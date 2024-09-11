@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <!-- Add Google Font Link -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* General body styling */
+        body {
+            background-color: black;
+            color: yellow;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            justify-content: center;
+            align-items: center;
+            padding-top: 200px; /* Adjust this value based on your header height */
+        }
+
+        /* Header styling */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 3px 20px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: black;
+            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .logo {
+            height: 65px;
+            width: auto;
+            box-shadow: 0 0 20px rgba(255, 255, 0, 0.8);
+            transition: box-shadow 0.3s ease-in-out;
+        }
+
+        /* Common styling for both left and right nav links */
+        .nav-links-left, .nav-links-right {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        /* Navigation links styling */
+        .nav-links-left a, .nav-links-right a {
+            color: yellow;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .nav-links-left a:hover, .nav-links-right a:hover {
+            color: rgba(255, 255, 0, 0.8);
+        }
+        .nav-links-left {
+            display: flex;
+            gap: 30px;
+            margin-left: 20px;
+            align-items: center;
+        }
+
+        .nav-links-left a {
+            color: yellow;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .nav-links-left a:hover {
+            color: rgba(255, 255, 0, 0.8);
+
+        }
+
+        .nav-links-right {
+            display: flex;
+            gap: 30px;
+            margin-right: 20px; /* Reduce right margin to prevent links from going off-screen */
+            align-items: center;
+
+        }
+        /* Form Container */
+        .login-container {
+            background-color: rgba(255, 255, 0, 0.1);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.5);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            margin-top: 50px; /* Adjusting to make room for the header */
+            margin-bottom: 50px; /* Add some space below the form */
+        }
+
+    
+        .login-container h2 {
+            margin-bottom: 30px;
+            font-size: 24px;
+            box-shadow: 0 0 30px rgba(255, 255, 0, 1);
+            padding: 15px;
+            border-radius: 10px;
+            color: black;
+            background-color: yellow;
+        }
+
+        /* Form fields */
+        .login-container input[type="text"],
+        .login-container input[type="REMOVED"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 2px solid yellow;
+            background-color: black;
+            color: yellow;
+            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.5);
+            transition: box-shadow 0.3s ease-in-out;
+            margin-bottom: 20px;
+        }
+
+        /* Button styling */
+        .login-container input[type="submit"] {
+            background-color: yellow;
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            box-shadow: 0px 4px 10px rgba(255, 255, 0, 0.5);
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            margin-top: 20px;
+            width: 100%;
+        }
+        .login-container input[type="submit"]:hover {
+            transform: translateY(-2px);
+            box-shadow: 0px 8px 20px rgba(255, 255, 0, 0.8);
+        }
+
+        /* Update the color of the "Don't have an account" link */
+        .login-container a {
+            color: yellow; /* Change the color to yellow */
+            text-decoration: none;
+            display: block;
+            margin-top: 15px;
+            transition: text-shadow 0.3s ease-in-out;
+        }
+
+        .login-container a:hover {
+            text-shadow: 0px 0px 10px rgba(255, 255, 0, 0.8);
+
+        }
+
+        /* Footer styling */
+        footer {
+            background-color: #121212;
+            color: rgba(255, 255, 255, 0.8);
+            padding: 30px 0;
+            text-align: center;
+            font-size: 14px;
+            margin-top: auto;
+            width: 100%;
+        }
+
+        footer a {
+            color: yellow;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+    
+    </style>
+</head>
+<body>
+    <header>
+        <img src="{{ url_for('static', filename='images/logobaby.png') }}" alt="ButchAI Logo" class="logo">
+        <div class="nav-links-right">
+            <a href="/">Home</a>
+            <a href="/signup">Sign Up</a> <!-- Link to sign up page -->
+        </div>
+    </header>
+
+    <!-- Form section -->
+    <div class="login-container">
+        <h2>Login</h2>
+        <form method="POST" action="/login">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="REMOVED" name="REMOVED" placeholder="Password" required>
+            <input type="submit" value="Login">
+        </form>
+        <a href="/signup">Don't have an account? Sign up</a>
+    </div>
+
+    <!-- Footer section -->
+    <footer>
+        <p>&copy; 2024 ButchAI. All rights reserved.</p>
+        <p>
+            <a href="/terms">Terms</a> | 
+            <a href="/privacy">Privacy Policy</a>
+        </p>
+    </footer> 
+</body>
+</html>

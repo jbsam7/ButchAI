@@ -1,0 +1,17 @@
+# Ignore virtual environments
+.venv/
+env/
+
+# Ignore Python cache files
+__pycache__/
+*.pyc
+
+# Ignore system files
+.DS_Store
+.idea/
+.vscode/
+
+# Ignore large or unnecessary data files
+/data/
+/logs/
+/static/audio_output.mp3

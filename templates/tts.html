@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text to Speech - Basic Version</title>
+
+    <!-- Google Fonts Link-->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: black;
+            color: yellow;
+            font-family: 'Poppins', Arial, sans-serif;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* Banner with Linear Gradient Background */
+        .banner {
+            background: linear-gradient(to right, yellow, rgba(0, 0, 0, 0.9));
+            padding: 50px 100px;
+            display: flex;
+            justify-content: space-between; /* To push logo to the right */
+            align-items: center;
+            height: 400px; /* Increase banner height */
+            margin-top: 80px; /* Adjust for header height */
+        }
+
+        /* Styling for the Heading */
+        .banner-heading {
+            color: black;
+            font-size: 2.5em;
+            text-align: center;
+            width: 100%;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+
+        /* Form inside the banner aligned to the left */
+        .banner-form {
+            width: 50%; /* Adjust the width of the form */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-left: -75px;
+        }
+
+        header {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 1px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: black;
+            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.5);
+            backdrop-filter: blur(10px);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .logo {
+            height: 65px;
+            width: auto;
+            margin-right: 20px;
+            box-shadow: 0 0 20px rgba(255, 255, 0, 0.8);
+            transition: box-shadow 0.3s ease-in-out;
+        }
+
+        .logo:hover {
+            box-shadow: 0 0 30px rgba(255, 255, 0, 1);
+        }
+
+        .nav-links-left {
+            display: flex;
+            gap: 30px;
+            margin-left: 20px;
+            align-items: center;
+        }
+
+        .nav-links-left a {
+            color: yellow;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .nav-links-left a:hover {
+            color: rgba(255, 255, 0, 0.8);
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: black;
+            min-width: 150px;
+            box-shadow: 0 4px 8px rgba(255, 255, 0, 0.2);
+            z-index: 1;
+            text-align: left;
+        }
+
+        .dropdown-content a {
+            color: yellow;
+            padding: 10px;
+            text-decoration: none;
+            display: block;
+            font-size: 16px;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .nav-links-right {
+            margin-left: auto;
+            display: flex;
+            gap: 15px;
+            margin-right: 20px;
+        }
+
+        .nav-links-right a {
+            color: yellow;
+            text-decoration: none;
+            padding: 10px 20px;
+            border: 2px solid yellow;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
+        }
+
+        .nav-links-right a:hover {
+            background-color: yellow;
+            color: black;
+            box-shadow: 0 0 20px rgba(255, 255, 0, 0.8);
+        }
+
+        form {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: black;
+            border: 2px solid yellow; /* Add a yellow border for visibility */
+            border-radius: 15px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.8);
+            transition: transform 0.3s, box-shadow 0.3s ease-in-out;
+        }
+
+        form:hover {
+            transform: translateY(-10px);
+            box-shadow: 0px 8px 20px rgba(255, 255, 0, 0.4);
+        }
+
+        input[type="file"],
+        textarea {
+            background-color: #222; /* Keep black for contrast */
+            color: yellow; /* Yellow text inside */
+            border: 1px solid yellow; /* Add a yellow border */
+            padding: 10px;
+            width: 100%;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            box-shadow: 0px 4px 10px rgba(255, 255, 0, 0.2);
+            transition: box-shadow 0.3s ease-in-out, border-color 0.3s;
+        }
+        /* Hover and Focus Effect for Inputs and Textarea */
+        input[type="file"]:hover,
+        textarea:hover,
+        input[type="file"]:focus,
+        textarea:focus {
+            box-shadow: 0px 4px 10px rgba(255, 255, 0, 0.4);
+            border-color: yellow; /* Highlight border on hover and focus */
+            outline: none; /* Remove default focus outline */
+        }
+        /* Submit Button */
+        input[type="submit"] {
+            background-color: yellow; /* Keep yellow for contrast */
+            color: black; /* Black text */
+            border: none;
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 1.2em;
+            width: 100%;
+            box-shadow: 0px 4px 10px rgba(255, 255, 0, 0.5);
+            transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        /* Hover Effect for Submit Button */
+        input[type="submit"]:hover {
+            background-color: #ffeb3b;
+            box-shadow: 0px 8px 20px rgba(255, 255, 0, 0.8);
+        }
+
+        label {
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        footer {
+            background-color: #121212;
+            color: rgba(255, 255, 255, 0.8);
+            padding: 30px 0;
+            text-align: center;
+            font-size: 14px;
+            margin-top: 50px;
+        }
+
+        footer a {
+            color: yellow;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .social-icons {
+            margin-top: 20px;
+        }
+
+        .social-icons img {
+            width: 30px;
+            margin: 0 10px;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        .social-icons img:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <!-- Insert logo here -->
+        <img src="{{ url_for('static', filename='images/logobaby.png') }}" alt="ButchAI Logo" class="logo">
+        <!-- Left navigation buttons-->
+        <div class="nav-links-left">
+            <a href="/">Home</a>
+
+            <!-- Drop down features-->
+            <div class="dropdown">
+                <a href="#">Features</a>
+                <div class="dropdown-content">
+                    <a href="/how-to-prompt">How to Prompt</a>
+                    <a href="/basic">Basic</a>
+                    <a href="/premium">Premium</a>
+                </div>
+            </div>
+            <a href="/pricing">Pricing</a>
+            <a href="/contact">Contact</a>
+        </div>
+        <!--- Right navigation links (Sign up and Login)-->
+        <div class="nav-links-right">
+            <a href="/account">Account</a>
+            <a href="/login">Login</a>
+        </div>
+    </header>
+
+    <!-- Banner Section -->
+    <div class="banner">
+        <!-- Form aligned to the left -->
+        <h1 class="banner-heading">Upload Your Video!</h1>
+        <div class="banner-form">
+            <form action="{{ url_for('text_to_speech') }}" method="post" enctype="multipart/form-data">
+                <label for="file">Upload Video File:</label>
+                <input type="file" id="file" name="file" accept="video/*" required>
+
+                <label for="custom_prompt">Enter Custom Prompt for Analysis:</label>
+                <textarea id="custom_prompt" name="custom_prompt" rows="4" placeholder="Enter your custom prompt for the video analysis..." required></textarea>
+
+                <input type="submit" value="Upload and Process Video">
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 ButchAI. All rights reserved.</p>
+        <p>
+            <a href="/terms">Terms</a>
+            <a href="/privacy">Privacy Policy</a>
+        </p>
+
+        <!-- Social Media Icons-->
+        <div class="social-icons">
+            <a href="#"><img src="{{ url_for('static', filename='images/x.png') }}" alt="X"></a>
+            <a href="#"><img src="{{ url_for('static', filename='images/yt.png') }}" alt="Youtube"></a>
+            <a href="#"><img src="{{ url_for('static', filename='images/tiktok.png') }}" alt="Tiktok"></a>
+            <a href="#"><img src="{{ url_for('static', filename='images/insta.png') }}" alt="Instagram"></a>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <!-- Add Google Font Link (same as main page) -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* General body styling */
+        body {
+            background-color: black;
+            color: yellow;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            justify-content: center;
+            align-items: center;
+            padding-top: 200px; /* Adjust this value based on your header height */
+
+        }
+
+        /* Header styling */
+        header {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 1px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: black;
+            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.5);
+            z-index: 1000;
+        }
+        
+        /* Logo inside the header */
+        .logo {
+            height: 65px;
+            width: auto;
+            margin-right: 20px;
+            box-shadow: 0 0 20px rgba(255, 255, 0, 0.8);
+            transition: box-shadow 0.3s ease-in-out;
+        }
+
+        /* Navigation links on the header */
+        .nav-links-left {
+            display: flex;
+            gap: 30px;
+            margin-left: 20px;
+            align-items: center;
+        }
+
+        .nav-links-left a {
+            color: yellow;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .nav-links-left a:hover {
+            color: rgba(255, 255, 0, 0.8);
+        }
+
+        /* Form Container */
+        .form-container {
+            background-color: rgba(255, 255, 0, 0.1);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 10px rgba(255, 255, 0, 0.5);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            margin-top: 100px; /* Adjusting to make room for the header */
+            margin-bottom: 50px; /* Add some space below the form */
+        }
+
+        /* Form Title */
+        .form-container h1 {
+            margin-bottom: 30px;
+            font-size: 24px;
+            box-shadow: 0 0 30px rgba(255, 255, 0, 1);
+            padding: 15px;
+            border-radius: 10px;
+            color: black;
+            background-color: yellow;
+        }
+
+        /* Form fields and labels */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            margin-bottom: 5px;
+            display: block;
+            text-align: left;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="date"],
+        .form-group input[type="email"],
+        .form-group input[type="REMOVED"] {
+            width: 100%; 
+            padding: 10px;
+            border-radius: 5px;
+            border: 2px solid yellow;
+            background-color: black;
+            color: yellow;
+            box-shadow: 0px 4px 10px rgba(255, 255, 0, 0.5);
+            transition: box-shadow 0.3s ease-in-out;
+        }
+
+        /* Checkbox styling */
+        .form-check {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .form-check-input {
+            margin-right: 10px;
+            margin-top: -6px;
+        }
+
+        /* Button styling */
+        .btn-primary {
+            background-color: yellow;
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            box-shadow: 0px 4px 10px rgba(255, 255, 0, 0.5);
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0px 8px 20px rgba(255, 255, 0, 0.8);
+        }
+
+        /* Footer styling (optional) */
+        footer {
+            background-color: #121212;
+            color: rgba(255, 255, 255, 0.8);
+            padding: 30px 0;
+            text-align: center;
+            font-size: 14px;
+            margin-top: auto; /* Pushes the footer to the bottom */
+            width: 100%;
+        }
+
+        footer a {
+            color: yellow;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header section -->
+    <header>
+        <img src="{{ url_for('static', filename='images/logobaby.png') }}" alt="ButchAI Logo" class="logo">
+        <div class="nav-links-left">
+            <a href="/">Home</a>
+            <a href="/login">Login</a>
+        </div>
+    </header>
+
+    <!-- Form section -->
+    <div class="form-container">
+        <h1>Create Your Account</h1>
+        <form action="{{ url_for('signup_route') }}" method="post">
+            <div class="form-group">
+                <label for="first_name">First Name:</label>
+                <input type="text" class="form-control" id="first_name" name="first_name" required>
+            </div>
+            <div class="form-group">
+                <label for="last_name">Last Name:</label>
+                <input type="text" class="form-control" id="last_name" name="last_name" required>
+            </div>
+            <div class="form-group">
+                <label for="dob">Date of Birth:</label>
+                <input type="date" class="form-control" id="dob" name="dob" required>
+            </div>
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" class="form-control" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="REMOVED">Password:</label>
+                <input type="REMOVED" class="form-control" id="REMOVED" name="REMOVED" required>
+            </div>
+            
+            <!-- Subscription Tier Selection -->
+            <div class="form-group">
+                <label>Select Subscription Tier:</label><br>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" id="basic" name="subscription_tier" value="basic">
+                    <label class="form-check-label" for="basic">Basic - $5/month</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" id="premium" name="subscription_tier" value="premium">
+                    <label class="form-check-label" for="premium">Premium - $15/month</label>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn-primary">Sign Up</button>
+        </form>
+    </div>
+
+    <!-- Optional footer -->
+    <footer>
+        <p>&copy; 2024 ButchAI. All rights reserved.</p>
+        <p>
+            <a href="/terms">Terms</a> | 
+            <a href="/privacy">Privacy Policy</a>
+        </p>
+    </footer>
+</body>
+</html>

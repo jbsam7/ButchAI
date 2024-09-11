@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Page</title>
+    <!-- Add google font link here-->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: black;
+            color: yellow;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center; /* Aligns items to the top of the header */
+            padding: 1px; /* Reducing padding to bring the content closer to the top */
+            position: fixed; /* Position the header absolutely to the top */
+            top: 0; /* Align the header to the top of the page */
+            width: 100%; /* Make the header span the full width of the page */
+            z-index: 1000; /* Ensure header stays on top */
+            background-color: black; /* Semi-transparent yellow background */
+            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.5); /* Subtle shadow effect */
+            backdrop-filter: blur(10px); /* Adds a slight blur behind the header for a modern look */
+            transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition effects */
+        }
+        .logo {
+            height: 65px; /* Adjust this value to control the size of your logo */
+            width: auto; /* Maintains the aspect ratio */
+            margin-right: 20px; /* Space between logo and nav links */
+            box-shadow: 0 0 20px rgba(255, 255, 0, 0.8); /* Glowing effect */
+            transition: box-shadow 0.3s ease-in-out;  /* Smooth transition for hover effect */
+        }
+
+        .logo:hover {
+            box-shadow: 0 0 30px rgba(255, 255, 0, 1); /* Stronger glow on hover */
+        }
+        
+        .nav-links-left {
+            display: flex;
+            gap: 30px; /* Controls spacing between each nav item */
+            margin-left: 20px; /* Adjust the spacing from the left side */
+            align-items: center; 
+            justify-content: flex-start; /* Align the links to the left */
+        }
+        .nav-links-left a {
+            color: yellow;
+            text-decoration: none;
+            font-size: 18px;            
+        }
+        .nav-links-left a:hover {
+            color: rgba(255, 255, 0, 0.8);
+        }
+
+        .dropdown {
+            position: relative;
+        }
+        
+        /* Dropdown content (hidden by default) */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: black;
+            min-width: 150px;
+            box-shadow: 0 4px 8px rgba(255, 255, 0, 0.2);
+            z-index: 1;
+            text-align: left;
+        }
+
+        /* Links inside the dropdown */
+        .dropdown-content a {
+            color: yellow;
+            padding: 10px;
+            text-decoration: none;
+            display: block;
+            font-size: 16px;
+        }
+        /* Show the drop down menu on hover */
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* Right side links (Sign up and login) */
+
+        .nav-links-right {
+            margin-left: auto;
+            display: flex;
+            gap: 15px;
+            margin-right: 20px;
+        }
+        .nav-links-right a {
+            color: yellow;
+            text-decoration: none;
+            padding: 10px 20px;
+            border: 2px solid yellow;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
+
+        }
+        .nav-links-right :hover {
+            background-color: yellow;
+            color: black;
+            box-shadow: 0 0 20px rgba(255, 255, 0, 0.8);
+
+        }
+
+        /* Banner section */
+        .banner {
+            background: linear-gradient(to right, yellow, rgba(255, 255, 0, 0.1));
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 50px 100px;
+            height: 400px;
+            margin-top: 80px; /* Adjust for header height */
+        }
+
+        .banner-text {
+            font-size: 48px;
+            font-weight: bold;
+            color: black;
+            max-width: 600px;
+        }
+
+        .banner-image {
+            height: 300px;
+            width: auto;
+            border-radius: 15px;
+            box-shadow: 0px 8px 20px rgba(255, 255, 0, 0.6); /* Creates a glowing, floating effect */
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Smooth animations */
+        }
+
+        .banner-image:hover {
+            transform: scale(1.05); /* Slightly enlarges the image on hover */
+            box-shadow: 0px 10px 30px rgba(255, 255, 0, 1); /* Stronger shadow when hovering */
+        }
+
+        /* Animation for microphone */
+        @keyframes sway {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(10deg); }
+            50% { transform: rotate(0deg); }
+            75% { transform: rotate(-10deg); }
+            100% {transform: rotate(0deg); }
+        }
+
+        /* Style for microphone image */
+        .moving-microphone {
+            height: 300px; /* Set height for the microphone image */
+            width: auto;
+            animation: sway 3s ease-in-out infinite; /* Apply the sway animation */
+            background-color: transparent;
+            border: none;
+        }
+
+        /* Second banner sectiono */
+        .second-banner {
+            background: linear-gradient(to right, black, rgb(27, 23, 23)); /* Light yellow fading to white */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 50px 20px;
+            color: yellow;
+            text-align: left;
+            font-family: 'Poppins', sans-serif; 
+}
+
+        .second-banner-text {
+            max-width: 600px; /* Restrict text width for better readability */
+            padding: 20px; /* Add padding for spacing */
+        }
+
+
+        .second-banner h2 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            line-height: 1.3;
+            text-shadow: 1px 1px 3px rgba(255, 255, 0, 0.3); /* Subtle shadow for a glowing effect */
+        }
+        /* Paragraph text styling */
+
+        .second-banner p {
+            font-size: 18px;
+            font-weight: 300;
+            line-height: 1.8;
+            color: rgba(255, 255, 0, 0.8); /* Softer yellow */
+        }
+
+        /* Box container for extra eligance */
+        .second-banner-text-container {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 15px rgba(255, 255, 0, 0.3); /* Soft shadow */
+            backdrop-filter: blur(5px); /* Subtle blur effect */
+        }
+
+        /* Third banner (new section)*/
+        .third-banner {
+            background: linear-gradient(to right, rgba(255, 255, 0, 0.1), yellow);
+            padding: 50px 20px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            justify-content: space-between;
+            font-family: 'Poppins', sans-serif;
+            color: black;
+        }
+
+        .third-banner-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+        }
+
+        .third-banner-section:nth-child(even) {
+            flex-direction: row-reverse; /* Alternate between left and right images */
+        }
+
+        .third-banner-section img {
+            width: 40%; /* Set image size */
+            border-radius: 15px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .third-banner-section p {
+            font-size: 20px;
+            line-height: 1.6;
+            width: 50%;
+            text-align: left;
+
+        }
+        
+        
+        /* Subsription options */
+        .subscription-options {
+            margin-top: 50px; /* Adjusted margin to move it below the second banner */
+            display: flex; /* Use flexbox to align items horizontally */
+            justify-content: center; /* Center the items horizontally */
+            gap: 20px; /* Add some space between the subscription tiers */
+        }
+        .subscription-tier {
+            width: 300px; /* set a fixed width for each subscription tier */
+            padding: 20px;
+            border-radius: 15px; /* Increased border radius for a softer look */
+            text-align: center;
+            background-color: rgba(255, 255, 0, 0.1); /* Semi-transparent yellow background */
+            box-shadow: 0px 4px 10px rgba(255, 255, 0, 0.2); /* Shadow for the floating effect */
+            transition: transform 0.3s, box-shadow 0.3s; /* Smooth transition for hover effects */
+            border: 2px solid transparent; /* Make border transparent to avoid conflict with the shadow */
+        }
+        .subscription-tier:hover {
+            transform: translateY(-10px); /* Move the box up on hover to enhance the floating effect */
+            box-shadow: 0px 8px 20px rgba(255, 255, 0, 0.4); /* Stronger shadow on hover */
+        }
+        .subscription-tier h3 {
+            margin-bottom: 15px;
+        }
+        .subscription-tier p {
+            margin-bottom: 10px;
+        }
+        .subscription-tier a {
+            color: black;
+            background-color: yellow;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block; /* Ensure the button size adjusts to the content */
+        }
+
+        /* Footer section */
+        footer {
+            background-color: #121212; /* Dark grey footer background */
+            color: rgba(255, 255, 255, 0.8); /* Slightly transparent white text */
+            padding: 30px 0;
+            text-align: center;
+            font-size: 14px;
+            margin-top: 50px;
+        }
+
+        footer a {
+            color: yellow;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .social-icons {
+            margin-top: 20px;
+        }
+
+        .social-icons img {
+            width: 30px;
+            margin: 0 10px;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        .social-icons img:hover {
+            opacity: 1;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <!-- Insert the logo here-->
+        <img src="{{ url_for('static', filename='images/logobaby.png') }}" alt="ButchAI Logo" class="logo">
+
+        <!-- Left Navigation links -->
+        <div class="nav-links-left">
+            <a href="/">Home</a>
+
+            <!-- Dropdown for features-->
+             <div class="dropdown">
+                <a href="#">Features</a>
+                <div class="dropdown-content">
+                    <a href="/how-to-prompt">How to Prompt</a>
+                    <a href="/basic">Basic</a>
+                    <a href="/premium">Premium</a>
+                </div>
+             </div>
+
+             <a href="/pricing">Pricing</a>
+             <a href="/contact">Contact</a>
+        </div>
+        <!-- Right navigation links (Sign up and login)-->
+        <div class="nav-links-right">
+            <a href="/signup">Sign Up</a>
+            <a href="/login">Login</a>
+        </div>
+    </header>
+
+    <!-- First banner section -->
+    <div class="banner">
+        <div class="banner-text">
+            Experience AI-Powered Voice Narration
+            <br>Designed for Your Needs.
+        </div>
+        <!-- Image to the right side of banner-->
+        <img src="{{ url_for('static', filename='images/logobaby.png') }}" alt="AI Voice" class="banner-image">
+    </div>
+
+    <!-- Second banner section-->
+    <div class="second-banner">
+        <div class="second-banner-text-container">
+            <div class="second-banner-text">
+                <h2>The First Narration Tool to Use Key Frames</h2>
+                <p> 
+                    We create custom narrations using key frames of your video to provide
+                    personalized voiceover content that stands out. This unique approach allows us
+                    to offer narration that enhances your storytelling, ensuring every key moment
+                    is highlighted with precision.
+                </p>
+            </div>
+        </div>
+
+    <!-- Animated microphone image-->
+        <img src="{{ url_for('static', filename='images/microphone.png') }}" alt="Animated Microphone" class="moving-microphone">
+    </div>
+
+    <!-- Third banner section-->
+    <div class="third-banner">
+        <div class="third-banner-section">
+            <img src="{{ url_for('static', filename='images/logobaby.png') }}" alt="Business Ad Image">
+            <p>
+                Our AI narration tool is perfect for business advertisements, offering you a tailored voiceover that aligns with your brand.
+                Stand out with our custom narrations for your promotional and ad videos, making sure your message is heard with clarity.
+            </p>
+        </div>
+        <div class="third-banner-section">
+            <img src="{{ url_for('static', filename='images/logobaby.png') }}" alt="Fun Narration Image">
+            <p>
+                Looking to have fun with your videos? Our tool lets you create entertaining and personalized narrations for any video you have. 
+                Whether it's for social media, memes, or just for fun, our narration tool adds an extra layer of creativity to your projects.
+            </p>
+        </div>
+    </div>
+
+    <!-- Subscription options-->
+    <div id="subscriptions" class="subscription-options">
+        <div class="subscription-tier">
+            <h3>Basic Tier - $5/month</h3>
+            <p>Access to basic narration services.</p>
+            <a href="/signup">Subscribe to Basic</a> 
+        </div>
+        <div class="subscription-tier">
+            <h3>Premium Tier - $15/month</h3>
+            <p>Advanced narration with key frame analysis.</p>
+            <a href="/signup">Subscribe to Premium</a> <!-- Directly links to the sign-up page -->
+        </div>
+    </div>
+    <!-- Footer section-->
+    <footer>
+        <p>&copy; 2024 ButchAI. All rights reserverd.</p>
+        <p>
+            <a href="/terms">Terms</a>
+            <a href="/privacy">Privacy Policy</a>
+        </p>
+
+        <!-- Social Medica Icons -->
+        <div class="social-icons">
+            <a href="#"><img src="{{ url_for('static', filename='images/x.png') }}" alt="X"></a>
+            <a href="#"><img src="{{ url_for('static', filename='images/yt.png') }}" alt="Youtube"></a>
+            <a href="#"><img src="{{ url_for('static', filename='images/tiktok.png') }}" alt="Tiktok"></a>
+            <a href="#"><img src="{{ url_for('static', filename='images/insta.png') }}" alt="Instagram"></a>
+        </div> 
+    </footer>
+</body>
+</html>

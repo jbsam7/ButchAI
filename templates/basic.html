@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic Plan - How It Works</title>
+    <!-- Add google font link here-->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: black;
+            color: yellow;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 1px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: black;
+            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.5);
+            backdrop-filter: blur(10px);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .logo {
+            height: 65px;
+            width: auto;
+            margin-right: 20px;
+            box-shadow: 0 0 20px rgba(255, 255, 0, 0.8);
+            transition: box-shadow 0.3s ease-in-out;
+        }
+        .logo:hover {
+            box-shadow: 0 0 30px rgba(255, 255, 0, 1);
+        }
+        .nav-links-left {
+            display: flex;
+            gap: 30px;
+            margin-left: 20px;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        .nav-links-left a {
+            color: yellow;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        .nav-links-left a:hover {
+            color: rgba(255, 255, 0, 0.8);
+        }
+        .dropdown {
+            position: relative;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: black;
+            min-width: 150px;
+            box-shadow: 0 4px 8px rgba(255, 255, 0, 0.2);
+            z-index: 1;
+            text-align: left;
+        }
+        .dropdown-content a {
+            color: yellow;
+            padding: 10px;
+            text-decoration: none;
+            display: block;
+            font-size: 16px;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        .nav-links-right {
+            margin-left: auto;
+            display: flex;
+            gap: 15px;
+            margin-right: 20px;
+        }
+        .nav-links-right a {
+            color: yellow;
+            text-decoration: none;
+            padding: 10px 20px;
+            border: 2px solid yellow;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
+        }
+        .nav-links-right:hover {
+            background-color: yellow;
+            color: black;
+            box-shadow: 0 0 20px rgba(255, 255, 0, 0.8);
+        }
+        .banner {
+            background: linear-gradient(to right, yellow, rgba(255, 255, 0, 0.1));
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 50px 100px;
+            height: 400px;
+            margin-top: 80px;
+        }
+        .banner-text {
+            font-size: 48px;
+            font-weight: bold;
+            color: black;
+            max-width: 600px;
+        }
+        .banner-image {
+            height: 300px;
+            width: auto;
+            border-radius: 15px;
+            box-shadow: 0px 8px 20px rgba(255, 255, 0, 0.6);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .banner-image:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 10px 30px rgba(255, 255, 0, 1);
+        }
+        .section {
+            padding: 50px 20px;
+            background-color: #121212;
+            color: yellow;
+            text-align: left;
+        }
+        .section h2 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 3px rgba(255, 255, 0, 0.3);
+        }
+        .section p {
+            font-size: 18px;
+            font-weight: 300;
+            line-height: 1.8;
+            color: rgba(255, 255, 0, 0.8);
+        }
+        .section img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+        .cta-section {
+            text-align: center;
+            padding: 50px 20px;
+            background-color: #111;
+            color: yellow;
+        }
+        .cta-section h2 {
+            font-size: 42px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .cta-section p {
+            font-size: 20px;
+            margin-bottom: 30px;
+        }
+        .cta-button {
+            background-color: yellow;
+            color: black;
+            padding: 15px 30px;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 5px;
+            box-shadow: 0px 8px 20px rgba(255, 255, 0, 0.8);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .cta-button:hover {
+            background-color: #ffeb3b;
+            box-shadow: 0px 12px 30px rgba(255, 255, 0, 1);
+        }
+        footer {
+            background-color: #121212;
+            color: rgba(255, 255, 255, 0.8);
+            padding: 30px 0;
+            text-align: center;
+            font-size: 14px;
+            margin-top: 50px;
+        }
+        footer a {
+            color: yellow;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+        .social-icons {
+            margin-top: 20px;
+        }
+        .social-icons img {
+            width: 30px;
+            margin: 0 10px;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+        .social-icons img:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="{{ url_for('static', filename='images/logobaby.png') }}" alt="ButchAI Logo" class="logo">
+        <div class="nav-links-left">
+            <a href="/">Home</a>
+            <div class="dropdown">
+                <a href="#">Features</a>
+                <div class="dropdown-content">
+                    <a href="/how-to-prompt">How to Prompt</a>
+                    <a href="/basic">Basic</a>
+                    <a href="/premium">Premium</a>
+                </div>
+            </div>
+            <a href="/pricing">Pricing</a>
+            <a href="/contact">Contact</a>
+        </div>
+        <div class="nav-links-right">
+            <a href="/signup">Sign Up</a>
+            <a href="/login">Login</a>
+        </div>
+    </header>
+
+    <!-- Banner Section -->
+    <div class="banner">
+        <div class="banner-text">
+            How the Basic Product Works
+        </div>
+        <img src="{{ url_for('static', filename='images/logobaby.png') }}" alt="Product Overview" class="banner-image">
+    </div>
+
+    <!-- Section explaining the basic product -->
+    <div class="section">
+        <h2>What You Get with the Basic Plan</h2>
+        <p>
+            The Basic Plan is perfect for those who are just starting out or need a limited amount of AI narration. For only $6 a month, you get access to:
+        </p>
+        <ul>
+            <li>Up to 10 minutes of AI-powered text-to-speech narration each month using the ElevenLabs API.</li>
+            <li>Customizable narration tones to suit your content's style and tone.</li>
+            <li>Easy-to-use interface for uploading video and entering prompts for the best narration results.</li>
+            <li>Upgrade options available if you need more minutes or advanced features.</li>
+        </ul>
+        <img src="{{ url_for('static', filename='images/logobaby.png') }}" alt="Basic Plan Features">
+    </div>
+
+    <!-- Call to Action section -->
+    <div class="cta-section">
+        <h2>Ready to Get Started?</h2>
+        <p>
+            Join the Basic Plan today for just $6 a month and start creating custom AI-powered narrations for your videos. It's simple and affordable!
+        </p>
+        <a href="/signup" class="cta-button">Sign Up Now</a>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 ButchAI. All rights reserved.</p>
+        <p>
+            <a href="/terms">Terms</a>
+            <a href="/privacy">Privacy Policy</a>
+        </p>
+        <div class="social-icons">
+            <a href="#"><img src="{{ url_for('static', filename='images/x.png') }}" alt="X"></a>
+            <a href="#"><img src="{{ url_for('static', filename='images/yt.png') }}" alt="Youtube"></a>
+            <a href="#"><img src="{{ url_for('static', filename='images/tiktok.png') }}" alt="Tiktok"></a>
+            <a href="#"><img src="{{ url_for('static', filename='images/insta.png') }}" alt="Instagram"></a>
+        </div> 
+    </footer>
+</body>
+</html>
