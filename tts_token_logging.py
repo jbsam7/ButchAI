@@ -1,0 +1,50 @@
+import sqlite3
+
+# --- Authentication Logic ---
+
+def get_db_connection():
+    conn = sqlite3.connect('users.db')
+    return conn
+
+# Function to count characters
+def count_characters(text):
+    return len(text)
+# Update character usage 
+def update_user_character_usage(username, character_count):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('''
+        UPDATE users
+        SET tts_characters = tts_characters + ?
+        WHERE username = ?''',
+        (character_count, username))
+    conn.commit()
+    conn.close()
+
+# Function to calculate costs based on character usage
+def calculate_tts_cost(character_count, rate_per_million=15.000):
+    cost = (character_count / 1_000_000) * rate_per_million
+    return cost
+
+# Function to log TTS character usage and cost
+def log_tts_usage_and_cost(username, character_count, rate_per_million=15.000):
+    # Calculate the cost for this transaction
+    total_cost = calculate_tts_cost(character_count, rate_per_million)
+
+    #Update total cost in database
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('''
+        UPDATE users
+        SET total_cost_tts = total_cost_tts + ?
+        WHERE username = ?''', (total_cost, username))
+    
+    # Commit the changes and close the connection
+    conn.commit()
+    conn.close()
+
+    # Output logging information
+    print(f"Username: {username}")
+    print(f"Characters used: {character_count}")
+    print(f"Total cost: ${total_cost:.8f} USD")
+

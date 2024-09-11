@@ -25,7 +25,8 @@ from stripe_utils import create_checkout_session_basic, create_checkout_session_
 from db_utils import init_db, update_db_schema, hash_REMOVED
 from text_adjustment import adjust_text_for_duration
 from audio_utils import generate_key_frame_phrases, extract_phrases, generate_audio_from_text, save_audio, analyze_frame, generate_sequential_summary, summarize_text, encode_image, extract_frames, calculate_frame_interval, save_audio
-
+from tts_audio import generate_audio_with_openai
+from tts_token_logging import log_tts_usage_and_cost, count_characters
 
 load_dotenv()
 
@@ -729,13 +730,16 @@ def text_to_speech():
             # Check for errors before proceeding to audio generation
             if 'Error' not in final_summary:
                 # Generate audio from the summary using your existing function
-                voice_id = 'pNInz6obpgDQGcFmaJgB'
-                audio = generate_audio_from_text(final_summary, voice_id)
+                audio_file_path = generate_audio_with_openai(final_summary)
 
-                # Save the audio and serve it to the user
-                output_filename = os.path.join('static', 'video_summary_audio.mp3')
-                save_audio(audio, output_filename)
-                return send_file(output_filename, as_attachment=True, download_name='video_summary_audio.mp3')
+                # Count characters in final summary
+                character_count = count_characters(final_summary)
+
+                # Log the character usage and cost
+                log_tts_usage_and_cost(username, character_count)
+
+                # Serve the audio file to the user
+                return send_file(audio_file_path, as_attachment=True, download_name='video_summary_audio.mp3')
             else:
                 flash("Error occurred during summarization. Please try again.")
                 return render_template('tts.html')

@@ -19,8 +19,10 @@ def init_db():
         input_tokens INTEGER DEFAULT 0,
         output_tokens INTEGER DEFAULT 0,
         video_duration REAL DEFAULT 0.0,
+        tts_characters INTEGER DEFAULT 0,
         total_cost REAL DEFAULT 0.0,
         total_cost_gpt4o REAL DEFAULT 0.0,
+        total_cost_tts REAL DEFAULT 0.0,
         tier TEXT DEFAULT 'basic',
         subscription_id TEXT 
     )
