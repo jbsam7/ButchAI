@@ -97,6 +97,42 @@
             margin-bottom: 10px;
         }
 
+        /* Form-check for radio buttons */
+        .form-check {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .form-check input[type="radio"] {
+            margin-right: 10px;
+            margin-top: -2px;
+            appearance: none;
+            background-color: yellow;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid yellow;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .form-check input[type="radio"]:focus {
+            outline: none;
+        }
+
+        .form-check-label {
+            font-size: 18px;
+            color: yellow;
+            cursor: pointer;
+        }
+
+        .form-check-label:hover {
+            color: rgba(255, 255, 0, 0.8);
+
+        }
+
         /* Unsubscribe Button */
         .btn-unsubscribe {
             background-color: red;
@@ -180,24 +216,32 @@
             <p><strong>Subscription Tier:</strong> {{ subscription_tier }}</p>
         </div>
 
-        <!-- Unsubscribe button -->
-        <form action="/unsubscribe" method="post">
-            <button type="submit" class="btn-unsubscribe">Unsubscribe</button>
-        </form>
+        <!-- Form to manage subscription tiers -->
+    <form action="{{ url_for('account') }}" method="POST">
+        <div class="subscription-info">
+            <p>Current Subscription: {{ subscription_tier }}</p>
 
-        <!-- Other account management actions -->
-        <button class="btn-account">Update Payment Info</button>
-        <button class="btn-account">Change Password</button>
-    </div>
+            <!-- Radio buttons for choosing new subscription tier -->
+            <label>Select New Subscription Tier:</label><br>
+            <div class="form-check">
+                <input type="radio" id="basic" name="subscription_tier" value="basic" {% if subscription_tier == 'basic' %}checked{% endif %}>
+                <label for="basic" class="form-check-label">Basic - $5/month</label>
+            </div>
+            <div class="form-check">
+                <input type="radio" id="premium" name="subscription_tier" value="premium" {% if subscription_tier == 'premium' %}checked{% endif %}>
+                <label for="premium" class="form-check-label">Premium - $15/month</label>
+            </div>
+        </div>
 
-    <!-- Footer section -->
-    <footer>
-        <p>&copy; 2024 ButchAI. All rights reserved.</p>
-        <p>
-            <a href="/terms">Terms</a> | 
-            <a href="/privacy">Privacy Policy</a>
-        </p>
-    </footer>
+        <button type="submit" class="btn-account">Update Subscription</button>
+    </form>
 
-</body>
-</html>
+    <!-- Unsubscribe button -->
+    <form action="/unsubscribe" method="post">
+        <button type="submit" class="btn-unsubscribe">Unsubscribe</button>
+    </form>
+
+    <!-- Other account management actions -->
+    <button class="btn-account">Update Payment Info</button>
+    <button class="btn-account">Change Password</button>
+</div>
