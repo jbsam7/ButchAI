@@ -27,6 +27,7 @@ from text_adjustment import adjust_text_for_duration
 from audio_utils import generate_key_frame_phrases, extract_phrases, generate_audio_from_text, save_audio, analyze_frame, generate_sequential_summary, summarize_text, encode_image, extract_frames, calculate_frame_interval, save_audio
 from tts_audio import generate_audio_with_openai
 from tts_token_logging import log_tts_usage_and_cost, count_characters
+from send_email import generate_otp, send_otp_email, store_otp, validate_otp
 
 load_dotenv()
 
@@ -182,7 +183,88 @@ def payment_successful():
         return redirect(url_for('text_to_speech'))
     else:
         flash('Payment successful! Your subscription is now active.')
-        return redirect(url_for('home'))
+        return redirect(url_for('login_route'))
+
+@app.route('/send-otp', methods=['POST'])
+def send_otp_route():
+    if 'username' not in session:
+        return redirect(url_for('login_route'))
+    
+    username = session['username']
+    # Fetch user's email based on the username (assuming user emails are stored)
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT email FROM users WHERE username = ?', (username,))
+    user_data = cursor.fetchone()
+    conn.close()
+
+    if user_data:
+        email = user_data[0]
+        otp = generate_otp() # Generate OTP
+        store_otp(email, otp) # Store the OTP
+        send_otp_email(email, otp) # Send the OTP via email
+        flash('OTP sent to your email address')
+    else:
+        flash('User not found')
+
+    return render_template('otp_verification.html')  # Render OTP verification page
+
+@app.route('/verify-otp', methods=['GET', 'POST'])
+def verify_otp_route():
+    if 'username' not in session:
+        return redirect(url_for('login_route'))
+    
+    if request.method == 'POST':
+        otp_entered = request.form['otp']
+        username = session['username']
+
+        # Fetch users email based on the username
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('SELECT email FROM users WHERE username = ?', (username,))
+        user_data = cursor.fetchone()
+        conn.close()
+
+        if user_data:
+            email = user_data[0]
+            is_valid, message = validate_otp(email, otp_entered)
+            if is_valid:
+                flash('OTP verified successfully')
+
+                # Fetch subscription status and tier after OTP verification
+                conn = get_db_connection()
+                cursor = conn.cursor()
+                cursor.execute('SELECT subscription_status, tier FROM users WHERE username = ?', (username,))
+                user_data =  cursor.fetchone()
+                conn.close()
+
+                if user_data:
+                    subscription_status, tier = user_data
+                    # Update the session with subscription details
+                    session['subscription_status'] = subscription_status
+                    session['subscription_tier'] = tier
+
+                    # Redirect based on subscription status and tier
+                    if subscription_status == 'active':
+                        if tier == 'premium':
+                            flash('Login successful! Welcome to your premium dashboard.')
+                            return redirect(url_for('home'))
+                        elif tier == 'basic':
+                            flash('Login successful! Welcome to the TTS page.')
+                            return redirect(url_for('text_to_speech'))
+                    else:
+                        flash('Your subscription is inactive. Please subscribe to continue.')
+                        return redirect(url_for('subscribe_basic'))
+                else:
+                    flash('Error retrieving user data')
+            else:
+                flash(message)  # Display OTP error message (e.g., "OTP expired" or "Invalid OTP")
+        else:
+            flash('User not found')
+
+    return render_template('otp_verification.html')
+
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login_route():
@@ -193,32 +275,22 @@ def login_route():
             # Fetch user subscription details
             conn = get_db_connection()
             cursor = conn.cursor()
-            cursor.execute('SELECT subscription_status, tier FROM users WHERE username = ?', (username,))
+            cursor.execute('SELECT email FROM users WHERE username = ?', (username,))
             user_data = cursor.fetchone()
             conn.close()
 
             if user_data:
-                subscription_status, tier = user_data
+                email = user_data[0]
+                otp = generate_otp() # Generate OTP
+                store_otp(email, otp) # Store OTP in temporary storage
+                send_otp_email(email, otp) # Send OTP to user's email
 
-                # Set session variables based on subscription status and tier
-                session['logged_in'] = True
-                session['username'] = username
-                session['subscription_status'] = subscription_status
-                session['subscription_tier'] = tier
-
-                # Conditionally redirect based on subscription status and tier
-                if subscription_status == 'active':
-                    if tier == 'premium':
-                        flash('Login successful! Welcome to your premium dashboard.')
-                        return redirect(url_for('home'))  # Redirect to the premium page
-                    elif tier == 'basic':
-                        flash('Login successful! Welcome to the TTS page.')
-                        return redirect(url_for('text_to_speech'))  # Redirect to the TTS page
-                else:
-                    flash('Your subscription is inactive. Please subscribe to continue.')
-                    return redirect(url_for('subscribe_basic'))  # Redirect to subscribe page for inactive users
+                flash('OTP sent to your email address for verification')
+                return redirect(url_for('verify_otp_route')) # Redirect to OTP verification page
             else:
-                flash('Invalid username or REMOVED')
+                flash('Email not found for the user.')
+        else:
+            flash('Invalid username or REMOVED')
     return render_template('login.html')
 
 @app.route('/logout')
