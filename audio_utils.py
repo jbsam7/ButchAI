@@ -204,10 +204,13 @@ def generate_sequential_summary(combined_summary, api_key, username):
         print("Response:", response.text)
         return "Error: API Request failed."
 
-# Summarize the text using the Claude model from Anthropic
-def summarize_text(final_summary, word_limit, api_key, custom_prompt, custom_prompt_frame, key_frame_one, key_frame_two, key_frame_one_time, key_frame_two_time, video_duration, retries=3, delay=60):
-    client = Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
-    
+# Summarize the text using the mini model from chatgpt
+def summarize_text(final_summary, word_limit, api_key, username, custom_prompt, custom_prompt_frame, key_frame_one, key_frame_two, key_frame_one_time, key_frame_two_time, video_duration, retries=3, delay=60):
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {api_key}"
+    }
+
     key_one_ratio = key_frame_one_time / video_duration
     key_two_ratio = key_frame_two_time / video_duration
 
@@ -225,20 +228,29 @@ def summarize_text(final_summary, word_limit, api_key, custom_prompt, custom_pro
         f"{custom_prompt}"
     )
 
+    max_tokens = math.ceil(word_limit * 1.33)
+
+    payload = {
+        "model": "gpt-4o-mini",
+        "messages": [{"role": "user", "content": prompt}],
+        "max_tokens": max_tokens
+    }
+
     for attempt in range(retries):
-        try:
-            response = client.messages.create(
-                max_tokens=1024,
-                messages=[{"role": "user", "content": prompt}],
-                model="claude-3-opus-20240229"
-            )
+        response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
 
-            summary_text = response.content[0].text if response.content else ""
-            print(f"Claude response: {summary_text}")
-            return summary_text.strip()
+        if response.status_code == 200:
+            response_json = response.json()
+            if 'choices' in response_json:
+                summary_text = response_json['choices'][0]['message']['content']
 
-        except Exception as e:
-            print(f"Error during API request to Claude: {str(e)}")
+                # Lot token usage 
+                token_usage = response_json['usage']
+                log_token_usage_and_cost(username, token_usage['prompt_tokens'], token_usage['completion_tokens'])
+
+                return summary_text
+        else: 
+            print(f"API Request failed with status code {response.status_code}: {response.text}")
             if attempt < retries - 1:
                 time.sleep(delay)
             else:

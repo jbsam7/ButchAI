@@ -17,11 +17,12 @@ def generate_audio_with_openai(input_text, voice="fable"):
     client = OpenAI(api_key=os.getenv("GPT_API_KEY"))  # Initialize the OpenAI client with API key
 
     # Define the path to save the audio file
-    speech_file_path = Path(__file__).parent / "speech_openai.mp3"
+    static_folder = Path(__file__).parent / "static"
+    speech_file_path = static_folder / "speech_openai.mp3"  # Save as 'speech_openai.mp3'
     
     # Call the OpenAI TTS API to generate speech
     response = client.audio.speech.create(
-        model="tts-1",
+        model="tts-1-hd",
         voice=voice,  # Choose a voice
         input=input_text  # The text to convert to speech
     )

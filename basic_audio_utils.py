@@ -26,6 +26,7 @@ def extract_basic_frames(video_path, video_duration):
     while success:
         if count % frame_interval == 0:
             frames.append(image)
+            print(f"Extracting frame {count} for analysis.")
         success, image = vidcap.read()
         count += 1
 
@@ -66,12 +67,14 @@ def analyze_frame_basic(encoded_image, api_key, username, retries=3, delay=60):
     }
 
     for attempt in range(retries):
+        print(f"Sending frame for analysis (attempt {attempt + 1})...")  # Print statement for frame analysis attempt
         response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
 
         if response.status_code == 200:
             response_json = response.json()
             if 'choices' in response_json:
                 result_text = response_json['choices'][0]['message']['content']
+                print(f"Frame analysis result: {result_text}") # Print result from image analysis
 
                 # Log token usage for cost tracking
                 token_usage = response_json['usage']
@@ -136,10 +139,12 @@ def summarize_text_basic(final_summary, word_limit, api_key, custom_prompt, user
         "Ensure the narrative reflects the main points, ends with a strong conclusion, and contains no symbols or unnecessary phrases"
     )
 
+    max_tokens = math.ceil(word_limit * 1.33)
+
     payload = {
         "model": "gpt-4o-mini",
         "messages": [{"role": "user", "content": prompt}],
-        "max_tokens": 150, 
+        "max_tokens": max_tokens, 
         "temperature": 0.8
     }
 
@@ -182,12 +187,15 @@ def summarize_video_basic(video_path, api_key, username, custom_prompt):
 
     # Analyze each frame
     summaries = []
-    for frame in frames:
+    for i, frame in enumerate(frames):
+        print(f"Analyzing frame {i + 1}/{len(frames)}")
         encoded_image = encode_image(frame)
         analysis_result = analyze_frame_basic(encoded_image, api_key, username)
+        print(f"Frame {i + 1} analysis result: {analysis_result}")
         summaries.append(analysis_result)
 
     combined_summary = " ".join(summaries)
+    print(f"Combined summary of all frames: {combined_summary}")  # Print combined summary of frames
 
     # Generate sequential summary
     sequential_summary = generate_basic_summary(combined_summary, api_key, username)

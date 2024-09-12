@@ -9,20 +9,9 @@ def get_db_connection():
 # Function to count characters
 def count_characters(text):
     return len(text)
-# Update character usage 
-def update_user_character_usage(username, character_count):
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute('''
-        UPDATE users
-        SET tts_characters = tts_characters + ?
-        WHERE username = ?''',
-        (character_count, username))
-    conn.commit()
-    conn.close()
 
 # Function to calculate costs based on character usage
-def calculate_tts_cost(character_count, rate_per_million=15.000):
+def calculate_tts_cost(character_count, rate_per_million=30.000):
     cost = (character_count / 1_000_000) * rate_per_million
     return cost
 
@@ -36,8 +25,8 @@ def log_tts_usage_and_cost(username, character_count, rate_per_million=15.000):
     cursor = conn.cursor()
     cursor.execute('''
         UPDATE users
-        SET total_cost_tts = total_cost_tts + ?
-        WHERE username = ?''', (total_cost, username))
+        SET tts_characters = tts_characters + ?, total_cost_tts = total_cost_tts + ?
+        WHERE username = ?''', (character_count, total_cost, username))
     
     # Commit the changes and close the connection
     conn.commit()

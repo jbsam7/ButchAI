@@ -458,7 +458,7 @@ def summarize_video(video_path, frame_interval, max_frame_for_last_key, api_key,
     # Debugging: Print video duration to verify it's calculated correctly
     print(f"Calculated video duration: {video_duration} seconds")
 
-    words_per_minute = 150
+    words_per_minute = 145
     total_words = math.ceil((video_duration / 60) * words_per_minute)
     print(f'Calculated target word count based on video duration: {total_words} words')
 
@@ -727,10 +727,13 @@ def text_to_speech():
             final_summary = summarize_video_basic(video_path, api_key, username, custom_prompt=user_prompt)
             print(f"Final summary: {final_summary}")
 
+            # Adjust the summary to match the desired video duration
+            adjusted_summary = adjust_text_for_duration(final_summary, video_duration)
+
             # Check for errors before proceeding to audio generation
             if 'Error' not in final_summary:
                 # Generate audio from the summary using your existing function
-                audio_file_path = generate_audio_with_openai(final_summary)
+                audio_file_path = generate_audio_with_openai(adjusted_summary)
 
                 # Count characters in final summary
                 character_count = count_characters(final_summary)
