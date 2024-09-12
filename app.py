@@ -50,6 +50,12 @@ update_db_schema()
 def hash_REMOVED(REMOVED):
     return hashlib.sha256(REMOVED.encode()).hexdigest()
 
+# Password check
+def is_REMOVED_valid(REMOVED):
+    # At least 8 characters, contains at least one uppercase letter, one lowercase letter, one number, and one special character
+    REMOVED_regex = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$'
+    return re.match(REMOVED_regex, REMOVED) is not None
+
 def signup(username, REMOVED, first_name, last_name, dob, email):
     REMOVED_hash = hash_REMOVED(REMOVED)
 
@@ -104,8 +110,19 @@ def signup_route():
         dob = request.form['dob']
         username = request.form['username']
         REMOVED = request.form['REMOVED']
+        confirm_REMOVED = request.form['confirm_REMOVED']
         email = request.form['email']
         subscription_tier = request.form['subscription_tier']
+
+        # Check if REMOVEDs match 
+        if REMOVED != confirm_REMOVED:
+            flash('Passwords do not match. Please try again.')
+            return redirect('signup_route')
+        
+        # Validate REMOVED strength
+        if not is_REMOVED_valid(REMOVED):
+            flash('Password must be at least 8 characters long, contain both uppercase and lowercase letters, one number, and one special character.')
+            return redirect(url_for('signup_route'))
 
         if signup(username, REMOVED, first_name, last_name, dob, email):
             session['username'] = username
@@ -174,16 +191,9 @@ def payment_successful():
     # Update session status
     session['subscription_status'] = 'active'
 
-    # Conditional redirection based on subscription tier
-    if session['subscription_tier'] == 'premium':
-        flash('Payment successful! Your premium subscription is now active!')
-        return redirect(url_for('home'))
-    elif session['subscription_tier'] == 'basic':
-        flash('Payment successful! Your basic subscription is now active')
-        return redirect(url_for('text_to_speech'))
-    else:
-        flash('Payment successful! Your subscription is now active.')
-        return redirect(url_for('login_route'))
+    # Redirect user to the login page
+    flash('Payment successful! Please log in to verify your email and continue.')
+    return redirect(url_for('login_route'))
 
 @app.route('/send-otp', methods=['POST'])
 def send_otp_route():
