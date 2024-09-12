@@ -16,17 +16,34 @@ def add_pauses_to_text(text, target_word_count):
         return text
     
     additional_words_needed = target_word_count - current_word_count
-    sentence_boundaries = [i for i, s in enumerate(sentences) if s.strip() in {'.', ',', '!', '?'}]
 
-    if not sentence_boundaries:
-        sentence_boundaries = list(range(len(sentences)))
+    # Find positions of commas first
+    comma_boundaries = [i for i, s in enumerate(sentences) if s.strip() == ',']
+    other_boundaries = [i for i, s in enumerate(sentences) if s.strip() in {'.', '!', '?'}]
 
-    pause_positions = random.sample(sentence_boundaries, min(additional_words_needed, len(sentence_boundaries)))
+    # If there aren't enough commas, add sentence-ending punctuation as fallback
+    all_boundaries = comma_boundaries + other_boundaries
 
+    # If there are too few commas or boundaries, we use the whole sentence array
+    if len(comma_boundaries) < additional_words_needed:
+        pause_positions = random.sample(all_boundaries, min(additional_words_needed, len(all_boundaries)))
+    else:
+        pause_positions = random.sample(comma_boundaries, additional_words_needed)
+
+    # Insert pauses at the selected positions
     for position in sorted(pause_positions, reverse=True):
         sentences.insert(position + 1, '...')
 
-    return ''.join(sentences)
+    adjusted_text = ''.join(sentences)
+    
+    # Ensure final text meets the word count requirement
+    adjusted_word_count = len(adjusted_text.split())
+    
+    if adjusted_word_count < target_word_count:
+        # If we're still short on words, append additional pauses at the end
+        adjusted_text += ' ...' * (target_word_count - adjusted_word_count)
+
+    return adjusted_text
 
 def adjust_text_for_duration(text, target_duration, words_per_minute=150):
     # Adjust the input text by adding pauses to match the desired narration length

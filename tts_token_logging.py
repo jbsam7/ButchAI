@@ -16,7 +16,7 @@ def calculate_tts_cost(character_count, rate_per_million=30.000):
     return cost
 
 # Function to log TTS character usage and cost
-def log_tts_usage_and_cost(username, character_count, rate_per_million=15.000):
+def log_tts_usage_and_cost(username, character_count, rate_per_million=30.000):
     # Calculate the cost for this transaction
     total_cost = calculate_tts_cost(character_count, rate_per_million)
 

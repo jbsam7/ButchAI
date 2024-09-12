@@ -139,7 +139,7 @@ def summarize_text_basic(final_summary, word_limit, api_key, custom_prompt, user
         "Ensure the narrative reflects the main points, ends with a strong conclusion, and contains no symbols or unnecessary phrases"
     )
 
-    max_tokens = math.ceil(word_limit * 1.33)
+    max_tokens = math.ceil(word_limit * 1.33) + 150
 
     payload = {
         "model": "gpt-4o-mini",
@@ -201,7 +201,7 @@ def summarize_video_basic(video_path, api_key, username, custom_prompt):
     sequential_summary = generate_basic_summary(combined_summary, api_key, username)
 
     # Determine the target word count based on video duration
-    words_per_minute = 135
+    words_per_minute = 140
     word_limit = math.ceil((video_duration / 60) * words_per_minute)
 
     # Generate the final summary using the custom prompt and sequential summary

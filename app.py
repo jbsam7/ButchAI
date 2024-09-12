@@ -729,6 +729,7 @@ def text_to_speech():
 
             # Adjust the summary to match the desired video duration
             adjusted_summary = adjust_text_for_duration(final_summary, video_duration)
+            print(f"Adjusted Summary: {adjusted_summary}")
 
             # Check for errors before proceeding to audio generation
             if 'Error' not in final_summary:

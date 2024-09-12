@@ -29,7 +29,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 3px 20px;
+            padding: 1px;
             position: fixed;
             top: 0;
             width: 100%;
@@ -48,7 +48,7 @@
         /* Common styling for both left and right nav links */
         .nav-links-left, .nav-links-right {
             display: flex;
-            gap: 30px;
+            gap: 15px;
             align-items: center;
         }
 
@@ -57,14 +57,20 @@
             color: yellow;
             text-decoration: none;
             font-size: 18px;
+            padding: 10px 20px;
+            border: 2px solid yellow;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
         }
 
         .nav-links-left a:hover, .nav-links-right a:hover {
-            color: rgba(255, 255, 0, 0.8);
+            background-color: yellow;
+            color: black;
+            box-shadow: 0 0 20px rgba(255, 255, 0, 0.8);
         }
         .nav-links-left {
             display: flex;
-            gap: 30px;
+            gap: 15px;
             margin-left: 20px;
             align-items: center;
         }
@@ -82,7 +88,7 @@
 
         .nav-links-right {
             display: flex;
-            gap: 30px;
+            gap: 15px;
             margin-right: 20px; /* Reduce right margin to prevent links from going off-screen */
             align-items: center;
 
@@ -114,7 +120,7 @@
         /* Form fields */
         .login-container input[type="text"],
         .login-container input[type="REMOVED"] {
-            width: 100%;
+            width: 90%;
             padding: 10px;
             border-radius: 5px;
             border: 2px solid yellow;
@@ -128,6 +134,7 @@
         /* Button styling */
         .login-container input[type="submit"] {
             background-color: yellow;
+            font-weight: bold;
             color: black;
             border: none;
             padding: 10px 20px;
@@ -136,7 +143,7 @@
             cursor: pointer;
             transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
             margin-top: 20px;
-            width: 100%;
+            width: 97%;
         }
         .login-container input[type="submit"]:hover {
             transform: translateY(-2px);

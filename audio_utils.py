@@ -228,7 +228,7 @@ def summarize_text(final_summary, word_limit, api_key, username, custom_prompt, 
         f"{custom_prompt}"
     )
 
-    max_tokens = math.ceil(word_limit * 1.33)
+    max_tokens = math.ceil(word_limit * 1.33) + 150
 
     payload = {
         "model": "gpt-4o-mini",

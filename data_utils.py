@@ -50,4 +50,4 @@ def log_token_usage_and_cost(username, input_tokens, output_tokens):
     print(f"Username: {username}")
     print(f"Input tokens: {input_tokens}")
     print(f"Output tokens: {output_tokens}")
-    print(f"Total cost: ${total_cost:.4f} USD")
+    print(f"Total cost: ${total_cost:.8f} USD")
