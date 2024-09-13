@@ -342,55 +342,55 @@ def account():
         result = cursor.fetchone()
         subscription_id, current_tier = result if result else (None, None)
         conn.close()
+        print(f"Subscription ID: {subscription_id}")
 
         # If the new tier is the same as the current tier, notify the user
         if new_tier == current_tier:
             flash('You are already on this subscription tier.')
             return redirect(url_for('account'))
         
-        # If the user has an existing subscription, cancel it on Stripe
-        if subscription_id:
-            try:
-                stripe.Subscription.delete(subscription_id)
-            except Exception as e:
-                flash(f'Error cancelling your current subscription: {str(e)}')
-                return redirect(url_for('account'))
-        # Create a new Stripe checkout session for the new subscription tier
+        # Update the existing Stripe subscription with the new price ID
         try:
             if new_tier == 'basic':
-                price_amount = 500  # $5/month
-                product_name = 'Basic Narration Subscription'
+                price_id = 'price_1PyQBqGWB2OjKBV44jdpOtqm'
             elif new_tier == 'premium':
-                price_amount = 1500  # $15/month
-                product_name = 'Premium Narration Subscription'
+                price_id = 'price_1PyQDpGWB2OjKBV4LL3FTYS2'
+
+            # Retrieve the subscription object from Stripe
+            subscription = stripe.Subscription.retrieve(subscription_id)
             
-            checkout_session = stripe.checkout.Session.create(
-                payment_method_types=['card'],
-                line_items=[{
-                    'price_data': {
-                        'currency': 'usd',
-                        'product_data': {
-                            'name': product_name,
-                        },
-                        'unit_amount': price_amount,
-                        'recurring': {
-                            'interval': 'month',
-                        },
-                    },
-                    'quantity': 1,
-                }],
-                mode='subscription',
-                success_url=url_for('subscription_successful', _external=True) + "?session_id={CHECKOUT_SESSION_ID}",
-                cancel_url=url_for('account', _external=True),
+            # Get the subscription item ID (the specific plan within the subscription)
+            subscription_item_id = subscription['items']['data'][0].id
+            
+            # Modify the subscription with the new price ID
+            stripe.Subscription.modify(
+                subscription_id,
+                items=[{
+                    'id': subscription_item_id,  # Use the correct subscription item ID
+                    'price': price_id  # The new price ID to update the subscription
+                }]
             )
+            print("Stripe subscription updated successfully.")
+            # Update the subscription tier and reset the video duration in the database
+            conn = get_db_connection()
+            cursor = conn.cursor()
+            cursor.execute('''
+                UPDATE users
+                SET tier = ?, 
+                    video_duration = 0  -- Reset video duration
+                WHERE username = ?
+            ''', (new_tier, username))
+            conn.commit()
+            conn.close()
 
-            # Store the new subscription tier in the session and redirect to Stripe
-            session['subscription_tier'] = new_tier
-            return redirect(checkout_session.url, code=303)
-        except Exception as e:
-            flash(f'Error creating a new subscription: {str(e)}')
+            session['subscription_tier'] = new_tier # Update session with the new tier
+            flash('Your subscription has been successfully updated!')
             return redirect(url_for('account'))
-
+        except Exception as e:
+            print(f"Error updating Stripe subscription: {str(e)}")
+            flash(f'Error updating subscription: {str(e)}')
+            return redirect(url_for('account'))
+    
     # For GET request, fetch the user data and render the account page
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -400,39 +400,10 @@ def account():
 
     if user_data:
         first_name, last_name, username, email, subscription_tier = user_data
-
-        # Pass the user data to the account page
         return render_template('accounts.html', first_name=first_name, last_name=last_name, username=username, email=email, subscription_tier=subscription_tier)
     else:
         flash('User not found')
         return redirect(url_for('login_route'))
-
-@app.route('/subscription-successful')
-@login_required
-def subscription_successful():
-    # Retrieve the session and Stripe subscription details
-    checkout_session = stripe.checkout.Session.retrieve(request.args.get('session_id'))
-    subscription_id = checkout_session.subscription  # Get subscription ID from Stripe
-
-    # Update the user's subscription in the database
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute('''
-        UPDATE users
-        SET subscription_status = 'active',
-            subscription_id = ?, -- Store the new Stripe subscription ID
-            tier = ?, -- Update the subscription tier
-            video_duration = 0 -- Reset the video duration to zero
-        WHERE username = ?
-    ''', (subscription_id, session['subscription_tier'], session['username']))
-    conn.commit()
-    conn.close()
-
-    # Update the session status and notify the user
-    session['subscription_status'] = 'active'
-    flash('Your subscription has been successfully updated and video duration reset!')
-
-    return redirect(url_for('account'))  # Redirect to account page
 
 # Unsubscribe route
 @app.route('/unsubscribe', methods=['POST'])

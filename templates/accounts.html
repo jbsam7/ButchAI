@@ -104,11 +104,11 @@
             margin-bottom: 10px;
         }
 
+        /* Form-check for radio buttons */
         .form-check input[type="radio"] {
             margin-right: 10px;
             margin-top: -2px;
             appearance: none;
-            background-color: yellow;
             width: 20px;
             height: 20px;
             border-radius: 50%;
@@ -116,10 +116,22 @@
             position: relative;
             cursor: pointer;
             transition: all 0.2s ease-in-out;
+            background-color: transparent; /* Make the background transparent by default */
         }
 
-        .form-check input[type="radio"]:focus {
-            outline: none;
+        .form-check input[type="radio"]:checked {
+            background-color: yellow; /* Only fill in yellow when selected */
+            border: 2px solid yellow; /* Keep the yellow border */
+        }
+        .form-check input[type="radio"]:checked::before {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: 10px;
+            height: 10px;
+            background-color: black; /* Add a black dot in the center */
+            border-radius: 50%;
         }
 
         .form-check-label {
