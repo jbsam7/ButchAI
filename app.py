@@ -135,29 +135,19 @@ def signup_route():
             # Create Stripe checkout session based on the subscription tier
             try:
                 if subscription_tier == 'basic':
-                    price_amount = 500  # Basic tier amount in cents ($5)
-                    product_name = 'Basic Narration Subscription'
+                    price_id = 'price_1PyQBqGWB2OjKBV44jdpOtqm'  # Replace with actual Basic Price ID
                 elif subscription_tier == 'premium':
-                    price_amount = 1500  # Premium tier amount in cents ($15)
-                    product_name = 'Premium Narration Subscription'
+                    price_id = 'price_1PyQDpGWB2OjKBV4LL3FTYS2'  # Replace with actual Premium Price ID
                 
+                # Use price ID for the subscription tier
                 checkout_session = stripe.checkout.Session.create(
                     payment_method_types=['card'],
                     line_items=[{
-                        'price_data': {
-                            'currency': 'usd',
-                            'product_data': {
-                                'name': product_name,
-                            },
-                            'unit_amount': price_amount,
-                            'recurring': {
-                                'interval': 'month',
-                            },
-                        },
+                        'price': price_id,
                         'quantity': 1,
                     }],
                     mode='subscription',
-                    success_url=url_for('payment_successful', _external=True) + "?session_id={CHECKOUT_SESSION_ID}",  # Updated success URL
+                    success_url=url_for('payment_successful', _external=True) + "?session_id={CHECKOUT_SESSION_ID}",
                     cancel_url=url_for('signup_route', _external=True),
                 )
                 return redirect(checkout_session.url, code=303)
