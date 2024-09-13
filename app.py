@@ -27,7 +27,7 @@ from text_adjustment import adjust_text_for_duration
 from audio_utils import generate_key_frame_phrases, extract_phrases, generate_audio_from_text, save_audio, analyze_frame, generate_sequential_summary, summarize_text, encode_image, extract_frames, calculate_frame_interval, save_audio
 from tts_audio import generate_audio_with_openai
 from tts_token_logging import log_tts_usage_and_cost, count_characters
-from send_email import generate_otp, send_otp_email, store_otp, validate_otp
+from send_email import generate_otp, send_otp_email, store_otp, validate_otp, generate_REMOVED_reset_token, verify_REMOVED_reset_token, send_REMOVED_reset_email, send_email
 
 load_dotenv()
 
@@ -264,7 +264,83 @@ def verify_otp_route():
 
     return render_template('otp_verification.html')
 
+@app.route('/forgot-username', methods=['GET', 'POST'])
+def forgot_username_route():
+    if request.method == 'POST':
+        email = request.form['email']
 
+        # Check if email exists in the database
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('SELECT username FROM users WHERE email = ?', (email,))
+        result = cursor.fetchone()
+        conn.close()
+
+        if result:
+            username = result[0]
+            # Send an email with the username (implement the send_email function)
+            send_email(email, 'Your Username', f'Your username is: {username}')
+            flash('Your username has been sent to your email address.')
+        else:
+            flash('Email not found.')
+        return redirect(url_for('forgot_username_route'))
+
+    return render_template('forgot_username.html')
+
+@app.route('/forgot-REMOVED', methods=['GET', 'POST'])
+def forgot_REMOVED_route():
+    if request.method == 'POST':
+        email = request.form['email']
+
+        # Check if email exists in the database
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('SELECT username FROM users WHERE email = ?', (email,))
+        result = cursor.fetchone()
+        conn.close()
+
+        if result:
+            token = generate_REMOVED_reset_token(email)  # Generate a secure token
+            reset_link = url_for('reset_REMOVED_route', token=token, _external=True)
+            # Send the reset link via email (implement the send_email function)
+            send_REMOVED_reset_email(email, f'Click the link to reset your REMOVED: {reset_link}')
+            flash('Password reset instructions have been sent to your email.')
+        else:
+            flash('Email not found.')
+
+        return redirect(url_for('forgot_REMOVED_route'))
+
+    return render_template('forgot_REMOVED.html')
+
+@app.route('/reset-REMOVED/<token>', methods=['GET', 'POST'])
+def reset_REMOVED_route(token):
+    # Verify the token and fetch the user's email
+    email = verify_REMOVED_reset_token(token)
+
+    if not email:
+        flash('Invalid or expired token.')
+        return redirect(url_for('forgot_REMOVED_route'))
+
+    if request.method == 'POST':
+        new_REMOVED = request.form['REMOVED']
+        confirm_REMOVED = request.form['confirm_REMOVED']
+
+        if new_REMOVED != confirm_REMOVED:
+            flash('Passwords do not match.')
+            return redirect(url_for('reset_REMOVED_route', token=token))
+
+        # Hash the new REMOVED and update the database
+        REMOVED_hash = hash_REMOVED(new_REMOVED)
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('UPDATE users SET REMOVED_hash = ? WHERE email = ?', (REMOVED_hash, email))
+        conn.commit()
+        conn.close()
+
+        flash('Your REMOVED has been updated successfully.')
+        return redirect(url_for('login_route'))
+
+    return render_template('reset_REMOVED.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login_route():
