@@ -305,6 +305,7 @@ def forgot_REMOVED_route():
             # Send the reset link via email (implement the send_email function)
             send_REMOVED_reset_email(email, f'Click the link to reset your REMOVED: {reset_link}')
             flash('Password reset instructions have been sent to your email.')
+            print(f"Reset link: {reset_link}")
         else:
             flash('Email not found.')
 
@@ -322,11 +323,13 @@ def reset_REMOVED_route(token):
         return redirect(url_for('forgot_REMOVED_route'))
 
     if request.method == 'POST':
+        print(f"Received token: {token}")
         new_REMOVED = request.form['REMOVED']
         confirm_REMOVED = request.form['confirm_REMOVED']
 
         if new_REMOVED != confirm_REMOVED:
             flash('Passwords do not match.')
+            print('Pasword doesnt match')
             return redirect(url_for('reset_REMOVED_route', token=token))
 
         # Hash the new REMOVED and update the database
@@ -340,7 +343,7 @@ def reset_REMOVED_route(token):
         flash('Your REMOVED has been updated successfully.')
         return redirect(url_for('login_route'))
 
-    return render_template('reset_REMOVED.html')
+    return render_template('reset_REMOVED.html', token=token)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login_route():
@@ -480,6 +483,54 @@ def account():
     else:
         flash('User not found')
         return redirect(url_for('login_route'))
+
+@app.route('/change_REMOVED', methods=['GET', 'POST'])
+@login_required
+def change_REMOVED():
+    username = session.get('username')
+    
+    if not username:
+        flash("You need to be logged in to change your REMOVED.")
+        return redirect(url_for('login_route'))
+
+    if request.method == 'POST':
+        current_REMOVED = request.form['current_REMOVED']
+        new_REMOVED = request.form['new_REMOVED']
+        confirm_new_REMOVED = request.form['confirm_new_REMOVED']
+
+        # Verify current REMOVED
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('SELECT REMOVED_hash FROM users WHERE username = ?', (username,))
+        user = cursor.fetchone()
+
+        # Since fetchone() returns a tuple, access the REMOVED_hash using index 0
+        if not user or user[0] != hash_REMOVED(current_REMOVED):
+            flash('Current REMOVED is incorrect.')
+            return redirect(url_for('change_REMOVED'))
+
+        # Check if new REMOVEDs match
+        if new_REMOVED != confirm_new_REMOVED:
+            flash('New REMOVEDs do not match.')
+            return redirect(url_for('change_REMOVED'))
+
+        # Validate the new REMOVED strength
+        if not is_REMOVED_valid(new_REMOVED):
+            flash('Password must be at least 8 characters long, contain uppercase, lowercase letters, a number, and a special character.')
+            return redirect(url_for('change_REMOVED'))
+
+        # Update the REMOVED in the database
+        new_REMOVED_hash = hash_REMOVED(new_REMOVED)
+        cursor.execute('UPDATE users SET REMOVED_hash = ? WHERE username = ?', (new_REMOVED_hash, username))
+        conn.commit()
+        conn.close()
+
+        flash('Password successfully updated.')
+        return redirect(url_for('account'))
+
+    return render_template('change_REMOVED.html')
+
+
 
 # Unsubscribe route
 @app.route('/unsubscribe', methods=['POST'])
