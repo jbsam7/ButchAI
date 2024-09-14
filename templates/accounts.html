@@ -256,7 +256,10 @@
         <button type="submit" class="btn-unsubscribe">Unsubscribe</button>
     </form>
 
-    <!-- Other account management actions -->
-    <button class="btn-account">Update Payment Info</button>
+    <!-- Add the form for updating payment info -->
+    <form action="{{ url_for('update_payment') }}" method="POST">
+        <button type="submit" class="btn-account">Update Payment Info</button>
+    </form>
+    <!-- Change Password button -->
     <button class="btn-account" onclick="window.location.href='/change_REMOVED'">Change Password</button>
 

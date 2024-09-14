@@ -24,7 +24,8 @@ def init_db():
         total_cost_gpt4o REAL DEFAULT 0.0,
         total_cost_tts REAL DEFAULT 0.0,
         tier TEXT DEFAULT 'basic',
-        subscription_id TEXT 
+        subscription_id TEXT,
+        stripe_customer_id TEXT -- Add customer_id column here
     )
     ''')
     conn.commit()

@@ -163,7 +163,11 @@ def signup_route():
 def payment_successful():
     # Retrieve session and Stripe subscription
     checkout_session = stripe.checkout.Session.retrieve(request.args.get('session_id'))
+
+    # Get subscription ID and customer ID from Stripe
     subscription_id = checkout_session.subscription  # Get subscription ID from Stripe
+    customer_id = checkout_session.customer  # Get customer ID
+
 
     # Update subscription status in the database
     conn = get_db_connection()
@@ -172,9 +176,10 @@ def payment_successful():
         UPDATE users
         SET subscription_status = 'active',
             subscription_id = ?, -- Store the Stripe subscription ID
+            stripe_customer_id = ?, -- Store the Stripe customer ID
             tier = ?
         WHERE username = ?
-    ''', (subscription_id, session['subscription_tier'], session['username']))
+    ''', (subscription_id, customer_id, session['subscription_tier'], session['username']))
     conn.commit()
     conn.close()
 
@@ -484,6 +489,7 @@ def account():
         flash('User not found')
         return redirect(url_for('login_route'))
 
+
 @app.route('/change_REMOVED', methods=['GET', 'POST'])
 @login_required
 def change_REMOVED():
@@ -530,7 +536,36 @@ def change_REMOVED():
 
     return render_template('change_REMOVED.html')
 
+# Update card payment
+@app.route('/update_payment', methods=['POST'])
+@login_required
+def update_payment():
+    # Get the current user's stripe_customer_id from your database
+    username = session.get('username')
 
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT stripe_customer_id FROM users WHERE username = ?', (username,))
+    result = cursor.fetchone()
+    stripe_customer_id = result[0] if result else None
+    conn.close()
+
+    if stripe_customer_id:
+        try:
+            # Rename the Stripe session variable to avoid conflict with Flask's session
+            stripe_session = stripe.billing_portal.Session.create(
+                customer=stripe_customer_id,
+                return_url=url_for('account', _external=True)  # Redirect to the account page after update
+            )
+
+            # Redirect the user to Stripe's customer portal
+            return redirect(stripe_session.url)
+        except Exception as e:
+            flash(f'Error creating Stripe customer portal session: {str(e)}')
+            return redirect(url_for('account'))
+    else:
+        flash('Stripe customer ID not found. Please contact support.')
+        return redirect(url_for('account'))
 
 # Unsubscribe route
 @app.route('/unsubscribe', methods=['POST'])
