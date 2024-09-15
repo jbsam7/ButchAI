@@ -196,20 +196,38 @@
             font-size: 48px;
             font-weight: bold;
             color: black;
-            max-width: 600px;
+            max-width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 4px solid black;
+            width: 600px;
+            animation: typing 6s steps(46, end) forwards, cursorBlink 6s step-end forwards; /* Removed infinite */
+        }
+        
+        /* Typing effect */
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 88%; } /* Makes sure the whole sentence is shown */
+        }
+        /* This keyframe ensures the cursor stays while typing, but disappears at the end */
+        @keyframes cursorBlink {
+            0% { border-right: 4px solid black; } /* Cursor visible */
+            99% { border-right: 4px solid black; } /* Cursor remains until typing ends */
+            100% { border-right: none; } /* Cursor disappears after typing */
+        }
+        /* Blink effect */
+        .banner-text::after {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 48px;
+            background-color: black;
+            animation: blink 0.75s step-end 6; 
         }
 
-        .banner-image {
-            height: 300px;
-            width: auto;
-            border-radius: 15px;
-            box-shadow: 0px 8px 20px rgba(255, 255, 0, 0.6); /* Creates a glowing, floating effect */
-            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Smooth animations */
-        }
-
-        .banner-image:hover {
-            transform: scale(1.05); /* Slightly enlarges the image on hover */
-            box-shadow: 0px 10px 30px rgba(255, 255, 0, 1); /* Stronger shadow when hovering */
+        @keyframes blink {
+            from, to { opacity: 1; }
+            50% { opacity: 0; }
         }
 
         /* Animation for microphone */
@@ -422,11 +440,8 @@
     <!-- First banner section -->
     <div class="banner">
         <div class="banner-text">
-            Experience AI-Powered Voice Narration
-            <br>Designed for Your Needs.
+            Just place your prompt, be creative, explore.
         </div>
-        <!-- Image to the right side of banner-->
-        <img src="{{ url_for('static', filename='images/logobaby.png') }}" alt="AI Voice" class="banner-image">
     </div>
 
     <!-- Second banner section-->
