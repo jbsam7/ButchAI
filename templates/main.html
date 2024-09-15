@@ -13,6 +13,58 @@
             font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 0;
+            overflow: hidden; /* Prevents scrolling during intro */
+        }
+
+        /* Full-screen intro overlay */
+        .intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000; /* High z-index to ensure it covers the page */
+        }
+
+        /* The text for the intro */
+        .intro-text {
+            font-size: 50px;
+            font-weight: 700;
+            color: yellow;
+            opacity: 0;
+            animation: fadeInOut 3s ease forwards;
+        }
+
+        /* Fade-in and Fade-out animation */
+        @keyframes fadeInOut {
+            0% {
+                opacity: 0;
+                transform: scale(1);
+            }
+            20% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+            80% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(1);
+            }
+        }
+
+        /* Hides the overlay after animation */
+        @keyframes hideOverlay {
+            100% {
+                display: none;
+            }
+
         }
         header {
             display: flex;
@@ -64,24 +116,45 @@
         .dropdown-content {
             display: none;
             position: absolute;
-            background-color: black;
-            min-width: 150px;
-            box-shadow: 0 4px 8px rgba(255, 255, 0, 0.2);
+            background-color: rgba(0, 0, 0, 0.8);
+            min-width: 200px; /* Slightly wider for better readability */
+            box-shadow: 0 8px 16px rgba(255, 255, 0, 0.3); /* Softer shadow */
             z-index: 1;
             text-align: left;
+            border-radius: 8px; /* Rounded corners for a modern look */
+            transition: opacity 0.3s ease, transform 0.3s ease; /* Smooth transition */
+            transform: translateY(10px); /* Start slightly below for smooth entry */
+            opacity: 0; /* Start invisible */
+
         }
 
         /* Links inside the dropdown */
         .dropdown-content a {
             color: yellow;
-            padding: 10px;
+            padding: 12px 16px; /* More padding for comfortable clicking */
             text-decoration: none;
             display: block;
             font-size: 16px;
+            transition: background-color 0.3s ease; /* Smooth hover effect */
+        }
+
+        /* Dropdown hover effects */
+        .dropdown-content a:hover {
+            background-color: rgba(255, 255, 0, 0.2); /* Yellow hover background */
+            color: white; /* Contrast color for better visibility */
         }
         /* Show the drop down menu on hover */
         .dropdown:hover .dropdown-content {
             display: block;
+            opacity: 1; /* Make it visible */
+            transform: translateY(0); /* Slide up smoothly into view */
+        }
+
+        /* Arrow for dropdown */
+        .dropdown::after {
+            content: " ▼"; /* Adds a small arrow after the Features link */
+            font-size: 12px;
+
         }
 
         /* Right side links (Sign up and login) */
@@ -313,6 +386,11 @@
     </style>
 </head>
 <body>
+    <!-- Intro Overlay -->
+    <div class="intro-overlay">
+        <div class="intro-text">Welcome to Butch AI</div>
+    </div> 
+
     <header>
         <!-- Insert the logo here-->
         <img src="{{ url_for('static', filename='images/logobaby.png') }}" alt="ButchAI Logo" class="logo">
@@ -372,7 +450,7 @@
     <!-- Third banner section-->
     <div class="third-banner">
         <div class="third-banner-section">
-            <img src="{{ url_for('static', filename='images/apple.jpg') }}" alt="Business Ad Image">
+            <img src="{{ url_for('static', filename='images/bball.jpg') }}" alt="Business Ad Image">
             <p>
                 Our AI narration tool is perfect for business advertisements, offering you a tailored voiceover that aligns with your brand.
                 Stand out with our custom narrations for your promotional and ad videos, making sure your message is heard with clarity.
@@ -400,6 +478,16 @@
             <a href="/signup">Subscribe to Premium</a> <!-- Directly links to the sign-up page -->
         </div>
     </div>
+    <script>
+        // Remove the intro overlay after the animation ends
+        document.addEventListener("DOMContentLoaded", function () {
+            const introOverlay = document.querySelector('.intro-overlay');
+            setTimeout(() => {
+                introOverlay.style.display = 'none';
+                document.body.style.overflow = 'auto'; // Allow scrolling after intro
+            }, 3000); // Matches the animation duration
+            });
+    </script>
     <!-- Footer section-->
     <footer>
         <p>&copy; 2024 ButchAI. All rights reserverd.</p>
