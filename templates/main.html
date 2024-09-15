@@ -291,6 +291,33 @@
             backdrop-filter: blur(5px); /* Subtle blur effect */
         }
 
+        .scroll-banner-text {
+            font-size: 32px;
+            font-weight: bold;
+            color: yellow;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 4px solid yellow;
+            width: 0;
+            visibility: hidden;
+            max-width: 650px;
+            display: inline-block;
+            position: absolute;
+            left: 20px; /* Position it on the right side */
+            text-align: left;
+        }
+
+        /* Typing keyframes */
+        @keyframes typingScroll {
+            from { width: 0; }
+            to { width: 105%; }
+        }
+        /* Cursor blink animation */
+        @keyframes blinkScroll {
+            from, to { border-color: transparent; }
+            50% { border-color: yellow; }
+        }
+
         /* Third banner (new section)*/
         .third-banner {
             background: linear-gradient(to right, rgba(255, 255, 0, 0.1), yellow);
@@ -458,8 +485,11 @@
             </div>
         </div>
 
-    <!-- Animated microphone image-->
-        <img src="{{ url_for('static', filename='images/microphone.png') }}" alt="Animated Microphone" class="moving-microphone">
+        <div style="position: relative; width: 100%; height: 50px;"> <!-- Added container -->
+            <div class="scroll-banner-text">
+                Narrate a commercial for Apple Jacks
+            </div> 
+        </div>
     </div>
 
     <!-- Third banner section-->
@@ -502,6 +532,18 @@
                 document.body.style.overflow = 'auto'; // Allow scrolling after intro
             }, 3000); // Matches the animation duration
             });
+        // Scroll event to trigger the typing animation
+        document.addEventListener("scroll", function() {
+            const bannerText = document.querySelector('.scroll-banner-text');
+            const bannerPosition = bannerText.getBoundingClientRect().top;
+            const screenPosition = window.innerHeight / 1.5;
+
+            if (bannerPosition < screenPosition) {
+                bannerText.style.visibility = 'visible';
+                bannerText.style.animation = 'typingScroll 4s steps(40, end) forwards, blinkScroll 0.75s step-end infinite';
+            }
+        });
+
     </script>
     <!-- Footer section-->
     <footer>
