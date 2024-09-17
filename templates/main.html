@@ -201,7 +201,7 @@
             overflow: hidden;
             border-right: 4px solid black;
             width: 600px;
-            animation: typing 6s steps(46, end) forwards, cursorBlink 6s step-end forwards; /* Removed infinite */
+            animation: typing 6s steps(46, end) forwards, cursorBlink 0.75s step-end infinite; /* Infinite blinking */
         }
         
         /* Typing effect */
@@ -211,43 +211,10 @@
         }
         /* This keyframe ensures the cursor stays while typing, but disappears at the end */
         @keyframes cursorBlink {
-            0% { border-right: 4px solid black; } /* Cursor visible */
-            99% { border-right: 4px solid black; } /* Cursor remains until typing ends */
-            100% { border-right: none; } /* Cursor disappears after typing */
+            from, to { border-color: transparent; }
+            50% { border-color: black; }
         }
-        /* Blink effect */
-        .banner-text::after {
-            content: '';
-            display: inline-block;
-            width: 4px;
-            height: 48px;
-            background-color: black;
-            animation: blink 0.75s step-end 6; 
-        }
-
-        @keyframes blink {
-            from, to { opacity: 1; }
-            50% { opacity: 0; }
-        }
-
-        /* Animation for microphone */
-        @keyframes sway {
-            0% { transform: rotate(0deg); }
-            25% { transform: rotate(10deg); }
-            50% { transform: rotate(0deg); }
-            75% { transform: rotate(-10deg); }
-            100% {transform: rotate(0deg); }
-        }
-
-        /* Style for microphone image */
-        .moving-microphone {
-            height: 300px; /* Set height for the microphone image */
-            width: auto;
-            animation: sway 3s ease-in-out infinite; /* Apply the sway animation */
-            background-color: transparent;
-            border: none;
-        }
-
+        
         /* Second banner sectiono */
         .second-banner {
             background: linear-gradient(to right, black, rgb(27, 23, 23)); /* Light yellow fading to white */

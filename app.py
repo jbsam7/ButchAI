@@ -216,6 +216,7 @@ def send_otp_route():
 
 @app.route('/verify-otp', methods=['GET', 'POST'])
 def verify_otp_route():
+    print(session)
     if 'username' not in session:
         return redirect(url_for('login_route'))
     
@@ -369,6 +370,11 @@ def login_route():
                 store_otp(email, otp) # Store OTP in temporary storage
                 send_otp_email(email, otp) # Send OTP to user's email
 
+                session['username'] = username
+                session['logged_in'] = True
+                session['otp_sent'] = True
+                print(username)
+
                 flash('OTP sent to your email address for verification')
                 return redirect(url_for('verify_otp_route')) # Redirect to OTP verification page
             else:
@@ -478,13 +484,15 @@ def account():
     # For GET request, fetch the user data and render the account page
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute('SELECT first_name, last_name, username, email, tier FROM users WHERE username = ?', (username,))
+    cursor.execute('SELECT first_name, last_name, username, email, tier, video_duration FROM users WHERE username = ?', (username,))
     user_data = cursor.fetchone()
     conn.close()
 
     if user_data:
-        first_name, last_name, username, email, subscription_tier = user_data
-        return render_template('accounts.html', first_name=first_name, last_name=last_name, username=username, email=email, subscription_tier=subscription_tier)
+        first_name, last_name, username, email, subscription_tier, video_duration = user_data
+        # Convert video_duration from seconds to minutes (round to nearest minute)
+        video_duration_minutes = round(video_duration / 60, 2)
+        return render_template('accounts.html', first_name=first_name, last_name=last_name, username=username, email=email, subscription_tier=subscription_tier, video_duration_minutes=video_duration_minutes)
     else:
         flash('User not found')
         return redirect(url_for('login_route'))
