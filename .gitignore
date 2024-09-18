@@ -14,11 +14,7 @@ __pycache__/
 # Ignore large or unnecessary data files
 /data/
 /logs/
-/static/audio_output.mp3
-/static/generated_audio.mp3
-/static/video_summary_audio*.mp3
-/static/videos/
-/uploads/
+
 
 # Ignore database files
 *.db
