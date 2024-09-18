@@ -16,7 +16,6 @@ from data_utils import get_db_connection, log_token_usage_and_cost
 from data_utils_gpt4o import log_token_usage_and_cost_gpt4o
 from basic_audio_utils import summarize_video_basic
 from flask import Flask, request, render_template, redirect, url_for, flash, session, send_file, jsonify
-from unrealspeech import UnrealSpeechAPI, play, save
 from functools import wraps
 from elevenlabs import save
 from elevenlabs.client import ElevenLabs
@@ -1058,5 +1057,5 @@ def text_to_speech():
     
 
 if __name__ == "__main__":
-    app.run(debug=True, threaded=True)
+    app.run
 

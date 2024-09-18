@@ -63,7 +63,6 @@ threadpoolctl==3.5.0
 tokenizers==0.20.0
 tqdm==4.66.5
 typing_extensions==4.12.2
-unrealspeech==0.1.5
 urllib3==2.2.2
 websockets==13.0
 Werkzeug==3.0.4
