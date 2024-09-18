@@ -395,6 +395,142 @@
             opacity: 1;
         }
 
+        /* Mobile styles */
+        @media only screen and (max-width: 768px) {
+            .banner-text {
+                font-size: 32px;
+                width: 80%;
+            }
+
+            .nav-links-left {
+                gap: 15px;
+                font-size: 16px;
+            }
+
+            .second-banner h2 {
+                font-size: 32px;
+            }
+
+            .subscription-tier{
+                width: 100%;
+                margin: 10px;
+            }
+
+            .banner {
+                flex-direction: column;
+                padding: 20px;
+                height: auto;
+            }
+            .third-banner-section img {
+                display: none;
+            }
+
+            /* Adjust the text to take full width */
+            .third-banner-section p {
+                width: 100%;
+                text-align: center;
+
+            }
+        }
+
+        /* Mobile Landscape (max-width 768px in landscape mode) */
+        @media only screen and (max-width: 768px) and (orientation: landscape) {
+            /* Adjust text and element sizes */
+            .banner {
+                padding: 20px 50px; /* Reduce padding for landscape mode */
+                height: auto; /* Make the height more flexible */
+            }
+            .banner-text {
+                font-size: 28px; /* Reduce font size for better fit */
+                width: 90%;
+            }
+
+            header {
+                padding: 5px; /* Adjust header padding for smaller space */
+                display: flex;
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
+            /* Adjust margins and padding for better readability */
+            .nav-links-left {
+                margin-left: 10px;
+                font-size: 14px; /* Make navigation text smaller */
+            }
+
+            .nav-links-right {
+                padding: 8px 15px;
+                font-size: 14px;
+                margin-right: 100px;
+
+            }
+
+            .second-banner-text {
+                font-size: 18px; /* Reduce text size for smaller width */
+            }
+
+            .second-banner h2 {
+                font-size: 30px; /* Adjust heading size */
+            }
+
+            .scroll-banner-text {
+                font-size: 20px; /* Make text smaller to avoid overflow */
+            }
+
+            .third-banner-section img {
+                width: 30%;
+            }
+
+            /* Adjust other elements to fit the landscape mode */
+            .subscription-options {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .subscription-tier {
+                width: 80%; /* Make subscription boxes narrower */
+            }
+
+            footer {
+                font-size: 12px; /* Adjust footer text size */
+
+            }
+
+
+        }
+
+        @media only screen and (max-width: 480px) {
+            .banner-text {
+                font-size: 24px;
+                width: 90%;
+            }
+
+            .nav-links-left, .nav-links-right {
+                flex-direction: column;
+                gap: 10px;
+                margin-left: 10px;
+                margin-right: 10px;
+            }
+
+            .subscription-options {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .second-banner {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .second-banner h2 {
+                font-size: 28px;
+            }
+
+            .subscription-tier {
+                width: 90%;
+
+            }
+
+        }
     </style>
 </head>
 <body>
