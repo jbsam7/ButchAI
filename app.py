@@ -812,7 +812,7 @@ def summarize_video(video_path, frame_interval, max_frame_for_last_key, api_key,
         print(f"Key frame 2 Time: {key_frame_two_time}, Phrase: {key_frame_two}")
 
         # Generate final, short summary using key frame phrases
-        final_summary = summarize_text(sequential_summary, total_words, api_key, custom_prompt, custom_prompt_frame, key_frame_one, key_frame_two, key_frame_one_time, key_frame_two_time, video_duration)
+        final_summary = summarize_text(sequential_summary, total_words, api_key, username, custom_prompt, custom_prompt_frame, key_frame_one, key_frame_two, key_frame_one_time, key_frame_two_time, video_duration)
 
         # **Debugging: Print Original and Adjusted Summaries**
         print(f"Original summary: {final_summary}") 
@@ -1057,5 +1057,5 @@ def text_to_speech():
     
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host='0.0.0.0')
 
