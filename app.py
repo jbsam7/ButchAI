@@ -8,10 +8,12 @@ import sqlite3
 import hashlib
 import math
 import stripe
+import logging
 from anthropic import Anthropic
 from pydub import AudioSegment
 from dotenv import load_dotenv
 import stripe.error
+from logging.handlers import RotatingFileHandler
 from data_utils import get_db_connection, log_token_usage_and_cost
 from data_utils_gpt4o import log_token_usage_and_cost_gpt4o
 from basic_audio_utils import summarize_video_basic
@@ -33,6 +35,27 @@ load_dotenv()
 # Initialize Flask app
 app = Flask(__name__)
 app.secret_key = os.getenv('FLASK_SECRET_KEY')   # Required for session management and flashing messages
+
+# Set up logging
+if not app.debug:
+    if not os.path.exists('logs'):
+        os.mkdir('logs')  # Create a logs directory if it doesn't exist
+    
+    # Set up a rotating file handler
+    file_handler = RotatingFileHandler('logs/flask_app.log', maxBytes=10240, backupCount=10)
+    file_handler.setLevel(logging.INFO)  # You can change this to DEBUG for more detailed logs
+    
+    # Set the format for logging
+    formatter = logging.Formatter(
+        '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'
+    )
+    file_handler.setFormatter(formatter)
+    
+    # Add the file handler to Flask's logger
+    app.logger.addHandler(file_handler)
+    app.logger.setLevel(logging.INFO)
+    
+    app.logger.info('Flask app startup')  # Example startup log message
 
 
 # Initialize Stripe with your secret key
@@ -828,7 +851,7 @@ def summarize_video(video_path, frame_interval, max_frame_for_last_key, api_key,
         return "Error: Could not generate key frame phrases"
 
 
-@app.route('/upload', methods=['GET', 'POST'])
+@app.route('/upload', methods=['POST'])
 @login_required
 @basic_required
 @premium_required
