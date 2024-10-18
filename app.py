@@ -828,7 +828,7 @@ def summarize_video(video_path, frame_interval, max_frame_for_last_key, api_key,
         return "Error: Could not generate key frame phrases"
 
 
-@app.route('/upload', methods=['POST'])
+@app.route('/upload', methods=['GET', 'POST'])
 @login_required
 @basic_required
 @premium_required

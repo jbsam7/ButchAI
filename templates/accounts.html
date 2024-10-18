@@ -211,7 +211,7 @@
         <img src="{{ url_for('static', filename='images/logobaby.png') }}" alt="ButchAI Logo" class="logo">
         <div class="nav-links-left">
             <!-- Dynamically direct the user to their subscription tier page -->
-            <a href="{{ url_for('text_to_speech') if subscription_tier == 'basic' else url_for('upload_video') }}">
+            <a href="{{ url_for('text_to_speech') if subscription_tier == 'basic' else url_for('home') }}">
                 {{ subscription_tier|capitalize }} Page
             </a>
             <a href="/logout">Logout</a>
