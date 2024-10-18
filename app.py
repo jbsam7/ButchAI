@@ -856,19 +856,21 @@ def summarize_video(video_path, frame_interval, max_frame_for_last_key, api_key,
 @basic_required
 @premium_required
 def upload_video():
+    # Log that the upload route has been accessed
+    app.logger.info("Received a file upload request.")
     # Debugging print to check received data
     print(request.form)
     custom_prompt = request.form.get('custom_prompt', '')
     custom_prompt_frame = request.form.get('custom_prompt_frame', '') # Get the custom frame prompt
 
     if custom_prompt == '':
-        print("Custom prompt is empty")
+        app.logger.warning("Custom prompt is empty.")
     else:
-        print(f"Received custom prompt: {custom_prompt}")
+        app.logger.info(f"Received custom prompt: {custom_prompt}")
     if custom_prompt_frame == '':
-        print("Custom prompt is empty.")
+        app.logger.warning("Custom frame prompt is empty.")
     else:
-        print(f"Received custom frame prompt: {custom_prompt_frame}")
+        app.logger.info(f"Received custom frame prompt: {custom_prompt_frame}")
 
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -881,6 +883,7 @@ def upload_video():
 
     # Check if the user has exceeded 
     if video_duration >= 1800: # 1800 seconds = 30 minutes
+        app.logger.info(f"User {session['username']} exceeded video limit.")
         cursor.execute('''
             UPDATE users
             SET subscription_status = 'inactive'
@@ -895,20 +898,25 @@ def upload_video():
 
     admin_username = 'justinsamuelson7@gmail.com'
     if session['username'] == admin_username:
+        app.logger.info(f"Admin privileges for {session['username']}. No video processing limit.")
         flash('Admin privileges: No video processing limit applies to you.')
     else:
         if subscription_status != 'active':
+            app.logger.warning(f"User {session['username']} attempted to upload without an active subscription.")
             flash('You need to subscribe to process the videos.')
             return redirect(url_for('subscribe'))
 
     if 'file' not in request.files:
+        app.logger.error("No file part in the request.")
         return "No file part"
     file = request.files['file']
     if file.filename == '':
+        app.logger.error("No file selected for upload.")
         return "No selected file"
     if file:
         video_path = os.path.join('uploads', file.filename)
         file.save(video_path)
+        app.logger.info(f"File {file.filename} saved to {video_path}.")
 
         custom_prompt = request.form.get('custom_prompt', '')
 
@@ -916,7 +924,7 @@ def upload_video():
         fps = vidcap.get(cv2.CAP_PROP_FPS)
         frame_count = int(vidcap.get(cv2.CAP_PROP_FRAME_COUNT))
         if fps == 0 or frame_count == 0:
-            print(f"Error: Invalid video file or could not determine FPS/frame count. FPS: {fps}, Frame Count: {frame_count}")
+            app.logger.error(f"Error: Invalid video file or could not determine FPS/frame count. FPS: {fps}, Frame Count: {frame_count}")
             return "Error: Invalid video file or could not determine FPS/frame count"
 
         video_duration_increment = frame_count / fps
@@ -924,6 +932,7 @@ def upload_video():
 
         # Update the users total video duration in the database
         new_total_video_duration = video_duration + video_duration_increment
+        app.logger.info(f"Updated video duration for user {session['username']}: {new_total_video_duration} seconds.")
         cursor.execute('''
             UPDATE users
             SET video_duration = ?
@@ -933,9 +942,11 @@ def upload_video():
         # Determine the number of key frames to extract based on video duration
         num_key_frames = 4 if video_duration_increment > 45 else 3 if video_duration_increment > 30 else 2
         frame_interval, max_frame_for_last_key = calculate_frame_interval(video_duration_increment, fps, num_key_frames)
+        app.logger.info(f"Extracting {num_key_frames} key frames at intervals of {frame_interval}.")
 
         api_key = os.getenv("GPT_API_KEY")
         if not api_key:
+            app.logger.error("API key is not set. Please set the ELEVENLABS_API_KEY.")
             return "API key is not set. Please set the ELEVENLABS_API_KEY."
         
         # Generate the adjusted summary
@@ -943,6 +954,7 @@ def upload_video():
 
         # Check for errors before proceeding to audio generation
         if 'Error' not in adjusted_summary:
+            app.logger.info(f"Summary generated successfully for video {file.filename}.")
             # Generate audio from the summary
             voice_id = 'pNInz6obpgDQGcFmaJgB'
             audio = generate_audio_from_text(adjusted_summary, voice_id)
@@ -951,7 +963,7 @@ def upload_video():
             return send_file(output_filename, as_attachment=True, download_name='video_summary_audio.mp3')
         else:
             # Handle the error properly, return to user or log it
-            print(f"Error during summarization: {adjusted_summary}")
+            app.logger.error(f"Error during summarization: {adjusted_summary}")
             flash("Error occurred during summarization. Please try again.")
             return redirect(url_for('upload_video'))  # Adjust as needed for your UI flow
 
