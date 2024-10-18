@@ -57,6 +57,10 @@ if not app.debug:
     
     app.logger.info('Flask app startup')  # Example startup log message
 
+@app.route('/test-logging')
+def test_logging():
+    app.logger.info("Test logging route accessed.")
+    return "Logging is working!"
 
 # Initialize Stripe with your secret key
 stripe.api_key = os.getenv('STRIPE_API_KEY')
