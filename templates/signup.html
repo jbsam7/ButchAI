@@ -184,11 +184,11 @@
         <form action="{{ url_for('signup_route') }}" method="post">
             <div class="form-group">
                 <label for="first_name">First Name:</label>
-                <input type="text" class="form-control" id="first_name" name="first_name" required>
+                <input type="text" class="form-control" id="first_name" name="first_name" required maxlength="50">
             </div>
             <div class="form-group">
                 <label for="last_name">Last Name:</label>
-                <input type="text" class="form-control" id="last_name" name="last_name" required>
+                <input type="text" class="form-control" id="last_name" name="last_name" required maxlength="50">
             </div>
             <div class="form-group">
                 <label for="dob">Date of Birth:</label>
@@ -196,15 +196,15 @@
             </div>
             <div class="form-group">
                 <label for="username">Username:</label>
-                <input type="text" class="form-control" id="username" name="username" required>
+                <input type="text" class="form-control" id="username" name="username" required minlength="3" maxlength="30" pattern="[a-zA-Z0-9_]+">
             </div>
             <div class="form-group">
                 <label for="email">Email:</label>
-                <input type="email" class="form-control" id="email" name="email" required>
+                <input type="email" class="form-control" id="email" name="email" required maxlength="100">
             </div>
             <div class="form-group">
                 <label for="REMOVED">Password:</label>
-                <input type="REMOVED" class="form-control" id="REMOVED" name="REMOVED" required oninput="validatePassword()">
+                <input type="REMOVED" class="form-control" id="REMOVED" name="REMOVED" required minlength="8" maxlength="50" oninput="validatePassword()">
                 <!-- Password criteria feedback -->
                 <ul id="REMOVEDCriteria" style="color: yellow; margin-left: 0; padding-left: 20px; list-style-type: none;">
                     <li id="minLength" style="color: red;">At least 8 characters</li>
@@ -216,7 +216,7 @@
             </div>
             <div class="form-group">
                 <label for="confirm_REMOVED">Confirm Password:</label>
-                <input type="REMOVED" class="form-control" id="confirm_REMOVED" name="confirm_REMOVED" required>
+                <input type="REMOVED" class="form-control" id="confirm_REMOVED" name="confirm_REMOVED" required minlength="8" maxlength="50">
                 <!-- Add the small tag to show REMOVED match feedback -->
                 <small id="REMOVEDMatch" style="color: red;"></small> <!-- Feedback for REMOVED match -->
             </div>

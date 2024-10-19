@@ -285,6 +285,40 @@
             50% { border-color: yellow; }
         }
 
+        .audio-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px auto;
+            padding: 10px;
+            border-radius: 10px;
+            background-color: black; /* Optional: Background color for the container */
+            max-width: fit-content;
+        }
+
+        #playPauseBtn {
+            background-color: yellow;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            cursor: pointer;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+        }
+
+        #playPauseBtn:hover {
+            background-color: #ffd700; /* Slightly darker yellow on hover */
+        }
+
+        #playPauseBtn:focus {
+            outline: none;
+        }
+
+        
         /* Third banner */
         .third-banner {
             background: linear-gradient(to right, rgba(255, 255, 0, 0.1), yellow);
@@ -591,9 +625,18 @@
 
         <div>
             <div class="scroll-banner-text">
-                Narrate a commercial for Apple Jacks<br>
+                Narrate an ad for Butch AI<br>
             </div> 
         </div>
+    </div>
+    <div class="audio-container">
+        <audio id="audioPlayer">
+            <source src="{{ url_for('static', filename='video_summary_audio.mp3') }}" type="audio/mp3">
+            Your browser does not support the audio element.
+        </audio>
+        <button id="playPauseBtn" class="play">
+            &#9658; <!-- Play icon -->
+        </button>
     </div>
 
     <!-- Third banner section-->
@@ -628,6 +671,33 @@
         </div>
     </div>
     <script>
+        // Wait for the DOM to load
+        document.addEventListener('DOMContentLoaded', function() {
+            const audio = document.getElementById('audioPlayer');
+            const playPauseBtn = document.getElementById('playPauseBtn');
+
+            // Function to update button icon
+            function updateButton() {
+                if (audio.paused) {
+                    playPauseBtn.innerHTML = '&#9658;'; // Play icon
+                } else {
+                    playPauseBtn.innerHTML = '&#10074;&#10074;'; // Pause icon
+                }
+            }
+
+            // Toggle play/pause on button click
+            playPauseBtn.addEventListener('click', function() {
+                if (audio.paused) {
+                    audio.play();
+                } else {
+                    audio.pause();
+                }
+                updateButton();
+            });
+
+            // Update button icon when audio ends
+            audio.addEventListener('ended', updateButton);
+        });
         // Remove the intro overlay after the animation ends
         document.addEventListener("DOMContentLoaded", function () {
             const introOverlay = document.querySelector('.intro-overlay');
