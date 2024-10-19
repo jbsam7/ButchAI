@@ -267,10 +267,10 @@
                 <input type="file" id="file" name="file" accept="video/*" required>
 
                 <label for="custom_prompt">Enter Custom Prompt:</label>
-                <textarea id="custom_prompt" name="custom_prompt" rows="4" cols="50" placeholder="Enter your custom prompt here..."></textarea>
+                <textarea id="custom_prompt" name="custom_prompt" rows="4" cols="50" placeholder="Enter your custom prompt here..." maxlength="250"></textarea>
 
-                <label for="custom_prompt_frame">Enter Custom Prompt for Frame Analysis:</label>
-                <textarea id="custom_prompt_frame" name="custom_prompt_frame" rows="4" cols="50" placeholder="Enter your custom prompt for frame analysis here..."></textarea>
+                <label for="custom_prompt_frame">Narration Focus (One or Two Words):</label>
+                <textarea id="custom_prompt_frame" name="custom_prompt_frame" rows="4" cols="50" placeholder="Enter your custom prompt for frame analysis here..." maxlength="30"></textarea>
 
                 <input type="submit" value="Upload and Process Video">
             </form>
