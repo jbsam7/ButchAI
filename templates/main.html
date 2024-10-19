@@ -69,7 +69,7 @@
             display: flex;
             flex-wrap: wrap; /* Allows items to wrap to the next line on small screens */
             align-items: center;
-            padding: 1px;
+            padding: 2px;
             position: fixed;
             top: 0;
             width: 100%;
@@ -81,12 +81,13 @@
         }
 
         .logo {
-            height: 65px;
+            height: 60px;
             width: auto;
             margin-right: 20px;
             transition: box-shadow 0.3s ease-in-out;
-            box-shadow: 0 0 30px rgba(255, 255, 0, 1);
-            border-radius: 8px;
+            border-radius: 6px;
+            margin-left: -2px;
+            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.5);
             
         }
 
@@ -165,6 +166,7 @@
             display: flex;
             gap: 15px;
             align-items: center;
+            margin-right: 1%;
         }
 
         .nav-links-right a {
@@ -174,6 +176,7 @@
             border: 2px solid yellow;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
+           
         }
 
         .nav-links-right a:hover {
@@ -223,7 +226,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 50px 20px;
+            padding: 35px;
             color: yellow;
             text-align: center;
             font-family: 'Poppins', sans-serif;
@@ -231,7 +234,7 @@
 
         .second-banner-text {
             max-width: 1000px;
-            padding: 20px;
+            padding: 30px;
             
         }
 
@@ -256,7 +259,7 @@
             background-color: rgba(0, 0, 0, 0.8);
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0px 4px 15px rgba(255, 255, 0, 0.3);
+            box-shadow: 0px 4px 15px rgba(255, 255, 0, 0.8);
             backdrop-filter: blur(5px);
             max-width: 100%;
         }
@@ -274,6 +277,7 @@
             display: inline-block;
             text-align: center;
             margin-top: 20px;
+            padding-top: 10%;
         }
 
         /* Typing keyframes */
@@ -339,7 +343,7 @@
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
-            padding: 20px;
+            padding: 30px;
             background-color: black; /* Adds a subtle background to each section */
             border-radius: 15px; /* Rounded corners for each section */
             box-shadow: 0px 4px 15px yellow; /* Shadow for depth */
@@ -356,6 +360,9 @@
             border-radius: 15px;
             box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
             margin-bottom: 0; /* Reset margin if needed */
+            margin-right: 1%;
+            margin-left: 1%;
+
         }
 
 
@@ -364,6 +371,8 @@
             line-height: 1.6;
             width: 55%; /* Adjusted width to fit alongside the video */
             text-align: left;
+            margin-right: 2%;
+            margin-left: 2%;
         }
 
         /* Subscription options */
@@ -382,15 +391,15 @@
             padding: 20px;
             border-radius: 15px;
             text-align: center;
-            background-color: rgba(255, 255, 0, 0.1);
-            box-shadow: 0px 4px 10px rgba(255, 255, 0, 0.2);
+            background-color: black;
+            box-shadow: 0px 4px 10px rgba(255, 255, 0, 0.8);
             transition: transform 0.3s, box-shadow 0.3s;
             border: 2px solid transparent;
         }
 
         .subscription-tier:hover {
             transform: translateY(-10px);
-            box-shadow: 0px 8px 20px rgba(255, 255, 0, 0.4);
+            box-shadow: 0px 8px 20px rgba(255, 255, 0, 0.8);
         }
 
         .subscription-tier h3 {
@@ -453,7 +462,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 10px;
+            padding: 0 1px;
             height: auto;
         }
 
@@ -461,19 +470,59 @@
         .hamburger {
             display: block; /* Show hamburger on mobile */
             cursor: pointer;
-            margin-left: 10px;
+            position: relative;
+            left: -1px;
+            border:  rgba(255, 255, 0);
+            padding: 6px;
+            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.8);
+            border-radius: 4px;
+            padding-right: 6%;
+            padding-left: 6%;
+            
+
         }
 
         .hamburger div {
-            width: 25px;
-            height: 3px;
+            width: 40px;
+            height: 6.5px;
             background-color: yellow;
-            margin: 4px 0;
+            margin: 6px 0;
+            border-radius: 4px;
+            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.5);
         }
-       
 
+        .logo {
+            width: 32%;
+            height: auto;
+            margin-left: 0.5%;
+            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.6);
+
+        }
+        .second-banner-text-container {
+            /* Allow full width on mobile */
+            padding: 10px 15px;
+            width: 100%; 
+
+        }
+        .second-banner-text {
+            width: 100%;
+            text-align: center;
+
+        }
+        .banner {
+            padding: 40px;
+
+        }
+        .banner-text {
+            font-size: 13px !important;
+            font-weight: bold;
+         
+
+        }
+
+    
         
-            /* Keep nav links hidden initially */
+        /* Keep nav links hidden initially */
         .nav-links-left,
         .nav-links-right {
             display: none; /* Hide the hamburger content by default */
