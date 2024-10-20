@@ -137,7 +137,7 @@ def home():
     return render_template('index.html')
 
 SIGNUP_ENABLED = True # Set to False to disable signups
-MAX_USERS = 2
+MAX_USERS = 3
 @app.route('/signup', methods=['GET', 'POST'])
 @limiter.limit("5 per minute")
 def signup_route():
