@@ -10,6 +10,8 @@ import math
 import stripe
 import logging
 import bleach
+import mimetypes
+from werkzeug.utils import secure_filename
 from anthropic import Anthropic
 from pydub import AudioSegment
 from dotenv import load_dotenv
@@ -19,6 +21,8 @@ from data_utils import get_db_connection, log_token_usage_and_cost
 from data_utils_gpt4o import log_token_usage_and_cost_gpt4o
 from basic_audio_utils import summarize_video_basic
 from flask import Flask, request, render_template, redirect, url_for, flash, session, send_file, jsonify
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 from functools import wraps
 from elevenlabs import save
 from elevenlabs.client import ElevenLabs
@@ -62,6 +66,9 @@ if not app.debug:
 def test_logging():
     app.logger.info("Test logging route accessed.")
     return "Logging is working!"
+
+# Initialize rate limiter with a limit of 100 requests per minute per IP
+limiter = Limiter(get_remote_address, app=app, default_limits=["100 per minute"])
 
 # Initialize Stripe with your secret key
 stripe.api_key = os.getenv('STRIPE_API_KEY')
@@ -132,6 +139,7 @@ def home():
 SIGNUP_ENABLED = True # Set to False to disable signups
 MAX_USERS = 2
 @app.route('/signup', methods=['GET', 'POST'])
+@limiter.limit("5 per minute")
 def signup_route():
     # Check if signups are currently enabled
     if not SIGNUP_ENABLED:
@@ -214,6 +222,7 @@ def signup_route():
 @login_required
 def payment_successful():
     # Retrieve session and Stripe subscription
+    
     checkout_session = stripe.checkout.Session.retrieve(request.args.get('session_id'))
 
     # Get subscription ID and customer ID from Stripe
@@ -247,7 +256,7 @@ def send_otp_route():
     if 'username' not in session:
         return redirect(url_for('login_route'))
     
-    username = session['username']
+    username = bleach.clean(session['username'])
     # Fetch user's email based on the username (assuming user emails are stored)
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -256,7 +265,7 @@ def send_otp_route():
     conn.close()
 
     if user_data:
-        email = user_data[0]
+        email = bleach.clean(user_data[0])
         otp = generate_otp() # Generate OTP
         store_otp(email, otp) # Store the OTP
         send_otp_email(email, otp) # Send the OTP via email
@@ -273,8 +282,8 @@ def verify_otp_route():
         return redirect(url_for('login_route'))
     
     if request.method == 'POST':
-        otp_entered = request.form['otp']
-        username = session['username']
+        otp_entered = bleach.clean(request.form['otp'])
+        username = bleach.clean(session['username'])
 
         # Fetch users email based on the username
         conn = get_db_connection()
@@ -284,7 +293,7 @@ def verify_otp_route():
         conn.close()
 
         if user_data:
-            email = user_data[0]
+            email = bleach.clean(user_data[0])
             is_valid, message = validate_otp(email, otp_entered)
             if is_valid:
                 flash('OTP verified successfully')
@@ -325,7 +334,7 @@ def verify_otp_route():
 @app.route('/forgot-username', methods=['GET', 'POST'])
 def forgot_username_route():
     if request.method == 'POST':
-        email = request.form['email']
+        email = bleach.clean(request.form['email'])
 
         # Check if email exists in the database
         conn = get_db_connection()
@@ -348,7 +357,7 @@ def forgot_username_route():
 @app.route('/forgot-REMOVED', methods=['GET', 'POST'])
 def forgot_REMOVED_route():
     if request.method == 'POST':
-        email = request.form['email']
+        email = bleach.clean(request.form['email'])
 
         # Check if email exists in the database
         conn = get_db_connection()
@@ -373,6 +382,7 @@ def forgot_REMOVED_route():
 
 @app.route('/reset-REMOVED/<token>', methods=['GET', 'POST'])
 def reset_REMOVED_route(token):
+    token = bleach.clean(token)
     # Verify the token and fetch the user's email
     email = verify_REMOVED_reset_token(token)
 
@@ -382,8 +392,8 @@ def reset_REMOVED_route(token):
 
     if request.method == 'POST':
         print(f"Received token: {token}")
-        new_REMOVED = request.form['REMOVED']
-        confirm_REMOVED = request.form['confirm_REMOVED']
+        new_REMOVED = bleach.clean(request.form['REMOVED'])
+        confirm_REMOVED = bleach.clean(request.form['confirm_REMOVED'])
 
         if new_REMOVED != confirm_REMOVED:
             flash('Passwords do not match.')
@@ -468,14 +478,21 @@ def contact():
 
 # Account page route
 @app.route('/account', methods=['GET', 'POST'])
+@limiter.limit("10 per minute")
 @login_required
 def account():
     # Get the username from the account session
-    username = session.get('username')
+    username = bleach.clean(session.get('username'))
 
     if request.method == 'POST':
         # Handle subscription change form submission
-        new_tier = request.form['subscription_tier']
+        new_tier = bleach.clean(request.form['subscription_tier'])
+        
+        # Validate that the selected tier is allowed
+        allowed_tiers = ['basic', 'premium']
+        if new_tier not in allowed_tiers:
+            flash('Invalid subscription tier selected.')
+            return redirect(url_for('account'))
 
         # Fetch current subscription details from the database
         conn = get_db_connection()
@@ -551,6 +568,7 @@ def account():
 
 
 @app.route('/change_REMOVED', methods=['GET', 'POST'])
+@limiter.limit("5 per minute")
 @login_required
 def change_REMOVED():
     username = session.get('username')
@@ -560,9 +578,9 @@ def change_REMOVED():
         return redirect(url_for('login_route'))
 
     if request.method == 'POST':
-        current_REMOVED = request.form['current_REMOVED']
-        new_REMOVED = request.form['new_REMOVED']
-        confirm_new_REMOVED = request.form['confirm_new_REMOVED']
+        current_REMOVED = bleach.clean(request.form['current_REMOVED'])
+        new_REMOVED = bleach.clean(request.form['new_REMOVED'])
+        confirm_new_REMOVED = bleach.clean(request.form['confirm_new_REMOVED'])
 
         # Verify current REMOVED
         conn = get_db_connection()
@@ -598,6 +616,7 @@ def change_REMOVED():
 
 # Update card payment
 @app.route('/update_payment', methods=['POST'])
+@limiter.limit("5 per minute")
 @login_required
 def update_payment():
     # Get the current user's stripe_customer_id from your database
@@ -629,6 +648,7 @@ def update_payment():
 
 # Unsubscribe route
 @app.route('/unsubscribe', methods=['POST'])
+@limiter.limit("5 per minute")
 @login_required
 def unsubscribe():
     # Get the username from the session
@@ -686,6 +706,7 @@ def subscribe_basic():
 def subscribe_premium():
     return render_template('subscribe_premium.html')
 
+@limiter.limit("5 per minute")
 def handle_stripe_webhook(payload, sig_header, webhook_secret):
     try:
         # Verify the strip webhook signature using Stripe's library
@@ -782,6 +803,7 @@ def create_checkout_session_premium_route():
     return create_checkout_session_premium()
 
 @app.route('/stripe-webhook', methods=['POST'])
+@limiter.limit("10 per minute")
 def stripe_webhook_route():
     print("Webhook received")
     payload = request.get_data(as_text=True)
@@ -882,6 +904,7 @@ def summarize_video(video_path, frame_interval, max_frame_for_last_key, api_key,
 
 
 @app.route('/upload', methods=['POST'])
+@limiter.limit("3 per minute")
 @login_required
 @basic_required
 @premium_required
@@ -944,7 +967,16 @@ def upload_video():
         app.logger.error("No file selected for upload.")
         return "No selected file"
     if file:
-        video_path = os.path.join('uploads', file.filename)
+        # Ensure the filename is secure
+        filename = secure_filename(file.filename)
+
+        # Check if the file is a valid video MIME type
+        mime_type, _ = mimetypes.guess_type(filename)
+        if mime_type is None or not mime_type.startswith('video'):
+            app.logger.error(f"Invalid file type: {mime_type}. Only video files are allowed.")
+            return "Invalid file type: Only video files are allowed"
+        
+        video_path = os.path.join('uploads', filename)
         file.save(video_path)
         app.logger.info(f"File {file.filename} saved to {video_path}.")
 
@@ -1014,7 +1046,17 @@ def text_to_speech():
             return render_template('tts.html')
 
         file = request.files['file']
-        video_path = os.path.join('uploads', file.filename)
+
+        # Ensure the filename is secure
+        filename = secure_filename(file.filename)
+
+        # Check if the file is a valid video MIME type
+        mime_type, _ = mimetypes.guess_type(filename)
+        if mime_type is None or not mime_type.startswith('video'):
+            flash(f"Invalid file type: {mime_type}. Only video files are allowed.")
+            return render_template('tts.html')
+        
+        video_path = os.path.join('uploads', filename)
         file.save(video_path)
 
         # Capture video properties for duration
