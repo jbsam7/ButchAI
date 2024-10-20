@@ -1,6 +1,7 @@
 # Ignore virtual environments
 .venv/
 old_openai_env/
+venv/
 
 # Ignore Python cache files
 __pycache__/
@@ -14,6 +15,10 @@ __pycache__/
 # Ignore large or unnecessary data files
 /data/
 /logs/
+/static/uploads/
+/static/videos/
+/static/video_summary_audio.mp3
+
 
 
 # Ignore database files
