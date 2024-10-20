@@ -8,50 +8,28 @@
     <!-- Google Fonts Link-->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet"> 
     <style>
-        body {
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
             background-color: black;
             color: yellow;
-            font-family: 'Poppins', Arial, sans-serif;
-            padding: 0;
+            font-family: 'Poppins', sans-serif;
             margin: 0;
+            padding: 0;
+            overflow-x: hidden;
         }
 
-        /* Banner with Linear Gradient Background */
-        .banner {
-            background: linear-gradient(to right, yellow, rgba(0, 0, 0, 0.9));
-            padding: 50px 100px;
-            display: flex;
-            justify-content: space-between; /* To push logo to the right */
-            align-items: center;
-            height: 400px; /* Increase banner height */
-            margin-top: 80px; /* Adjust for header height */
-        }
-
-        /* Styling for the Heading */
-        .banner-heading {
-            color: black;
-            font-size: 2.5em;
-            text-align: center;
-            width: 100%;
-            margin-bottom: 20px;
-            font-weight: bold;
-        }
-
-        /* Form inside the banner aligned to the left */
-        .banner-form {
-            width: 50%; /* Adjust the width of the form */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            margin-left: -75px;
-        }
-
+        /* Header Styles (Copied from main.html) */
         header {
             display: flex;
-            justify-content: flex-start;
+            flex-wrap: wrap;
             align-items: center;
-            padding: 1px;
-            position: fixed; /* Change to relative for absolute positioning inside */
+            padding: 2px;
+            position: fixed;
             top: 0;
             width: 100%;
             z-index: 1000;
@@ -62,11 +40,13 @@
         }
 
         .logo {
-            height: 65px; /* Keep the logo large */
+            height: 60px;
             width: auto;
             margin-right: 20px;
-            box-shadow: 0 0 20px rgba(255, 255, 0, 0.8);
             transition: box-shadow 0.3s ease-in-out;
+            border-radius: 6px;
+            margin-left: -2px;
+            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.5);
         }
 
         .logo:hover {
@@ -75,8 +55,8 @@
 
         .nav-links-left {
             display: flex;
-            gap: 30px;
-            margin-left: 20px;
+            flex-wrap: wrap;
+            gap: 20px;
             align-items: center;
         }
 
@@ -94,33 +74,57 @@
             position: relative;
         }
 
+        /* Dropdown content (hidden by default) */
         .dropdown-content {
             display: none;
             position: absolute;
-            background-color: black;
-            min-width: 150px;
-            box-shadow: 0 4px 8px rgba(255, 255, 0, 0.2);
+            background-color: rgba(0, 0, 0, 0.8);
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(255, 255, 0, 0.3);
             z-index: 1;
             text-align: left;
+            border-radius: 8px;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            transform: translateY(10px);
+            opacity: 0;
         }
 
+        /* Links inside the dropdown */
         .dropdown-content a {
             color: yellow;
-            padding: 10px;
+            padding: 12px 16px;
             text-decoration: none;
             display: block;
             font-size: 16px;
+            transition: background-color 0.3s ease;
         }
 
+        /* Dropdown hover effects */
+        .dropdown-content a:hover {
+            background-color: rgba(255, 255, 0, 0.2);
+            color: white;
+        }
+
+        /* Show the drop down menu on hover */
         .dropdown:hover .dropdown-content {
             display: block;
+            opacity: 1;
+            transform: translateY(0);
         }
 
+        /* Arrow for dropdown */
+        .dropdown::after {
+            content: " ▼";
+            font-size: 12px;
+        }
+
+        /* Right side links (Sign up and login) */
         .nav-links-right {
             margin-left: auto;
             display: flex;
             gap: 15px;
-            margin-right: 20px;
+            align-items: center;
+            margin-right: 1%;
         }
 
         .nav-links-right a {
@@ -138,21 +142,50 @@
             box-shadow: 0 0 20px rgba(255, 255, 0, 0.8);
         }
 
-        form {
+        /* Banner Section */
+        .banner {
+            background: linear-gradient(to right, yellow, rgba(0, 0, 0, 0.9));
+            padding: 100px 50px 50px 50px; /* Increased top padding to accommodate fixed header */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        /* Updated Heading */
+        .banner-heading {
+            color: black;
+            font-size: 2.5em;
+            text-align: center;
             width: 100%;
-            max-width: 500px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: black;
-            border: 2px solid yellow;
+            margin-bottom: 20px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        /* Form Styles */
+        .banner-form {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            background-color: #111;
+            padding: 30px;
             border-radius: 15px;
-            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.8);
+            box-shadow: 0px 8px 20px rgba(255, 255, 0, 0.3);
             transition: transform 0.3s, box-shadow 0.3s ease-in-out;
         }
 
-        form:hover {
-            transform: translateY(-10px);
-            box-shadow: 0px 8px 20px rgba(255, 255, 0, 0.4);
+        .banner-form:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 12px 25px rgba(255, 255, 0, 0.5);
+        }
+
+        label {
+            margin-bottom: 10px;
+            font-weight: 500;
+            color: #FFD700;
         }
 
         input[type="file"],
@@ -160,45 +193,48 @@
             background-color: #222;
             color: yellow;
             border: 1px solid yellow;
-            padding: 10px;
-            width: 95%;
-            border-radius: 5px;
+            padding: 12px;
+            width: 100%;
+            border-radius: 8px;
             margin-bottom: 20px;
             box-shadow: 0px 4px 10px rgba(255, 255, 0, 0.2);
             transition: box-shadow 0.3s ease-in-out, border-color 0.3s;
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
         }
+
         /* Hover and Focus Effect for Inputs and Textarea */
         input[type="file"]:hover,
         textarea:hover,
         input[type="file"]:focus,
         textarea:focus {
             box-shadow: 0px 4px 10px rgba(255, 255, 0, 0.4);
-            color: yellow; /* Highlight border on hover and focus */
-            outline: none; /* Remove default focus outline */
+            border-color: #FFD700;
+            outline: none;
         }
+
         /* Submit Button */
         input[type="submit"] {
             background-color: yellow;
             color: black;
             border: none;
             padding: 15px;
-            border-radius: 5px;
+            border-radius: 8px;
             font-size: 1.2em;
             width: 100%;
             box-shadow: 0px 4px 10px rgba(255, 255, 0, 0.5);
             transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            cursor: pointer;
+            font-weight: 600;
         }
+
         /* Hover Effect for Submit Button */
         input[type="submit"]:hover {
             background-color: #ffeb3b;
             box-shadow: 0px 8px 20px rgba(255, 255, 0, 0.8);
         }
 
-        label {
-            margin-bottom: 10px;
-            display: block;
-        }
-
+        /* Footer Styles (Copied from main.html) */
         footer {
             background-color: #121212;
             color: rgba(255, 255, 255, 0.8);
@@ -218,6 +254,10 @@
             text-decoration: underline;
         }
 
+        .social-icons {
+            margin-top: 20px;
+        }
+
         .social-icons img {
             width: 30px;
             margin: 0 10px;
@@ -228,17 +268,144 @@
         .social-icons img:hover {
             opacity: 1;
         }
+
+        /* Mobile Styles */
+        @media only screen and (max-width: 768px) {
+
+            /* Header Adjustments */
+            header {
+                justify-content: space-between;
+                padding: 10px 20px;
+            }
+
+            /* Hamburger menu styling */
+            .hamburger {
+                display: block; /* Show hamburger on mobile */
+                cursor: pointer;
+                position: relative;
+                border: rgba(255, 255, 0);
+                padding: 6px;
+                box-shadow: 0 4px 10px rgba(255, 255, 0, 0.8);
+                border-radius: 4px;
+            }
+
+            .hamburger div {
+                width: 30px;
+                height: 4px;
+                background-color: yellow;
+                margin: 5px 0;
+                border-radius: 4px;
+                box-shadow: 0 4px 10px rgba(255, 255, 0, 0.5);
+            }
+
+            .logo {
+                width: 40%;
+                height: auto;
+                margin-left: 0;
+                box-shadow: 0 4px 10px rgba(255, 255, 0, 0.6);
+            }
+
+            /* Adjust Banner Padding for Mobile */
+            .banner {
+                padding: 80px 20px 20px 20px;
+            }
+
+            .banner-heading {
+                font-size: 2em;
+            }
+
+            /* Stack Form Vertically on Mobile */
+            .banner-form {
+                width: 100%;
+                max-width: 100%;
+                padding: 20px;
+                margin-top: 20px;
+            }
+
+            /* Navigation Links for Mobile */
+            .nav-links-left,
+            .nav-links-right {
+                display: none; /* Hide initially */
+                flex-direction: column;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background-color: #000;
+                padding: 10px 0;
+                z-index: 1000;
+                text-align: center;
+            }
+
+            .nav-links-left a,
+            .nav-links-right a {
+                font-size: 18px;
+                padding: 15px 0;
+                text-decoration: none;
+                color: yellow;
+                display: block;
+                width: 100%;
+            }
+
+            .menu-open .nav-links-left,
+            .menu-open .nav-links-right {
+                display: flex;
+            }
+
+            /* Dropdown Adjustments for Mobile */
+            .dropdown-content {
+                position: static;
+                background-color: #111;
+                box-shadow: none;
+                transform: none;
+                opacity: 1;
+                display: none;
+            }
+
+            .dropdown:hover .dropdown-content {
+                display: none;
+            }
+
+            .dropdown .dropdown-content {
+                display: none;
+            }
+
+            .dropdown a {
+                cursor: pointer;
+            }
+
+            .dropdown a::after {
+                content: " ▼";
+                font-size: 12px;
+            }
+
+            .dropdown.open .dropdown-content {
+                display: block;
+            }
+        }
     </style>
 </head>
 <body>
-    <header>
-        <!-- Insert logo here -->
-        <img src="{{ url_for('static', filename='images/logobaby.png') }}" alt="ButchAI Logo" class="logo">
-        <!-- Left navigation buttons-->
-        <div class="nav-links-left">
-            <a href="/">Home</a>
+    <!-- Intro Overlay (Optional, can be removed if not needed) -->
+    <div class="intro-overlay" style="display: none;">
+        <div class="intro-text">Welcome to Butch AI</div>
+    </div> 
 
-            <!-- Drop down features-->
+    <!-- Header (Integrated from main.html) -->
+    <header>
+        <!-- Logo -->
+        <img src="{{ url_for('static', filename='images/logobaby.png') }}" alt="ButchAI Logo" class="logo">
+
+        <!-- Hamburger menu icon -->
+        <div class="hamburger" onclick="toggleMenu()">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+
+        <!-- Left Navigation links -->
+        <div class="nav-links-left">
+            <!-- Dropdown for features-->
             <div class="dropdown">
                 <a href="#">Features</a>
                 <div class="dropdown-content">
@@ -246,38 +413,44 @@
                     <a href="/basic">Basic</a>
                     <a href="/premium">Premium</a>
                 </div>
-            </div> 
+            </div>
+
             <a href="/pricing">Pricing</a>
             <a href="/contact">Contact</a>
         </div>
-        <!-- Right navigation links (Sign up and Login)-->
+
+        <!-- Right navigation links (Sign up and login)-->
         <div class="nav-links-right">
-            <a href="/account">Account</a>
+            <a href="/signup">Sign Up</a>
             <a href="/login">Login</a>
-        </div> 
+        </div>
     </header>
 
     <!-- Banner Section --> 
     <div class="banner">
-        <!-- Form Aligned left -->
-        <h1 class="banner-heading">Upload video!</h1> 
+        <!-- Heading -->
+        <h1 class="banner-heading">Upload Video for Analysis</h1> 
+
+        <!-- Form -->
         <div class="banner-form">
             <form action="/upload" method="post" enctype="multipart/form-data">
                 <label for="file">Choose Video File:</label>
                 <input type="file" id="file" name="file" accept="video/*" required>
 
                 <label for="custom_prompt">Enter Custom Prompt:</label>
-                <textarea id="custom_prompt" name="custom_prompt" rows="4" cols="50" placeholder="Enter your custom prompt here..." maxlength="250"></textarea>
+                <textarea id="custom_prompt" name="custom_prompt" rows="4" placeholder="Enter your custom prompt here..." maxlength="250" required></textarea>
 
                 <label for="custom_prompt_frame">Narration Focus (One or Two Words):</label>
-                <textarea id="custom_prompt_frame" name="custom_prompt_frame" rows="4" cols="50" placeholder="Enter your custom prompt for frame analysis here..." maxlength="30"></textarea>
+                <textarea id="custom_prompt_frame" name="custom_prompt_frame" rows="2" placeholder="Enter your focus here..." maxlength="30" required></textarea>
 
                 <input type="submit" value="Upload and Process Video">
             </form>
         </div>
     </div>
+
+    <!-- Footer (Integrated from main.html) -->
     <footer>
-        <p>&copy; 2024 ButchAI. All rights resevered.</p>
+        <p>&copy; 2024 ButchAI. All rights reserved.</p>
         <p>
             <a href="/terms">Terms</a>
             <a href="/privacy">Privacy Policy</a>
@@ -286,10 +459,25 @@
         <!-- Social Media Icons -->
         <div class="social-icons">
             <a href="#"><img src="{{ url_for('static', filename='images/x.png') }}" alt="X"></a>
-            <a href="#"><img src="{{ url_for('static', filename='images/yt.png') }}" alt="Youtube"></a>
-            <a href="#"><img src="{{ url_for('static', filename='images/tiktok.png') }}" alt="Tiktok"></a>
+            <a href="#"><img src="{{ url_for('static', filename='images/yt.png') }}" alt="YouTube"></a>
+            <a href="#"><img src="{{ url_for('static', filename='images/tiktok.png') }}" alt="TikTok"></a>
             <a href="#"><img src="{{ url_for('static', filename='images/insta.png') }}" alt="Instagram"></a>
         </div> 
     </footer>
+
+    <script>
+        function toggleMenu() {
+            const header = document.querySelector('header');
+            header.classList.toggle('menu-open');
+        }
+
+        // Handle Dropdown for Mobile
+        document.querySelectorAll('.dropdown > a').forEach(function(dropdownToggle) {
+            dropdownToggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                this.parentElement.classList.toggle('open');
+            });
+        });
+    </script>
 </body>
 </html>
