@@ -9,6 +9,7 @@ import hashlib
 import math
 import stripe
 import logging
+import bleach
 from anthropic import Anthropic
 from pydub import AudioSegment
 from dotenv import load_dotenv
@@ -129,7 +130,7 @@ def home():
     return render_template('index.html')
 
 SIGNUP_ENABLED = True # Set to False to disable signups
-MAX_USERS = 1
+MAX_USERS = 2
 @app.route('/signup', methods=['GET', 'POST'])
 def signup_route():
     # Check if signups are currently enabled
@@ -150,14 +151,20 @@ def signup_route():
 
 
     if request.method == 'POST':
-        first_name = request.form['first_name']
-        last_name = request.form['last_name']
-        dob = request.form['dob']
-        username = request.form['username']
-        REMOVED = request.form['REMOVED']
-        confirm_REMOVED = request.form['confirm_REMOVED']
-        email = request.form['email']
+        # Sanitize user inputs using bleach
+        first_name = bleach.clean(request.form['first_name'])
+        last_name = bleach.clean(request.form['last_name'])
+        dob = bleach.clean(request.form['dob'])
+        username = bleach.clean(request.form['username'])
+        REMOVED = bleach.clean(request.form['REMOVED'])
+        confirm_REMOVED = bleach.clean(request.form['confirm_REMOVED'])
+        email = bleach.clean(request.form['email'])
         subscription_tier = request.form['subscription_tier']
+
+        # Ensure the subscription tier is one of the allowed values
+        if subscription_tier not in ['basic', 'premium']:
+            flash('Invalid subscription tier selected. Please try again.')
+            return redirect(url_for('signup_route'))
 
         # Check if REMOVEDs match 
         if REMOVED != confirm_REMOVED:
@@ -399,8 +406,8 @@ def reset_REMOVED_route(token):
 @app.route('/login', methods=['GET', 'POST'])
 def login_route():
     if request.method == 'POST':
-        username = request.form['username']
-        REMOVED = request.form['REMOVED']
+        username = bleach.clean(request.form['username'])
+        REMOVED = bleach.clean(request.form['REMOVED'])
         if login(username, REMOVED):
             # Fetch user subscription details
             conn = get_db_connection()
