@@ -18,6 +18,7 @@ __pycache__/
 /uploads/
 /static/videos/
 /static/video_summary_audio.mp3
+/static/speech_openai.mp3
 
 # Ignore specific static files
 static/images/jordandog.jpg
