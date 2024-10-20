@@ -19,6 +19,11 @@ __pycache__/
 /static/videos/
 /static/video_summary_audio.mp3
 
+# Ignore specific static files
+static/images/jordandog.jpg
+static/jojo.mov
+static/jordanpoopy.mp4
+
 
 
 # Ignore database files
