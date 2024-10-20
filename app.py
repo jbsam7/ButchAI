@@ -128,8 +128,27 @@ def main_route():
 def home():
     return render_template('index.html')
 
+SIGNUP_ENABLED = True # Set to False to disable signups
+MAX_USERS = 1
 @app.route('/signup', methods=['GET', 'POST'])
 def signup_route():
+    # Check if signups are currently enabled
+    if not SIGNUP_ENABLED:
+        flash('Signups are currently disabled. Please try again later.')
+        return redirect(url_for('login_route'))
+    
+    # Check if user count has exceeded MAX_USERS
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT COUNT(*) FROM users')
+    user_count = cursor.fetchone()[0]
+    conn.close()
+
+    if user_count >= MAX_USERS:
+        flash('Maximum number of users reached. Signups are currently closed.')
+        return redirect(url_for('login_route'))
+
+
     if request.method == 'POST':
         first_name = request.form['first_name']
         last_name = request.form['last_name']
