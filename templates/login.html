@@ -11,7 +11,7 @@
         * {
             box-sizing: border-box;
             margin: 0;
-            padding: 5px;
+            padding: 0; /* Removed padding: 5px; to prevent layout issues */
         }
 
         html, body {
@@ -21,22 +21,32 @@
             margin: 0;
             padding: 0;
             overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
         }
 
         /* Header Styles */
         header {
             display: flex;
-            justify-content: space-between;
+            justify-content: space-between; /* Distribute space between left and right */
             align-items: center;
-            padding: 0px;
+            padding: 10px 20px;
             position: fixed;
             top: 0;
             width: 100%;
-            background-color: black;
+            background-color: rgba(0, 0, 0, 0.9); /* Semi-transparent for better visibility */
             box-shadow: 0 4px 10px rgba(255, 255, 0, 0.5);
             z-index: 1000;
         }
 
+        /* Left Section: Logo and Navigation Links */
+        .left-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* Logo Styling */
         .logo {
             height: 60px;
             width: auto;
@@ -49,15 +59,8 @@
             box-shadow: 0 0 30px rgba(255, 255, 0, 1);
         }
 
-        /* Navigation Links */
+        /* Navigation Links Containers */
         .nav-links-left, .nav-links-right {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-        
-         /* Navigation Links */
-         .nav-links-left, .nav-links-right {
             display: flex;
             align-items: center;
             gap: 20px;
@@ -119,7 +122,7 @@
             transform: translateY(0);
         }
 
-        /* Right Navigation Links (Sign Up and Login) */
+        /* Right Navigation Links (Sign Up and Home) */
         .nav-links-right a {
             color: yellow;
             text-decoration: none;
@@ -141,7 +144,6 @@
         .hamburger {
             display: none; /* Hidden by default, shown on mobile via media queries */
             cursor: pointer;
-            position: relative;
             padding: 6px;
             box-shadow: 0 4px 10px rgba(255, 255, 0, 0.8);
             border-radius: 4px;
@@ -204,7 +206,8 @@
 
         /* Login Container */
         .login-container {
-            background: black;
+            background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent to blend with background */
+            color: yellow;
             padding: 40px;
             border-radius: 15px;
             box-shadow: 0 4px 20px rgba(255, 255, 0, 0.8);
@@ -223,7 +226,7 @@
             color: black;
             padding: 15px;
             border-radius: 10px;
-            box-shadow: 0 0 30px rgba(255, 255, 0, 0.8);
+            box-shadow: 0 0 30px rgba(255, 255, 0, 1);
         }
 
         /* Form fields */
@@ -316,7 +319,7 @@
 
         /* Mobile Styles */
         @media only screen and (max-width: 768px) {
-            /* Hamburger Menu */
+            /* Show Hamburger Menu */
             .hamburger {
                 display: block; /* Show hamburger on mobile */
             }
@@ -397,31 +400,34 @@
 <body>
     <!-- Header -->
     <header>
-        <!-- Logo -->
-        <img src="{{ url_for('static', filename='images/logobaby.png') }}" alt="ButchAI Logo" class="logo">
+        <!-- Left Section: Logo and Navigation Links -->
+        <div class="left-section">
+            <!-- Logo -->
+            <img src="{{ url_for('static', filename='images/logobaby.png') }}" alt="ButchAI Logo" class="logo">
 
-        <!-- Left Navigation Links -->
-        <div class="nav-links-left">
-            <div class="dropdown">
-                <a href="#">Features</a>
-                <div class="dropdown-content">
-                    <a href="/how-to-prompt">How to Prompt</a>
-                    <a href="/basic">Basic</a>
-                    <a href="/premium">Premium</a>
+            <!-- Left Navigation Links -->
+            <div class="nav-links-left">
+                <div class="dropdown">
+                    <a href="#">Features</a>
+                    <div class="dropdown-content">
+                        <a href="/how-to-prompt">How to Prompt</a>
+                        <a href="/basic">Basic</a>
+                        <a href="/premium">Premium</a>
+                    </div>
                 </div>
+                <a href="/pricing">Pricing</a>
+                <a href="/contact">Contact</a>
             </div>
-            <a href="/pricing">Pricing</a>
-            <a href="/contact">Contact</a>
         </div>
 
         <!-- Right Navigation Links -->
         <div class="nav-links-right">
             <a href="/signup">Sign Up</a>
-            <a href="/">Home</a>
+            <a href="/home">Home</a> <!-- Changed from Login to Home -->
         </div>
 
         <!-- Hamburger Menu Icon -->
-        <div class="hamburger" onclick="toggleMenu()">
+        <div class="hamburger" onclick="toggleMenu()" aria-label="Toggle navigation menu" role="button" tabindex="0">
             <div></div>
             <div></div>
             <div></div>
@@ -470,6 +476,13 @@
             const header = document.querySelector('header');
             header.classList.toggle('menu-open');
         }
+
+        // Optional: Allow toggling menu with keyboard (Enter key)
+        document.querySelector('.hamburger').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                toggleMenu();
+            }
+        });
     </script>
 </body>
 </html>
