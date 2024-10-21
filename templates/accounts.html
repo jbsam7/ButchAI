@@ -5,75 +5,198 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Account Management</title>
 
-    <!-- Google Fonts Link-->
+    <!-- Google Fonts Link -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
     <style>
-        body {
+        /* Global Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
             background-color: black;
             color: yellow;
             font-family: 'Poppins', sans-serif;
-            padding: 0;
-            margin: 0;
+            height: 100%;
             min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
         }
 
-        /* Header styling */
+        /* Header Styles */
         header {
             display: flex;
-            justify-content: flex-start;
+            justify-content: space-between; /* Space between left and right sections */
             align-items: center;
-            padding: 1px;
+            padding: 10px 20px;
             position: fixed;
             top: 0;
             width: 100%;
-            background-color: black;
+            background-color: rgba(0, 0, 0, 0.9); /* Semi-transparent for better visibility */
             box-shadow: 0 4px 10px rgba(255, 255, 0, 0.5);
             z-index: 1000;
         }
 
-        /* Logo inside the header */
-        .logo {
-            height: 65px;
-            width: auto;
-            margin-right: 20px;
-            box-shadow: 0 0 20px rgba(255, 255, 0, 0.8);
-            transition: box-shadow 0.3s ease-in-out;
-        }
-
-        /* Navigation links */
-        .nav-links-left {
+        /* Left Section: Logo and Navigation Links */
+        .left-section {
             display: flex;
-            gap: 30px;
-            margin-left: 20px;
             align-items: center;
+            gap: 20px;
         }
 
+        /* Logo Styling */
+        .logo {
+            height: 60px;
+            width: auto;
+            transition: box-shadow 0.3s ease-in-out;
+            border-radius: 6px;
+            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.5);
+        }
+
+        .logo:hover {
+            box-shadow: 0 0 30px rgba(255, 255, 0, 1);
+        }
+
+        /* Navigation Links Containers */
+        .nav-links-left, .nav-links-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* Left Navigation Links */
         .nav-links-left a {
             color: yellow;
             text-decoration: none;
             font-size: 18px;
+            transition: color 0.3s;
         }
 
         .nav-links-left a:hover {
             color: rgba(255, 255, 0, 0.8);
         }
 
-        /* Account Container */
+        /* Dropdown Menu */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown > a::after {
+            content: " ▼";
+            font-size: 12px;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: black;
+            min-width: 150px;
+            box-shadow: 0 4px 8px rgba(255, 255, 0, 0.2);
+            z-index: 1;
+            text-align: left;
+            border-radius: 8px;
+        }
+
+        .dropdown-content a {
+            color: yellow;
+            padding: 10px;
+            text-decoration: none;
+            display: block;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown-content a:hover {
+            background-color: rgba(255, 255, 0, 0.2);
+            color: white;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* Right Navigation Links (Premium Page, Basic Page, Logout) */
+        .nav-links-right a {
+            color: yellow;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 10px 20px;
+            border: 2px solid yellow;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
+            transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+        }
+
+        .nav-links-right a:hover {
+            background-color: yellow;
+            color: black;
+            box-shadow: 0 0 20px rgba(255, 255, 0, 0.8);
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none; /* Hidden by default, shown on mobile via media queries */
+            cursor: pointer;
+            padding: 6px;
+            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.8);
+            border-radius: 4px;
+        }
+
+        .hamburger div {
+            width: 30px;
+            height: 4px;
+            background-color: yellow;
+            margin: 5px 0;
+            border-radius: 2px;
+            box-shadow: 0 2px 5px rgba(255, 255, 0, 0.5);
+        }
+
+        /* Banner Styles */
+        .banner {
+            background: linear-gradient(to right, yellow, rgba(255, 255, 0, 0.1));
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Center the text */
+            padding: 100px 20px; /* Adjusted padding to accommodate fixed header */
+            margin-top: 60px; /* Adjusted to prevent overlap with fixed header */
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .banner-text {
+            font-size: 36px;
+            font-weight: bold;
+            color: black; /* Text color contrasting with the background */
+            max-width: 90%;
+            overflow: hidden;
+            white-space: nowrap;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+            animation: none; /* Removed typing animation for simplicity */
+            margin-bottom: 20px;
+        }
+
+        .banner-subtext {
+            font-size: 18px;
+            color: rgba(0, 0, 0, 0.8);
+        }
+
+        /* Account Container Styles */
         .account-container {
-            background-color: rgba(255, 255, 0, 0.1);
+            background-color: black;
+            color: yellow;
             padding: 40px;
             border-radius: 15px;
-            box-shadow: 0px 4px 10px rgba(255, 255, 0, 0.5);
+            box-shadow: 0px 8px 20px rgba(255, 255, 0, 0.6);
             width: 100%;
-            max-width: 400px;
+            max-width: 500px;
             text-align: center;
-            margin-top: 150px; /* Space for header */
-            margin-bottom: 50px;
+            margin: 150px auto 50px auto; /* Space for header and footer */
         }
 
         /* Title inside account container */
@@ -90,6 +213,7 @@
         /* Subscription Information */
         .subscription-info {
             margin-bottom: 30px;
+            text-align: left;
         }
 
         .subscription-info p {
@@ -104,7 +228,6 @@
             margin-bottom: 10px;
         }
 
-        /* Form-check for radio buttons */
         .form-check input[type="radio"] {
             margin-right: 10px;
             margin-top: -2px;
@@ -123,6 +246,7 @@
             background-color: yellow; /* Only fill in yellow when selected */
             border: 2px solid yellow; /* Keep the yellow border */
         }
+
         .form-check input[type="radio"]:checked::before {
             content: '';
             position: absolute;
@@ -142,7 +266,6 @@
 
         .form-check-label:hover {
             color: rgba(255, 255, 0, 0.8);
-
         }
 
         /* Unsubscribe Button */
@@ -182,15 +305,15 @@
             box-shadow: 0px 8px 20px rgba(255, 255, 0, 0.8);
         }
 
-        /* Footer */
+        /* Footer Styles */
         footer {
             background-color: #121212;
             color: rgba(255, 255, 255, 0.8);
             padding: 30px 0;
             text-align: center;
             font-size: 14px;
-            margin-top: auto;
             width: 100%;
+            margin-top: auto; /* Pushes footer to the bottom */
         }
 
         footer a {
@@ -202,21 +325,145 @@
         footer a:hover {
             text-decoration: underline;
         }
+
+        .social-icons {
+            margin-top: 20px;
+        }
+
+        .social-icons img {
+            width: 30px;
+            margin: 0 10px;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        .social-icons img:hover {
+            opacity: 1;
+        }
+
+        /* Mobile Styles */
+        @media only screen and (max-width: 768px) {
+            /* Show Hamburger Menu */
+            .hamburger {
+                display: block; /* Show hamburger on mobile */
+            }
+
+            /* Hide navigation links by default */
+            .nav-links-left,
+            .nav-links-right {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background-color: #000;
+                padding: 10px 0;
+                z-index: 1000;
+                text-align: center;
+            }
+
+            .nav-links-left a,
+            .nav-links-right a {
+                font-size: 18px;
+                padding: 15px 0;
+                text-decoration: none;
+                color: yellow;
+                display: block;
+                width: 100%;
+            }
+
+            /* Show navigation links when menu is open */
+            .menu-open .nav-links-left,
+            .menu-open .nav-links-right {
+                display: flex;
+            }
+
+            /* Adjust banner text */
+            .banner-text {
+                font-size: 24px; /* Reduced font size */
+                padding: 0 10px;
+                white-space: normal; /* Allow text to wrap */
+                line-height: 1.4; /* Improve readability */
+                text-align: center; /* Ensure centered alignment */
+                color: black; /* Maintain contrast */
+                margin-bottom: 10px;
+            }
+
+            .banner-subtext {
+                font-size: 16px; /* Reduced font size */
+                padding: 0 10px;
+                white-space: normal;
+                text-align: center;
+                color: rgba(0, 0, 0, 0.8);
+            }
+
+            /* Adjust account container for mobile */
+            .account-container {
+                padding: 30px;
+                max-width: 90%;
+                margin: 120px auto 30px auto; /* Adjusted for mobile */
+            }
+
+            /* Adjust footer */
+            footer {
+                padding: 20px 0;
+            }
+
+            .social-icons img {
+                width: 25px;
+                margin: 0 8px;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <!-- Header section -->
+    <!-- Header -->
     <header>
-        <img src="{{ url_for('static', filename='images/logobaby.png') }}" alt="ButchAI Logo" class="logo">
-        <div class="nav-links-left">
+        <div class="left-section">
+            <img src="{{ url_for('static', filename='images/logobaby.png') }}" alt="ButchAI Logo" class="logo">
+
+            <div class="nav-links-left">
+                <a href="/">Home</a>
+                <div class="dropdown">
+                    <a href="#">Features</a>
+                    <div class="dropdown-content">
+                        <a href="/how-to-prompt">How to Prompt</a>
+                        <a href="/basic">Basic</a>
+                        <a href="/premium">Premium</a>
+                    </div>
+                </div>
+                <a href="/pricing">Pricing</a>
+                <a href="/contact">Contact</a>
+            </div>
+        </div>
+
+        <div class="nav-links-right">
             <!-- Dynamically direct the user to their subscription tier page -->
             <a href="{{ url_for('text_to_speech') if subscription_tier == 'basic' else url_for('home') }}">
                 {{ subscription_tier|capitalize }} Page
             </a>
             <a href="/logout">Logout</a>
         </div>
+
+        <!-- Hamburger Menu Icon -->
+        <div class="hamburger" onclick="toggleMenu()" aria-label="Toggle navigation menu" role="button" tabindex="0">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
     </header>
+
+    <!-- Banner Section -->
+    <div class="banner">
+        <div class="banner-text">
+            Manage Your Account
+        </div>
+        <div class="banner-subtext">
+            Update your subscription, payment info, and more.
+        </div>
+    </div>
 
     <!-- Account Management Container -->
     <div class="account-container">
@@ -233,34 +480,68 @@
         </div>
 
         <!-- Form to manage subscription tiers -->
-    <form action="{{ url_for('account') }}" method="POST">
-        <div class="subscription-info">
-            <p>Current Subscription: {{ subscription_tier }}</p>
+        <form action="{{ url_for('account') }}" method="POST">
+            <div class="subscription-info">
+                <p>Current Subscription: {{ subscription_tier }}</p>
 
-            <!-- Radio buttons for choosing new subscription tier -->
-            <label>Select New Subscription Tier:</label><br>
-            <div class="form-check">
-                <input type="radio" id="basic" name="subscription_tier" value="basic" {% if subscription_tier == 'basic' %}checked{% endif %}>
-                <label for="basic" class="form-check-label">Basic - $5/month</label>
+                <!-- Radio buttons for choosing new subscription tier -->
+                <label>Select New Subscription Tier:</label><br>
+                <div class="form-check">
+                    <input type="radio" id="basic" name="subscription_tier" value="basic" {% if subscription_tier == 'basic' %}checked{% endif %}>
+                    <label for="basic" class="form-check-label">Basic - $5/month</label>
+                </div>
+                <div class="form-check">
+                    <input type="radio" id="premium" name="subscription_tier" value="premium" {% if subscription_tier == 'premium' %}checked{% endif %}>
+                    <label for="premium" class="form-check-label">Premium - $15/month</label>
+                </div>
             </div>
-            <div class="form-check">
-                <input type="radio" id="premium" name="subscription_tier" value="premium" {% if subscription_tier == 'premium' %}checked{% endif %}>
-                <label for="premium" class="form-check-label">Premium - $15/month</label>
-            </div>
-        </div>
 
-        <button type="submit" class="btn-account">Update Subscription</button>
-    </form>
+            <button type="submit" class="btn-account">Update Subscription</button>
+        </form>
 
-    <!-- Unsubscribe button -->
-    <form action="/unsubscribe" method="post">
-        <button type="submit" class="btn-unsubscribe">Unsubscribe</button>
-    </form>
+        <!-- Unsubscribe button -->
+        <form action="/unsubscribe" method="post">
+            <button type="submit" class="btn-unsubscribe">Unsubscribe</button>
+        </form>
 
-    <!-- Add the form for updating payment info -->
-    <form action="{{ url_for('update_payment') }}" method="POST">
-        <button type="submit" class="btn-account">Update Payment Info</button>
-    </form>
-    <!-- Change Password button -->
-    <button class="btn-account" onclick="window.location.href='/change_REMOVED'">Change Password</button>
+        <!-- Form for updating payment info -->
+        <form action="{{ url_for('update_payment') }}" method="POST">
+            <button type="submit" class="btn-account">Update Payment Info</button>
+        </form>
 
+        <!-- Change Password button -->
+        <button class="btn-account" onclick="window.location.href='/change_REMOVED'">Change Password</button>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 ButchAI. All rights reserved.</p>
+        <p>
+            <a href="/terms">Terms</a>
+            <a href="/privacy">Privacy Policy</a>
+        </p>
+        <!-- Social Media Icons -->
+        <div class="social-icons">
+            <a href="#"><img src="{{ url_for('static', filename='images/x.png') }}" alt="X"></a>
+            <a href="#"><img src="{{ url_for('static', filename='images/yt.png') }}" alt="YouTube"></a>
+            <a href="#"><img src="{{ url_for('static', filename='images/tiktok.png') }}" alt="TikTok"></a>
+            <a href="#"><img src="{{ url_for('static', filename='images/insta.png') }}" alt="Instagram"></a>
+        </div> 
+    </footer>
+
+    <!-- JavaScript for Hamburger Menu Toggle -->
+    <script>
+        function toggleMenu() {
+            const header = document.querySelector('header');
+            header.classList.toggle('menu-open');
+        }
+
+        // Allow toggling menu with keyboard (Enter key)
+        document.querySelector('.hamburger').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                toggleMenu();
+            }
+        });
+    </script>
+</body>
+</html>
