@@ -4,58 +4,92 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Basic Plan - How It Works</title>
-    <!-- Add google font link here-->
+    <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            background-color: black;
-            color: yellow;
-            font-family: 'Poppins', sans-serif;
+        /* Global Styles */
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
+
+        html, body {
+            background-color: black;
+            color: yellow;
+            font-family: 'Poppins', sans-serif;
+            height: 100%;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header Styles */
         header {
             display: flex;
-            justify-content: flex-start;
+            justify-content: space-between; /* Space between left and right sections */
             align-items: center;
-            padding: 1px;
+            padding: 10px 20px;
             position: fixed;
             top: 0;
             width: 100%;
-            z-index: 1000;
-            background-color: black;
+            background-color: rgba(0, 0, 0, 0.9); /* Semi-transparent for better visibility */
             box-shadow: 0 4px 10px rgba(255, 255, 0, 0.5);
-            backdrop-filter: blur(10px);
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1000;
         }
+
+        /* Left Section: Logo and Navigation Links */
+        .left-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* Logo Styling */
         .logo {
-            height: 65px;
+            height: 60px;
             width: auto;
-            margin-right: 20px;
-            box-shadow: 0 0 20px rgba(255, 255, 0, 0.8);
             transition: box-shadow 0.3s ease-in-out;
+            border-radius: 6px;
+            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.5);
         }
+
         .logo:hover {
             box-shadow: 0 0 30px rgba(255, 255, 0, 1);
         }
-        .nav-links-left {
+
+        /* Navigation Links Containers */
+        .nav-links-left, .nav-links-right {
             display: flex;
-            gap: 30px;
-            margin-left: 20px;
             align-items: center;
-            justify-content: flex-start;
+            gap: 20px;
         }
+
+        /* Left Navigation Links */
         .nav-links-left a {
             color: yellow;
             text-decoration: none;
             font-size: 18px;
+            transition: color 0.3s;
         }
+
         .nav-links-left a:hover {
             color: rgba(255, 255, 0, 0.8);
         }
+
+        /* Dropdown Menu */
         .dropdown {
             position: relative;
         }
+
+        .dropdown > a::after {
+            content: " ▼";
+            font-size: 12px;
+        }
+
         .dropdown-content {
             display: none;
             position: absolute;
@@ -64,101 +98,157 @@
             box-shadow: 0 4px 8px rgba(255, 255, 0, 0.2);
             z-index: 1;
             text-align: left;
+            border-radius: 8px;
         }
+
         .dropdown-content a {
             color: yellow;
             padding: 10px;
             text-decoration: none;
             display: block;
             font-size: 16px;
+            transition: background-color 0.3s ease;
         }
+
+        .dropdown-content a:hover {
+            background-color: rgba(255, 255, 0, 0.2);
+            color: white;
+        }
+
         .dropdown:hover .dropdown-content {
             display: block;
         }
-        .nav-links-right {
-            margin-left: auto;
-            display: flex;
-            gap: 15px;
-            margin-right: 20px;
-        }
+
+        /* Right Navigation Links (Sign Up and Login) */
         .nav-links-right a {
             color: yellow;
             text-decoration: none;
+            font-size: 18px;
             padding: 10px 20px;
             border: 2px solid yellow;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
+            transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
         }
+
         .nav-links-right a:hover {
             background-color: yellow;
             color: black;
             box-shadow: 0 0 20px rgba(255, 255, 0, 0.8);
         }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none; /* Hidden by default, shown on mobile via media queries */
+            cursor: pointer;
+            padding: 6px;
+            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.8);
+            border-radius: 4px;
+        }
+
+        .hamburger div {
+            width: 30px;
+            height: 4px;
+            background-color: yellow;
+            margin: 5px 0;
+            border-radius: 2px;
+            box-shadow: 0 2px 5px rgba(255, 255, 0, 0.5);
+        }
+
+        /* Banner Styles */
         .banner {
             background: linear-gradient(to right, yellow, rgba(255, 255, 0, 0.1));
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 50px 100px;
-            height: 400px;
-            margin-top: 80px;
+            justify-content: center; /* Center the text */
+            padding: 100px 20px; /* Adjusted padding to accommodate fixed header */
+            margin-top: 60px; /* Adjusted to prevent overlap with fixed header */
+            flex-direction: column;
+            text-align: center;
         }
+
         .banner-text {
             font-size: 48px;
             font-weight: bold;
-            color: black;
-            max-width: 600px;
+            color: black; /* Text color contrasting with the background */
+            max-width: 90%;
+            overflow: hidden;
+            white-space: nowrap;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+            animation: none; /* Removed typing animation for simplicity */
         }
-        .banner-image {
-            height: 300px;
-            width: auto;
-            border-radius: 15px;
-            box-shadow: 0px 8px 20px rgba(255, 255, 0, 0.6);
-            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-        }
-        .banner-image:hover {
-            transform: scale(1.05);
-            box-shadow: 0px 10px 30px rgba(255, 255, 0, 1);
-        }
+
+        /* Section Styles */
         .section {
             padding: 50px 20px;
             background-color: #121212;
             color: yellow;
             text-align: left;
+            display: flex;
+            flex-direction: row;
+            gap: 40px;
+            flex-wrap: wrap;
         }
+
         .section h2 {
             font-size: 36px;
             font-weight: 700;
             margin-bottom: 15px;
             text-shadow: 1px 1px 3px rgba(255, 255, 0, 0.3);
+            width: 100%;
         }
+
         .section p {
             font-size: 18px;
             font-weight: 300;
             line-height: 1.8;
             color: rgba(255, 255, 0, 0.8);
+            flex: 1;
+            min-width: 300px;
         }
+
+        .section ul {
+            list-style-type: disc;
+            margin-left: 20px;
+            font-size: 18px;
+            line-height: 1.8;
+        }
+
         .section img {
             max-width: 100%;
             height: auto;
             border-radius: 15px;
             margin-top: 20px;
+            flex: 1;
+            min-width: 300px;
+            box-shadow: 0px 8px 20px rgba(255, 255, 0, 0.6);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
         }
+
+        .section img:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 10px 30px rgba(255, 255, 0, 1);
+        }
+
+        /* Call to Action section */
         .cta-section {
             text-align: center;
             padding: 50px 20px;
             background-color: #111;
             color: yellow;
         }
+
         .cta-section h2 {
             font-size: 42px;
             font-weight: bold;
             margin-bottom: 20px;
         }
+
         .cta-section p {
             font-size: 20px;
             margin-bottom: 30px;
         }
+
         .cta-button {
             background-color: yellow;
             color: black;
@@ -170,59 +260,160 @@
             box-shadow: 0px 8px 20px rgba(255, 255, 0, 0.8);
             transition: background-color 0.3s ease, box-shadow 0.3s ease;
         }
+
         .cta-button:hover {
             background-color: #ffeb3b;
             box-shadow: 0px 12px 30px rgba(255, 255, 0, 1);
         }
+
+        /* Footer Styles */
         footer {
             background-color: #121212;
             color: rgba(255, 255, 255, 0.8);
             padding: 30px 0;
             text-align: center;
             font-size: 14px;
-            margin-top: 50px;
+            width: 100%;
+            margin-top: auto; /* Pushes footer to the bottom */
         }
+
         footer a {
             color: yellow;
             text-decoration: none;
             margin: 0 10px;
         }
+
         footer a:hover {
             text-decoration: underline;
         }
+
         .social-icons {
             margin-top: 20px;
         }
+
         .social-icons img {
             width: 30px;
             margin: 0 10px;
             opacity: 0.7;
             transition: opacity 0.3s ease;
         }
+
         .social-icons img:hover {
             opacity: 1;
+        }
+
+        /* Mobile Styles */
+        @media only screen and (max-width: 768px) {
+            /* Show Hamburger Menu */
+            .hamburger {
+                display: block; /* Show hamburger on mobile */
+            }
+
+            /* Hide navigation links by default */
+            .nav-links-left,
+            .nav-links-right {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background-color: #000;
+                padding: 10px 0;
+                z-index: 1000;
+                text-align: center;
+            }
+
+            .nav-links-left a,
+            .nav-links-right a {
+                font-size: 18px;
+                padding: 15px 0;
+                text-decoration: none;
+                color: yellow;
+                display: block;
+                width: 100%;
+            }
+
+            /* Show navigation links when menu is open */
+            .menu-open .nav-links-left,
+            .menu-open .nav-links-right {
+                display: flex;
+            }
+
+            /* Adjust banner text */
+            .banner-text {
+                font-size: 24px; /* Reduced font size */
+                padding: 0 10px;
+                white-space: normal; /* Allow text to wrap */
+                line-height: 1.4; /* Improve readability */
+                text-align: center; /* Ensure centered alignment */
+                color: black; /* Maintain contrast */
+            }
+
+            /* Adjust section layout for mobile */
+            .section {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .section p,
+            .section ul {
+                text-align: left;
+                margin: 0 auto;
+                max-width: 90%;
+            }
+
+            .section img {
+                margin-top: 20px;
+                width: 100%;
+                max-width: 400px;
+                min-width: unset;
+            }
+
+            /* Adjust footer */
+            footer {
+                padding: 20px 0;
+            }
+
+            .social-icons img {
+                width: 25px;
+                margin: 0 8px;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Header -->
     <header>
-        <img src="{{ url_for('static', filename='images/logobaby.png') }}" alt="ButchAI Logo" class="logo">
-        <div class="nav-links-left">
-            <a href="/">Home</a>
-            <div class="dropdown">
-                <a href="#">Features</a>
-                <div class="dropdown-content">
-                    <a href="/how-to-prompt">How to Prompt</a>
-                    <a href="/basic">Basic</a>
-                    <a href="/premium">Premium</a>
+        <div class="left-section">
+            <img src="{{ url_for('static', filename='images/logobaby.png') }}" alt="ButchAI Logo" class="logo">
+
+            <div class="nav-links-left">
+                <a href="/">Home</a>
+                <div class="dropdown">
+                    <a href="#">Features</a>
+                    <div class="dropdown-content">
+                        <a href="/how-to-prompt">How to Prompt</a>
+                        <a href="/basic">Basic</a>
+                        <a href="/premium">Premium</a>
+                    </div>
                 </div>
+                <a href="/pricing">Pricing</a>
+                <a href="/contact">Contact</a>
             </div>
-            <a href="/pricing">Pricing</a>
-            <a href="/contact">Contact</a>
         </div>
+
         <div class="nav-links-right">
             <a href="/signup">Sign Up</a>
             <a href="/login">Login</a>
+        </div>
+
+        <!-- Hamburger Menu Icon -->
+        <div class="hamburger" onclick="toggleMenu()" aria-label="Toggle navigation menu" role="button" tabindex="0">
+            <div></div>
+            <div></div>
+            <div></div>
         </div>
     </header>
 
@@ -231,7 +422,7 @@
         <div class="banner-text">
             How the Basic Product Works
         </div>
-        <img src="{{ url_for('static', filename='images/logobaby.png') }}" alt="Product Overview" class="banner-image">
+        <!-- Removed the banner image as per your request -->
     </div>
 
     <!-- Section explaining the basic product -->
@@ -246,7 +437,8 @@
             <li>Easy-to-use interface for uploading video and entering prompts for the best narration results.</li>
             <li>Upgrade options available if you need more minutes or advanced features.</li>
         </ul>
-        <img src="{{ url_for('static', filename='images/logobaby.png') }}" alt="Basic Plan Features">
+        <!-- Example Image -->
+        <img src="{{ url_for('static', filename='images/bball.jpg') }}" alt="Basic Plan Features">
     </div>
 
     <!-- Call to Action section -->
@@ -258,18 +450,35 @@
         <a href="/signup" class="cta-button">Sign Up Now</a>
     </div>
 
+    <!-- Footer -->
     <footer>
         <p>&copy; 2024 ButchAI. All rights reserved.</p>
         <p>
             <a href="/terms">Terms</a>
             <a href="/privacy">Privacy Policy</a>
         </p>
+        <!-- Social Media Icons -->
         <div class="social-icons">
             <a href="#"><img src="{{ url_for('static', filename='images/x.png') }}" alt="X"></a>
-            <a href="#"><img src="{{ url_for('static', filename='images/yt.png') }}" alt="Youtube"></a>
-            <a href="#"><img src="{{ url_for('static', filename='images/tiktok.png') }}" alt="Tiktok"></a>
+            <a href="#"><img src="{{ url_for('static', filename='images/yt.png') }}" alt="YouTube"></a>
+            <a href="#"><img src="{{ url_for('static', filename='images/tiktok.png') }}" alt="TikTok"></a>
             <a href="#"><img src="{{ url_for('static', filename='images/insta.png') }}" alt="Instagram"></a>
         </div> 
     </footer>
+
+    <!-- JavaScript for Hamburger Menu Toggle -->
+    <script>
+        function toggleMenu() {
+            const header = document.querySelector('header');
+            header.classList.toggle('menu-open');
+        }
+
+        // Allow toggling menu with keyboard (Enter key)
+        document.querySelector('.hamburger').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                toggleMenu();
+            }
+        });
+    </script>
 </body>
 </html>
