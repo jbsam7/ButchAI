@@ -3,80 +3,192 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up</title>
-    <!-- Add Google Font Link (same as main page) -->
+    <title>Sign Up - Butch AI</title>
+    <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
-    
     <style>
-        /* General body styling */
-        body {
-            background-color: black;
-            color: yellow;
-            font-family: 'Poppins', sans-serif;
+        /* Global Styles */
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            justify-content: center;
-            align-items: center;
-            padding-top: 280px; /* Adjust this value based on your header height */
-
         }
 
-        /* Header styling */
+        html, body {
+            background-color: #121212;
+            color: yellow;
+            font-family: 'Poppins', sans-serif;
+            height: 100%;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header Styles */
         header {
             display: flex;
-            justify-content: flex-start;
+            justify-content: space-between; /* Space between left and right sections */
             align-items: center;
-            padding: 1px;
+            padding: 2px;
             position: fixed;
             top: 0;
             width: 100%;
-            background-color: black;
+            background-color: rgba(0, 0, 0, 0.9); /* Semi-transparent for better visibility */
             box-shadow: 0 4px 10px rgba(255, 255, 0, 0.5);
             z-index: 1000;
         }
-        
-        /* Logo inside the header */
-        .logo {
-            height: 65px;
-            width: auto;
-            margin-right: 20px;
-            box-shadow: 0 0 20px rgba(255, 255, 0, 0.8);
-            transition: box-shadow 0.3s ease-in-out;
-        }
 
-        /* Navigation links on the header */
-        .nav-links-left {
+        /* Left Section: Logo and Navigation Links */
+        .left-section {
             display: flex;
-            gap: 30px;
-            margin-left: 20px;
             align-items: center;
+            gap: 20px;
         }
 
+        /* Logo Styling */
+        .logo {
+            height: 60px;
+            width: auto;
+            transition: box-shadow 0.3s ease-in-out;
+            border-radius: 6px;
+            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.5);
+        }
+
+        .logo:hover {
+            box-shadow: 0 0 30px rgba(255, 255, 0, 1);
+        }
+
+        /* Navigation Links Containers */
+        .nav-links-left, .nav-links-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* Left Navigation Links */
         .nav-links-left a {
             color: yellow;
             text-decoration: none;
             font-size: 18px;
+            transition: color 0.3s;
         }
 
         .nav-links-left a:hover {
             color: rgba(255, 255, 0, 0.8);
         }
 
+        /* Dropdown Menu */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown > a::after {
+            content: " ▼";
+            font-size: 12px;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: black;
+            min-width: 150px;
+            box-shadow: 0 4px 8px rgba(255, 255, 0, 0.2);
+            z-index: 1;
+            text-align: left;
+            border-radius: 8px;
+        }
+
+        .dropdown-content a {
+            color: yellow;
+            padding: 10px;
+            text-decoration: none;
+            display: block;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown-content a:hover {
+            background-color: rgba(255, 255, 0, 0.2);
+            color: white;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* Right Navigation Links (Sign Up and Login) */
+        .nav-links-right a {
+            color: yellow;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 10px 20px;
+            border: 2px solid yellow;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
+            transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+        }
+
+        .nav-links-right a:hover {
+            background-color: yellow;
+            color: black;
+            box-shadow: 0 0 20px rgba(255, 255, 0, 0.8);
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none; /* Hidden by default, shown on mobile via media queries */
+            cursor: pointer;
+            padding: 6px;
+            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.8);
+            border-radius: 4px;
+        }
+
+        .hamburger div {
+            width: 30px;
+            height: 4px;
+            background-color: yellow;
+            margin: 5px 0;
+            border-radius: 2px;
+            box-shadow: 0 2px 5px rgba(255, 255, 0, 0.5);
+        }
+
+        /* Banner Styles */
+        .banner {
+            background: linear-gradient(to right, yellow, rgba(255, 255, 0, 0.1));
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Center the text */
+            padding: 70px 20px; /* Adjusted padding to accommodate fixed header */
+            margin-top: 80px; /* Adjusted to prevent overlap with fixed header */
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .banner-text {
+            font-size: 48px;
+            font-weight: bold;
+            color: black; /* Text color contrasting with the background */
+            max-width: 90%;
+            overflow: hidden;
+            white-space: nowrap;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+            animation: none; /* Removed typing animation for simplicity */
+        }
+
         /* Form Container */
         .form-container {
-            background-color: rgba(255, 255, 0, 0.1);
+            background-color: black;
             padding: 40px;
             border-radius: 15px;
-            box-shadow: 0px 4px 10px rgba(255, 255, 0, 0.5);
-            width: 100%;
-            max-width: 400px;
+            box-shadow: 0px 4px 10px rgba(255, 255, 0, 1);
+            width: 90%;
+            max-width: 600px;
             text-align: center;
-            margin-top: 100px; /* Adjusting to make room for the header */
-            margin-bottom: 50px; /* Add some space below the form */
+            margin: 50px auto 30px auto; /* Adjusted margins */
+            flex: 1; /* Allows the form container to grow and fill available space */
         }
 
         /* Form Title */
@@ -93,19 +205,21 @@
         /* Form fields and labels */
         .form-group {
             margin-bottom: 20px;
+            text-align: left; /* Align labels to the left */
         }
 
         .form-group label {
             margin-bottom: 5px;
             display: block;
-            text-align: left;
+            color: yellow;
+            font-size: 16px;
         }
 
         .form-group input[type="text"],
         .form-group input[type="date"],
         .form-group input[type="email"],
         .form-group input[type="REMOVED"] {
-            width: 93%; 
+            width: 100%;
             padding: 10px;
             border-radius: 5px;
             border: 2px solid yellow;
@@ -113,6 +227,22 @@
             color: yellow;
             box-shadow: 0px 4px 10px rgba(255, 255, 0, 0.5);
             transition: box-shadow 0.3s ease-in-out;
+            font-size: 16px;
+        }
+
+        .form-group input[type="text"]::placeholder,
+        .form-group input[type="date"]::placeholder,
+        .form-group input[type="email"]::placeholder,
+        .form-group input[type="REMOVED"]::placeholder {
+            color: rgba(255, 255, 0, 0.7);
+        }
+
+        .form-group input[type="text"]:focus,
+        .form-group input[type="date"]:focus,
+        .form-group input[type="email"]:focus,
+        .form-group input[type="REMOVED"]:focus {
+            box-shadow: 0px 6px 15px rgba(255, 255, 0, 0.8);
+            outline: none;
         }
 
         /* Checkbox styling */
@@ -132,28 +262,30 @@
             background-color: yellow;
             color: black;
             border: none;
-            padding: 10px 20px;
+            padding: 15px 0; /* Adjusted padding for consistency */
             border-radius: 5px;
-            box-shadow: 0px 4px 10px rgba(255, 255, 0, 0.5);
+            box-shadow: 0px 8px 20px rgba(255, 255, 0, 0.8);
             cursor: pointer;
             transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
             margin-top: 20px;
-            width: 100%;
+            width: 100%; /* Ensure button spans full width */
+            font-size: 18px;
+            font-weight: bold;
+            text-decoration: none;
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0px 8px 20px rgba(255, 255, 0, 0.8);
+            box-shadow: 0px 12px 30px rgba(255, 255, 0, 1);
         }
 
-        /* Footer styling (optional) */
+        /* Footer Styles */
         footer {
-            background-color: #121212;
+            background-color: black;
             color: rgba(255, 255, 255, 0.8);
             padding: 30px 0;
             text-align: center;
             font-size: 14px;
-            margin-top: auto; /* Pushes the footer to the bottom */
             width: 100%;
         }
 
@@ -166,29 +298,163 @@
         footer a:hover {
             text-decoration: underline;
         }
+
+        .social-icons {
+            margin-top: 20px;
+        }
+
+        .social-icons img {
+            width: 30px;
+            margin: 0 10px;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        .social-icons img:hover {
+            opacity: 1;
+        }
+
+        /* Mobile Styles */
+        @media only screen and (max-width: 768px) {
+            /* Show Hamburger Menu */
+            .hamburger {
+                display: block; /* Show hamburger on mobile */
+            }
+
+            /* Hide navigation links by default */
+            .nav-links-left,
+            .nav-links-right {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background-color: #000;
+                padding: 10px 0;
+                z-index: 1000;
+                text-align: center;
+            }
+
+            .nav-links-left a,
+            .nav-links-right a {
+                font-size: 18px;
+                padding: 15px 0;
+                text-decoration: none;
+                color: yellow;
+                display: block;
+                width: 100%;
+            }
+
+            /* Show navigation links when menu is open */
+            .menu-open .nav-links-left,
+            .menu-open .nav-links-right {
+                display: flex;
+            }
+           
+            /* Adjust banner text */
+            .banner-text {
+                font-size: 32px; /* Reduced font size */
+                padding: 0 10px;
+                white-space: normal; /* Allow text to wrap */
+                line-height: 1.4; /* Improve readability */
+                text-align: center; /* Ensure centered alignment */
+            }
+
+            /* Adjust form container */
+            .form-container {
+                margin: 50px auto 20px auto; /* Adjust margins for better spacing */
+                padding: 30px; /* Reduce padding for smaller screens */
+                max-width: 90%; /* Allow slight flexibility */
+            }
+
+            /* Adjust form-group labels and inputs */
+            .form-group label {
+                font-size: 16px;
+            }
+
+            .form-group input[type="text"],
+            .form-group input[type="date"],
+            .form-group input[type="email"],
+            .form-group input[type="REMOVED"] {
+                font-size: 14px;
+                padding: 8px;
+            }
+
+            /* Adjust button */
+            .btn-primary {
+                padding: 12px 0;
+                font-size: 16px;
+            }
+
+            /* Adjust footer */
+            footer {
+                padding: 20px 0;
+            }
+
+            .social-icons img {
+                width: 25px;
+                margin: 0 8px;
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- Header section -->
+    <!-- Header -->
     <header>
-        <img src="{{ url_for('static', filename='images/logobaby.png') }}" alt="ButchAI Logo" class="logo">
-        <div class="nav-links-left">
-            <a href="/">Home</a>
+        <!-- Left Section: Logo and Navigation Links -->
+        <div class="left-section">
+            <!-- Logo -->
+            <img src="{{ url_for('static', filename='images/logobaby.png') }}" alt="ButchAI Logo" class="logo">
+
+            <!-- Left Navigation Links -->
+            <div class="nav-links-left">
+                <a href="/">Home</a>
+                <div class="dropdown">
+                    <a href="#">Features</a>
+                    <div class="dropdown-content">
+                        <a href="/how-to-prompt">How to Prompt</a>
+                        <a href="/basic">Basic</a>
+                        <a href="/premium">Premium</a>
+                    </div>
+                </div>
+                <a href="/pricing">Pricing</a>
+                <a href="/contact">Contact</a>
+            </div>
+        </div>
+
+        <!-- Right Navigation Links -->
+        <div class="nav-links-right">
+            <a href="/signup">Sign Up</a>
             <a href="/login">Login</a>
+        </div>
+
+        <!-- Hamburger Menu Icon -->
+        <div class="hamburger" onclick="toggleMenu()" aria-label="Toggle navigation menu" role="button" tabindex="0">
+            <div></div>
+            <div></div>
+            <div></div>
         </div>
     </header>
 
-    <!-- Form section -->
+    <!-- Banner Section -->
+    <div class="banner">
+        <div class="banner-text">
+            Sign Up Today!
+        </div>
+    </div>
+
+    <!-- Form Section -->
     <div class="form-container">
         <h1>Create Your Account</h1>
         <form action="{{ url_for('signup_route') }}" method="post">
             <div class="form-group">
                 <label for="first_name">First Name:</label>
-                <input type="text" class="form-control" id="first_name" name="first_name" required maxlength="50">
+                <input type="text" class="form-control" id="first_name" name="first_name" required maxlength="50" placeholder="Enter your first name">
             </div>
             <div class="form-group">
                 <label for="last_name">Last Name:</label>
-                <input type="text" class="form-control" id="last_name" name="last_name" required maxlength="50">
+                <input type="text" class="form-control" id="last_name" name="last_name" required maxlength="50" placeholder="Enter your last name">
             </div>
             <div class="form-group">
                 <label for="dob">Date of Birth:</label>
@@ -196,15 +462,15 @@
             </div>
             <div class="form-group">
                 <label for="username">Username:</label>
-                <input type="text" class="form-control" id="username" name="username" required minlength="3" maxlength="30" pattern="[a-zA-Z0-9_]+">
+                <input type="text" class="form-control" id="username" name="username" required minlength="3" maxlength="30" pattern="[a-zA-Z0-9_]+" placeholder="Choose a username">
             </div>
             <div class="form-group">
                 <label for="email">Email:</label>
-                <input type="email" class="form-control" id="email" name="email" required maxlength="100">
+                <input type="email" class="form-control" id="email" name="email" required maxlength="100" placeholder="Enter your email">
             </div>
             <div class="form-group">
                 <label for="REMOVED">Password:</label>
-                <input type="REMOVED" class="form-control" id="REMOVED" name="REMOVED" required minlength="8" maxlength="50" oninput="validatePassword()">
+                <input type="REMOVED" class="form-control" id="REMOVED" name="REMOVED" required minlength="8" maxlength="50" oninput="validatePassword()" placeholder="Create a REMOVED">
                 <!-- Password criteria feedback -->
                 <ul id="REMOVEDCriteria" style="color: yellow; margin-left: 0; padding-left: 20px; list-style-type: none;">
                     <li id="minLength" style="color: red;">At least 8 characters</li>
@@ -216,16 +482,16 @@
             </div>
             <div class="form-group">
                 <label for="confirm_REMOVED">Confirm Password:</label>
-                <input type="REMOVED" class="form-control" id="confirm_REMOVED" name="confirm_REMOVED" required minlength="8" maxlength="50">
+                <input type="REMOVED" class="form-control" id="confirm_REMOVED" name="confirm_REMOVED" required minlength="8" maxlength="50" placeholder="Confirm your REMOVED">
                 <!-- Add the small tag to show REMOVED match feedback -->
                 <small id="REMOVEDMatch" style="color: red;"></small> <!-- Feedback for REMOVED match -->
             </div>
-            
+
             <!-- Subscription Tier Selection -->
             <div class="form-group">
                 <label>Select Subscription Tier:</label><br>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" id="basic" name="subscription_tier" value="basic">
+                    <input class="form-check-input" type="radio" id="basic" name="subscription_tier" value="basic" required>
                     <label class="form-check-label" for="basic">Basic - $5/month</label>
                 </div>
                 <div class="form-check">
@@ -238,7 +504,46 @@
             <button type="submit" class="btn-primary">Sign Up</button>
         </form>
     </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 ButchAI. All rights reserved.</p>
+        <p>
+            <a href="/terms">Terms</a> |
+            <a href="/privacy">Privacy Policy</a>
+        </p>
+        <!-- Social Media Icons -->
+        <div class="social-icons">
+            <a href="#"><img src="{{ url_for('static', filename='images/x.png') }}" alt="X"></a>
+            <a href="#"><img src="{{ url_for('static', filename='images/yt.png') }}" alt="YouTube"></a>
+            <a href="#"><img src="{{ url_for('static', filename='images/tiktok.png') }}" alt="TikTok"></a>
+            <a href="#"><img src="{{ url_for('static', filename='images/insta.png') }}" alt="Instagram"></a>
+        </div> 
+    </footer>
+
+    <!-- JavaScript for Hamburger Menu Toggle and Dropdown -->
     <script>
+        function toggleMenu() {
+            const header = document.querySelector('header');
+            header.classList.toggle('menu-open');
+        }
+
+        // Allow toggling menu with keyboard (Enter key)
+        document.querySelector('.hamburger').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                toggleMenu();
+            }
+        });
+
+        // Toggle dropdown on mobile
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        if (dropdownToggle) {
+            dropdownToggle.addEventListener('click', function() {
+                this.parentElement.classList.toggle('active');
+            });
+        }
+
+        // Password Validation Function
         function validatePassword() {
             const REMOVED = document.getElementById("REMOVED").value;
             const confirmPassword = document.getElementById("confirm_REMOVED").value; // Grab confirm REMOVED value
@@ -249,35 +554,35 @@
             const number = document.getElementById("number");
             const special = document.getElementById("special");
             const match = document.getElementById("REMOVEDMatch"); // Feedback for REMOVED match
-        
+
             // Minimum length (8 characters)
             if (REMOVED.length >= 8) {
                 minLength.style.color = "green";
             } else {
                 minLength.style.color = "red";
             }
-        
+
             // At least one uppercase letter
             if (/[A-Z]/.test(REMOVED)) {
                 uppercase.style.color = "green";
             } else {
                 uppercase.style.color = "red";
             }
-        
+
             // At least one lowercase letter
             if (/[a-z]/.test(REMOVED)) {
                 lowercase.style.color = "green";
             } else {
                 lowercase.style.color = "red";
             }
-        
+
             // At least one number
             if (/\d/.test(REMOVED)) {
                 number.style.color = "green";
             } else {
                 number.style.color = "red";
             }
-        
+
             // At least one special character
             if (/[@$!%*?&]/.test(REMOVED)) {
                 special.style.color = "green";
@@ -294,16 +599,6 @@
                 match.innerText = "Passwords do not match";
             }
         }
-
-        </script>
-
-    <!-- Optional footer -->
-    <footer>
-        <p>&copy; 2024 ButchAI. All rights reserved.</p>
-        <p>
-            <a href="/terms">Terms</a> | 
-            <a href="/privacy">Privacy Policy</a>
-        </p>
-    </footer>
+    </script>
 </body>
 </html>
