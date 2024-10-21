@@ -3,33 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <!-- Add Google Font Link -->
+    <title>Login - Butch AI</title>
+    <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
-
     <style>
-        /* General body styling */
-        body {
+        /* General Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 5px;
+        }
+
+        html, body {
             background-color: black;
             color: yellow;
             font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 0;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            justify-content: center;
-            align-items: center;
-            padding-top: 200px; /* Adjust this value based on your header height */
+            overflow-x: hidden;
         }
 
-        /* Header styling */
+        /* Header Styles */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1px;
+            padding: 0px;
             position: fixed;
             top: 0;
             width: 100%;
@@ -39,21 +38,89 @@
         }
 
         .logo {
-            height: 65px;
+            height: 60px;
             width: auto;
-            box-shadow: 0 0 20px rgba(255, 255, 0, 0.8);
             transition: box-shadow 0.3s ease-in-out;
+            border-radius: 6px;
+            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.5);
         }
 
-        /* Common styling for both left and right nav links */
+        .logo:hover {
+            box-shadow: 0 0 30px rgba(255, 255, 0, 1);
+        }
+
+        /* Navigation Links */
         .nav-links-left, .nav-links-right {
             display: flex;
-            gap: 15px;
             align-items: center;
+            gap: 20px;
+        }
+        
+         /* Navigation Links */
+         .nav-links-left, .nav-links-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
         }
 
-        /* Navigation links styling */
-        .nav-links-left a, .nav-links-right a {
+        /* Left Navigation Links */
+        .nav-links-left a {
+            color: yellow;
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+
+        .nav-links-left a:hover {
+            color: rgba(255, 255, 0, 0.8);
+        }
+
+        /* Dropdown Menu */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown > a::after {
+            content: " ▼";
+            font-size: 12px;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.8);
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(255, 255, 0, 0.3);
+            z-index: 1;
+            text-align: left;
+            border-radius: 8px;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            transform: translateY(10px);
+            opacity: 0;
+        }
+
+        .dropdown-content a {
+            color: yellow;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown-content a:hover {
+            background-color: rgba(255, 255, 0, 0.2);
+            color: white;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Right Navigation Links (Sign Up and Login) */
+        .nav-links-right a {
             color: yellow;
             text-decoration: none;
             font-size: 18px;
@@ -61,60 +128,102 @@
             border: 2px solid yellow;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
+            transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
         }
 
-        .nav-links-left a:hover, .nav-links-right a:hover {
+        .nav-links-right a:hover {
             background-color: yellow;
             color: black;
             box-shadow: 0 0 20px rgba(255, 255, 0, 0.8);
         }
-        .nav-links-left {
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none; /* Hidden by default, shown on mobile via media queries */
+            cursor: pointer;
+            position: relative;
+            padding: 6px;
+            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.8);
+            border-radius: 4px;
+        }
+
+        .hamburger div {
+            width: 30px;
+            height: 4px;
+            background-color: yellow;
+            margin: 5px 0;
+            border-radius: 2px;
+            box-shadow: 0 2px 5px rgba(255, 255, 0, 0.5);
+        }
+
+        /* Banner Styles */
+        .banner {
+            background: linear-gradient(to right, yellow, rgba(255, 255, 0, 0.1));
             display: flex;
-            gap: 15px;
-            margin-left: 20px;
             align-items: center;
+            justify-content: center;
+            padding: 50px 20px;
+            margin-top: 80px; /* Adjusted to prevent overlap with fixed header */
+            flex-direction: column;
+            text-align: center;
+            position: relative;
         }
 
-        .nav-links-left a {
-            color: yellow;
-            text-decoration: none;
-            font-size: 18px;
+        .banner::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(255, 255, 0, 0.5), rgba(255, 255, 0, 0.5));
+            z-index: -1;
         }
 
-        .nav-links-left a:hover {
-            color: rgba(255, 255, 0, 0.8);
-
+        .banner-text {
+            font-size: 48px;
+            font-weight: bold;
+            color: black;
+            max-width: 90%;
+            overflow: hidden;
+            border-right: 4px solid black;
+            white-space: nowrap;
+            animation: typing 6s steps(46, end) forwards, cursorBlink 0.75s step-end infinite;
         }
 
-        .nav-links-right {
-            display: flex;
-            gap: 15px;
-            margin-right: 20px; /* Reduce right margin to prevent links from going off-screen */
-            align-items: center;
-
+        /* Typing Effect */
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
         }
-        /* Form Container */
+
+        @keyframes cursorBlink {
+            from, to { border-color: transparent; }
+            50% { border-color: black; }
+        }
+
+        /* Login Container */
         .login-container {
-            background-color: rgba(255, 255, 0, 0.1);
+            background: black;
             padding: 40px;
             border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.5);
-            width: 100%;
+            box-shadow: 0 4px 20px rgba(255, 255, 0, 0.8);
+            width: 90%;
             max-width: 400px;
             text-align: center;
-            margin-top: 50px; /* Adjusting to make room for the header */
-            margin-bottom: 50px; /* Add some space below the form */
+            margin: 50px auto;
+            position: relative;
+            z-index: 1;
         }
 
-    
         .login-container h2 {
             margin-bottom: 30px;
             font-size: 24px;
-            box-shadow: 0 0 30px rgba(255, 255, 0, 1);
+            background-color: yellow;
+            color: black;
             padding: 15px;
             border-radius: 10px;
-            color: black;
-            background-color: yellow;
+            box-shadow: 0 0 30px rgba(255, 255, 0, 0.8);
         }
 
         /* Form fields */
@@ -127,8 +236,13 @@
             background-color: black;
             color: yellow;
             box-shadow: 0 4px 10px rgba(255, 255, 0, 0.5);
-            transition: box-shadow 0.3s ease-in-out;
             margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .login-container input[type="text"]::placeholder,
+        .login-container input[type="REMOVED"]::placeholder {
+            color: rgba(255, 255, 0, 0.7);
         }
 
         /* Button styling */
@@ -144,34 +258,34 @@
             transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
             margin-top: 20px;
             width: 97%;
+            font-size: 16px;
         }
+
         .login-container input[type="submit"]:hover {
             transform: translateY(-2px);
             box-shadow: 0px 8px 20px rgba(255, 255, 0, 0.8);
         }
 
-        /* Update the color of the "Don't have an account" link */
         .login-container a {
-            color: yellow; /* Change the color to yellow */
+            color: yellow;
             text-decoration: none;
             display: block;
             margin-top: 15px;
-            transition: text-shadow 0.3s ease-in-out;
+            font-size: 14px;
         }
 
         .login-container a:hover {
             text-shadow: 0px 0px 10px rgba(255, 255, 0, 0.8);
-
         }
 
-        /* Footer styling */
+        /* Footer Styles */
         footer {
             background-color: #121212;
             color: rgba(255, 255, 255, 0.8);
             padding: 30px 0;
             text-align: center;
             font-size: 14px;
-            margin-top: auto;
+            margin-top: 50px;
             width: 100%;
         }
 
@@ -185,19 +299,143 @@
             text-decoration: underline;
         }
 
-    
+        .social-icons {
+            margin-top: 20px;
+        }
+
+        .social-icons img {
+            width: 30px;
+            margin: 0 10px;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        .social-icons img:hover {
+            opacity: 1;
+        }
+
+        /* Mobile Styles */
+        @media only screen and (max-width: 768px) {
+            /* Hamburger Menu */
+            .hamburger {
+                display: block; /* Show hamburger on mobile */
+            }
+
+            /* Hide navigation links by default */
+            .nav-links-left,
+            .nav-links-right {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background-color: #000;
+                padding: 10px 0;
+                z-index: 1000;
+                text-align: center;
+            }
+
+            .nav-links-left a,
+            .nav-links-right a {
+                font-size: 18px;
+                padding: 15px 0;
+                text-decoration: none;
+                color: yellow;
+                display: block;
+                width: 100%;
+            }
+
+            /* Show navigation links when menu is open */
+            .menu-open .nav-links-left,
+            .menu-open .nav-links-right {
+                display: flex;
+            }
+
+            /* Adjust banner text */
+            .banner-text {
+                font-size: 32px;
+            }
+
+            /* Adjust login container */
+            .login-container {
+                width: 90%;
+                padding: 30px;
+                margin: 40px auto;
+            }
+
+            .login-container h2 {
+                font-size: 20px;
+                padding: 10px;
+            }
+
+            .login-container input[type="text"],
+            .login-container input[type="REMOVED"] {
+                width: 85%;
+                padding: 8px;
+                font-size: 14px;
+            }
+
+            .login-container input[type="submit"] {
+                width: 95%;
+                padding: 8px;
+                font-size: 14px;
+            }
+
+            /* Adjust footer */
+            footer {
+                padding: 20px 0;
+            }
+
+            .social-icons img {
+                width: 25px;
+                margin: 0 8px;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- Header -->
     <header>
+        <!-- Logo -->
         <img src="{{ url_for('static', filename='images/logobaby.png') }}" alt="ButchAI Logo" class="logo">
+
+        <!-- Left Navigation Links -->
+        <div class="nav-links-left">
+            <div class="dropdown">
+                <a href="#">Features</a>
+                <div class="dropdown-content">
+                    <a href="/how-to-prompt">How to Prompt</a>
+                    <a href="/basic">Basic</a>
+                    <a href="/premium">Premium</a>
+                </div>
+            </div>
+            <a href="/pricing">Pricing</a>
+            <a href="/contact">Contact</a>
+        </div>
+
+        <!-- Right Navigation Links -->
         <div class="nav-links-right">
+            <a href="/signup">Sign Up</a>
             <a href="/">Home</a>
-            <a href="/signup">Sign Up</a> <!-- Link to sign up page -->
+        </div>
+
+        <!-- Hamburger Menu Icon -->
+        <div class="hamburger" onclick="toggleMenu()">
+            <div></div>
+            <div></div>
+            <div></div>
         </div>
     </header>
 
-    <!-- Form section -->
+    <!-- Gradient Banner -->
+    <div class="banner">
+        <div class="banner-text">
+            Welcome to Butch AI – Please Log In
+        </div>
+    </div>
+
+    <!-- Login Form Container -->
     <div class="login-container">
         <h2>Login</h2>
         <form method="POST" action="/login">
@@ -210,13 +448,28 @@
         <a href="/signup">Don't have an account? Sign up</a>
     </div>
 
-    <!-- Footer section -->
+    <!-- Footer -->
     <footer>
         <p>&copy; 2024 ButchAI. All rights reserved.</p>
         <p>
-            <a href="/terms">Terms</a> | 
+            <a href="/terms">Terms</a> |
             <a href="/privacy">Privacy Policy</a>
         </p>
-    </footer> 
+        <!-- Social Media Icons -->
+        <div class="social-icons">
+            <a href="#"><img src="{{ url_for('static', filename='images/x.png') }}" alt="X"></a>
+            <a href="#"><img src="{{ url_for('static', filename='images/yt.png') }}" alt="YouTube"></a>
+            <a href="#"><img src="{{ url_for('static', filename='images/tiktok.png') }}" alt="TikTok"></a>
+            <a href="#"><img src="{{ url_for('static', filename='images/insta.png') }}" alt="Instagram"></a>
+        </div> 
+    </footer>
+
+    <!-- JavaScript for Hamburger Menu Toggle -->
+    <script>
+        function toggleMenu() {
+            const header = document.querySelector('header');
+            header.classList.toggle('menu-open');
+        }
+    </script>
 </body>
 </html>
