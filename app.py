@@ -277,7 +277,7 @@ def send_otp_route():
 
 @app.route('/verify-otp', methods=['GET', 'POST'])
 def verify_otp_route():
-    print(session)
+    app.logger.info(session)
     if 'username' not in session:
         return redirect(url_for('login_route'))
     
@@ -372,7 +372,7 @@ def forgot_REMOVED_route():
             # Send the reset link via email (implement the send_email function)
             send_REMOVED_reset_email(email, f'Click the link to reset your REMOVED: {reset_link}')
             flash('Password reset instructions have been sent to your email.')
-            print(f"Reset link: {reset_link}")
+            app.logger.info(f"Reset link: {reset_link}")
         else:
             flash('Email not found.')
 
@@ -391,13 +391,13 @@ def reset_REMOVED_route(token):
         return redirect(url_for('forgot_REMOVED_route'))
 
     if request.method == 'POST':
-        print(f"Received token: {token}")
+        app.logger.info(f"Received token: {token}")
         new_REMOVED = bleach.clean(request.form['REMOVED'])
         confirm_REMOVED = bleach.clean(request.form['confirm_REMOVED'])
 
         if new_REMOVED != confirm_REMOVED:
             flash('Passwords do not match.')
-            print('Pasword doesnt match')
+            app.logger.info('Pasword doesnt match')
             return redirect(url_for('reset_REMOVED_route', token=token))
 
         # Hash the new REMOVED and update the database
@@ -435,7 +435,7 @@ def login_route():
                 session['username'] = username
                 session['logged_in'] = True
                 session['otp_sent'] = True
-                print(username)
+                app.logger.info(username)
 
                 flash('OTP sent to your email address for verification')
                 return redirect(url_for('verify_otp_route')) # Redirect to OTP verification page
@@ -501,7 +501,7 @@ def account():
         result = cursor.fetchone()
         subscription_id, current_tier = result if result else (None, None)
         conn.close()
-        print(f"Subscription ID: {subscription_id}")
+        app.logger.info(f"Subscription ID: {subscription_id}")
 
         # If the new tier is the same as the current tier, notify the user
         if new_tier == current_tier:
@@ -529,7 +529,7 @@ def account():
                     'price': price_id  # The new price ID to update the subscription
                 }]
             )
-            print("Stripe subscription updated successfully.")
+            app.logger.info("Stripe subscription updated successfully.")
             # Update the subscription tier and reset the video duration in the database
             conn = get_db_connection()
             cursor = conn.cursor()
@@ -546,7 +546,7 @@ def account():
             flash('Your subscription has been successfully updated!')
             return redirect(url_for('account'))
         except Exception as e:
-            print(f"Error updating Stripe subscription: {str(e)}")
+            app.logger.info(f"Error updating Stripe subscription: {str(e)}")
             flash(f'Error updating subscription: {str(e)}')
             return redirect(url_for('account'))
     
@@ -745,22 +745,22 @@ def handle_stripe_webhook(payload, sig_header, webhook_secret):
     
     elif event['type'] == 'invoice.created':
         # Handle invoice.created event
-        print("Invoice created:", event['data']['object']['id'])
+        app.logger.info("Invoice created:", event['data']['object']['id'])
         return jsonify({'status': 'invoice created processed'}), 200
     
     elif event['type'] == 'invoice.updated':
         # Handle invoice.updated event
-        print("Invoice updated:", event['data']['object']['id'])
+        app.logger.info("Invoice updated:", event['data']['object']['id'])
         return jsonify({'status': 'invoice updated processed'}), 200
     
     elif event['type'] == 'invoice.finalized':
         # Handle invoice.finalized event
-        print("Invoice finalized:", event['data']['object']['id'])
+        app.logger.info("Invoice finalized:", event['data']['object']['id'])
         return jsonify({'status': 'invoice finalized processed'}), 200
     
     elif event['type'] == 'invoice.paid':
         # Handle paid invoices
-        print("Invoice paid:", event['data']['object']['id'])
+        app.logger.info("Invoice paid:", event['data']['object']['id'])
         return jsonify({'status': 'invoice paid processed'})
     
     elif event['type'] == 'customer.subscription.deleted':
@@ -789,7 +789,7 @@ def handle_stripe_webhook(payload, sig_header, webhook_secret):
     # Handle other event types here if needed
     else:
         # Event type is not explicitly handled, but respond with 200
-        print(f"Unhandled event type: {event['type']}")
+        app.logger.info(f"Unhandled event type: {event['type']}")
         return jsonify({'status': 'event not processed'}), 400
     
 @app.route('/create-checkout-session-basic', methods=['POST'])
@@ -805,7 +805,7 @@ def create_checkout_session_premium_route():
 @app.route('/stripe-webhook', methods=['POST'])
 @limiter.limit("10 per minute")
 def stripe_webhook_route():
-    print("Webhook received")
+    app.logger.info("Webhook received")
     payload = request.get_data(as_text=True)
     sig_header = request.headers.get('Stripe-Signature')
     webhook_secret = os.getenv('STRIPE_WEBHOOK_SECRET')
@@ -818,7 +818,7 @@ ELEVENLABS_API_KEY = os.getenv('ELEVENLABS_API_KEY')
 
 
 def summarize_video(video_path, frame_interval, max_frame_for_last_key, api_key, custom_prompt, custom_prompt_frame, username):
-    print("Starting video summarization process...")
+    app.logger.info("Starting video summarization process...")
     frames = extract_frames(video_path, frame_interval)
     summaries = []
     
@@ -830,16 +830,16 @@ def summarize_video(video_path, frame_interval, max_frame_for_last_key, api_key,
     vidcap.release()
 
     # Debugging: Print video duration to verify it's calculated correctly
-    print(f"Calculated video duration: {video_duration} seconds")
+    app.logger.info(f"Calculated video duration: {video_duration} seconds")
 
     words_per_minute = 145
     total_words = math.ceil((video_duration / 60) * words_per_minute)
-    print(f'Calculated target word count based on video duration: {total_words} words')
+    app.logger.info(f'Calculated target word count based on video duration: {total_words} words')
 
     if video_duration > 120:
         buffer_percentage = 0.1
         total_words += math.ceil(total_words * buffer_percentage)
-        print(f"Added buffer: New total characters = {total_words}")
+        app.logger.info(f"Added buffer: New total characters = {total_words}")
 
     key_frame_times = []
     for i, frame in enumerate(frames):
@@ -849,20 +849,20 @@ def summarize_video(video_path, frame_interval, max_frame_for_last_key, api_key,
             break
         key_frame_times.append(frame_time)
 
-        print(f"Analyzing frame {i+1}/{len(frames)} at time {frame_time:.2f} seconds")
+        app.logger.info(f"Analyzing frame {i+1}/{len(frames)} at time {frame_time:.2f} seconds")
         encoded_frame = encode_image(frame)
         analysis_result = analyze_frame(encoded_frame, api_key, username)
 
         if "Error" in analysis_result:
-            print(f"Frame {i+1} analysis failed: {analysis_result}")
+            app.logger.info(f"Frame {i+1} analysis failed: {analysis_result}")
         else:
             frame_label = f"Frame {i+1}:"
             frame_summary = f"{frame_label} {analysis_result}"
-            print(f"{frame_label} summary: {frame_summary}")
+            app.logger.info(f"{frame_label} summary: {frame_summary}")
             summaries.append(frame_summary)
 
     combined_summary = " ".join(summaries)
-    print(f"Combined summary of key frames: {combined_summary}")
+    app.logger.info(f"Combined summary of key frames: {combined_summary}")
 
     # Step 1: Create a quick sequential summary of the combined summary
     sequential_summary = generate_sequential_summary(combined_summary, api_key, username)
@@ -872,8 +872,8 @@ def summarize_video(video_path, frame_interval, max_frame_for_last_key, api_key,
     frame_phrases = extract_phrases(response_text)
 
     # Debugging: Print the extracted key frame phrases and their indices
-    print(f"Extracted key frame phrases: {frame_phrases}")
-    print(f"Key frame times: {key_frame_times}")
+    app.logger.info(f"Extracted key frame phrases: {frame_phrases}")
+    app.logger.info(f"Key frame times: {key_frame_times}")
 
     if len(frame_phrases) == 2:
         key_frame_one_time = key_frame_times[list(frame_phrases.keys())[0] - 1]
@@ -883,20 +883,20 @@ def summarize_video(video_path, frame_interval, max_frame_for_last_key, api_key,
         key_frame_two = list(frame_phrases.values())[1]
 
         # Debugging: Print time of each key frame and corrisponding phrase
-        print(f"Key frame 1 Time: {key_frame_one_time}, Phrase: {key_frame_one}")
-        print(f"Key frame 2 Time: {key_frame_two_time}, Phrase: {key_frame_two}")
+        app.logger.info(f"Key frame 1 Time: {key_frame_one_time}, Phrase: {key_frame_one}")
+        app.logger.info(f"Key frame 2 Time: {key_frame_two_time}, Phrase: {key_frame_two}")
 
         # Generate final, short summary using key frame phrases
         final_summary = summarize_text(sequential_summary, total_words, api_key, username, custom_prompt, custom_prompt_frame, key_frame_one, key_frame_two, key_frame_one_time, key_frame_two_time, video_duration)
 
         # **Debugging: Print Original and Adjusted Summaries**
-        print(f"Original summary: {final_summary}") 
+        app.logger.info(f"Original summary: {final_summary}") 
         # Adjust the final summary to match the target duration before generating audio
         adjusted_summary = adjust_text_for_duration(final_summary, video_duration)
-        print(f"Adjusted summary: {adjusted_summary}")
+        app.logger.info(f"Adjusted summary: {adjusted_summary}")
 
-        print("Final summary generated:", final_summary)
-        print("Video summarization complete.")
+        app.logger.info("Final summary generated:", final_summary)
+        app.logger.info("Video summarization complete.")
 
         return adjusted_summary
     else:
@@ -911,8 +911,8 @@ def summarize_video(video_path, frame_interval, max_frame_for_last_key, api_key,
 def upload_video():
     # Log that the upload route has been accessed
     app.logger.info("Received a file upload request.")
-    # Debugging print to check received data
-    print(request.form)
+    # Debugging app.logger.info to check received data
+    app.logger.info(request.form)
     custom_prompt = request.form.get('custom_prompt', '')
     custom_prompt_frame = request.form.get('custom_prompt_frame', '') # Get the custom frame prompt
 
@@ -1070,7 +1070,7 @@ def text_to_speech():
             flash('Error: Invalid video file or could not determine FPS/frame count.')
             return render_template('tts.html')
 
-        print(f"Video duration: {video_duration} seconds")
+        app.logger.info(f"Video duration: {video_duration} seconds")
 
         # Set API key and other settings for analysis
         api_key = os.getenv("GPT_API_KEY")
@@ -1131,11 +1131,11 @@ def text_to_speech():
         # Call the basic summarization function
         try:
             final_summary = summarize_video_basic(video_path, api_key, username, custom_prompt=user_prompt)
-            print(f"Final summary: {final_summary}")
+            app.logger.info(f"Final summary: {final_summary}")
 
             # Adjust the summary to match the desired video duration
             adjusted_summary = adjust_text_for_duration(final_summary, video_duration)
-            print(f"Adjusted Summary: {adjusted_summary}")
+            app.logger.info(f"Adjusted Summary: {adjusted_summary}")
 
             # Check for errors before proceeding to audio generation
             if 'Error' not in final_summary:

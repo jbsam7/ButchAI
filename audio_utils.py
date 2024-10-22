@@ -3,12 +3,17 @@ import time
 import re
 import base64
 import math
+import logging
+from app import app
 from elevenlabs.client import ElevenLabs
 from anthropic import Anthropic
 import os
 from data_utils_gpt4o import get_db_connection,log_token_usage_and_cost_gpt4o
 from data_utils import get_db_connection, log_token_usage_and_cost
 import cv2
+
+# Now you can use app.logger for logging
+app.logger.info("This is a log message")
 
 # Generate key frame phrases using GPT-4o
 def generate_key_frame_phrases(combined_summary, custom_prompt, api_key, username, retries=3, delay=60):
@@ -51,7 +56,7 @@ def generate_key_frame_phrases(combined_summary, custom_prompt, api_key, usernam
 
                 return key_frame_phrases
         else:
-            print(f"API Request failed with status code {response.status_code}: {response.text}")
+            app.logger.info(f"API Request failed with status code {response.status_code}: {response.text}")
 
             if attempt < retries - 1:
                 time.sleep(delay)
@@ -69,7 +74,7 @@ def extract_phrases(response_text):
     return frame_phrases
 
 def extract_frames(video_path, frame_interval):
-    print(f"Starting frame extraction with interval: {frame_interval}")
+    app.logger.info(f"Starting frame extraction with interval: {frame_interval}")
     vidcap = cv2.VideoCapture(video_path)
     frames = []
     success, image = vidcap.read()
@@ -80,7 +85,7 @@ def extract_frames(video_path, frame_interval):
         success, image = vidcap.read()
         count += 1
     vidcap.release()
-    print(f"Frame extraction complete. Total frames extracted: {len(frames)}")
+    app.logger.info(f"Frame extraction complete. Total frames extracted: {len(frames)}")
     return frames
 
 def encode_image(image):
@@ -100,7 +105,7 @@ def generate_audio_from_text(prompt, voice_id):
 def save_audio(audio, filename):
     with open(filename, 'wb') as f:
         f.write(audio)
-    print(f"Audio saved to {filename}")
+    app.logger.info(f"Audio saved to {filename}")
 
 # Analyze the frame image using GPT-4o
 def analyze_frame(image_data, api_key, username, retries=3, delay=60):
@@ -140,7 +145,7 @@ def analyze_frame(image_data, api_key, username, retries=3, delay=60):
 
                 return response_text
         else:
-            print(f"API Request failed with status code {response.status_code}: {response.text}")
+            app.logger.info(f"API Request failed with status code {response.status_code}: {response.text}")
 
             if attempt < retries - 1:
                 time.sleep(delay)
@@ -200,8 +205,8 @@ def generate_sequential_summary(combined_summary, api_key, username):
         else:
             return "Error: Response did not contain expected 'choices' key."
     else:
-        print("API Request failed with status code:", response.status_code)
-        print("Response:", response.text)
+        app.logger.info("API Request failed with status code:", response.status_code)
+        app.logger.info("Response:", response.text)
         return "Error: API Request failed."
 
 # Summarize the text using the mini model from chatgpt
@@ -250,7 +255,7 @@ def summarize_text(final_summary, word_limit, api_key, username, custom_prompt, 
 
                 return summary_text
         else: 
-            print(f"API Request failed with status code {response.status_code}: {response.text}")
+            app.logger.info(f"API Request failed with status code {response.status_code}: {response.text}")
             if attempt < retries - 1:
                 time.sleep(delay)
             else:
