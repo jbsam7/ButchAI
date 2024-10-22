@@ -6,6 +6,7 @@ from email.mime.text import MIMEText
 from dotenv import load_dotenv
 import os
 from itsdangerous import URLSafeTimedSerializer
+from logger import logger
 
 # Load environment variables
 load_dotenv()

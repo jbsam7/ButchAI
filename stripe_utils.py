@@ -2,6 +2,7 @@ import stripe
 import os
 from flask import url_for, session, redirect
 from data_utils import get_db_connection
+from logger import logger
 
 # Initialize Stripe with your secret key
 stripe.api_key = os.getenv('STRIPE_API_KEY')

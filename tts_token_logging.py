@@ -1,4 +1,5 @@
 import sqlite3
+from logger import logger
 
 # --- Authentication Logic ---
 
@@ -33,7 +34,7 @@ def log_tts_usage_and_cost(username, character_count, rate_per_million=30.000):
     conn.close()
 
     # Output logging information
-    print(f"Username: {username}")
-    print(f"Characters used: {character_count}")
-    print(f"Total cost: ${total_cost:.8f} USD")
+    logger.info(f"Username: {username}")
+    logger.info(f"Characters used: {character_count}")
+    logger.info(f"Total cost: ${total_cost:.8f} USD")
 

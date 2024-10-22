@@ -6,7 +6,7 @@ import math
 import os
 from data_utils import log_token_usage_and_cost
 from elevenlabs.client import ElevenLabs
-
+from logger import logger
 
 # Extract fewer frames (2 per minute, 1 per 30 seconds)
 def extract_basic_frames(video_path, video_duration):
@@ -26,12 +26,12 @@ def extract_basic_frames(video_path, video_duration):
     while success:
         if count % frame_interval == 0:
             frames.append(image)
-            print(f"Extracting frame {count} for analysis.")
+            logger.info(f"Extracting frame {count} for analysis.")
         success, image = vidcap.read()
         count += 1
 
     vidcap.release()
-    print(f"Extracted {len(frames)} frames for basic analysis.")
+    logger.info(f"Extracted {len(frames)} frames for basic analysis.")
     return frames
 
 # Encode the image for analysis
@@ -67,14 +67,14 @@ def analyze_frame_basic(encoded_image, api_key, username, retries=3, delay=60):
     }
 
     for attempt in range(retries):
-        print(f"Sending frame for analysis (attempt {attempt + 1})...")  # Print statement for frame analysis attempt
+        logger.info(f"Sending frame for analysis (attempt {attempt + 1})...")  # Print statement for frame analysis attempt
         response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
 
         if response.status_code == 200:
             response_json = response.json()
             if 'choices' in response_json:
                 result_text = response_json['choices'][0]['message']['content']
-                print(f"Frame analysis result: {result_text}") # Print result from image analysis
+                logger.info(f"Frame analysis result: {result_text}") # Print result from image analysis
 
                 # Log token usage for cost tracking
                 token_usage = response_json['usage']
@@ -82,7 +82,7 @@ def analyze_frame_basic(encoded_image, api_key, username, retries=3, delay=60):
 
                 return result_text
         else:
-            print(f"Frame analysis failed: {response.status_code}, {response.text}")
+            logger.info(f"Frame analysis failed: {response.status_code}, {response.text}")
             if attempt < retries - 1:
                 time.sleep(delay)
             else:
@@ -122,7 +122,7 @@ def generate_basic_summary(combined_summary, api_key, username):
 
         return summary
     else:
-        print(f"Summary generation failed: {response.status_code}")
+        logger.info(f"Summary generation failed: {response.status_code}")
         return "Error generating summary"
     
 # Summarize text using GPT Mini
@@ -162,7 +162,7 @@ def summarize_text_basic(final_summary, word_limit, api_key, custom_prompt, user
 
                 return final_summary_text
         else:
-            print(f"API Request failed with status code {response.status_code}: {response.text}")
+            logger.info(f"API Request failed with status code {response.status_code}: {response.text}")
 
             if attempt < retries - 1:
                 time.sleep(delay)
@@ -171,7 +171,7 @@ def summarize_text_basic(final_summary, word_limit, api_key, custom_prompt, user
 
 # Main function to summarize video for basic users
 def summarize_video_basic(video_path, api_key, username, custom_prompt):
-    print("Starting basic video summarization...")
+    logger.info("Starting basic video summarization...")
 
     # Capture video details
     vidcap = cv2.VideoCapture(video_path)
@@ -180,7 +180,7 @@ def summarize_video_basic(video_path, api_key, username, custom_prompt):
     video_duration = frame_count / fps
     vidcap.release()
 
-    print(f"Video duration: {video_duration} seconds")
+    logger.info(f"Video duration: {video_duration} seconds")
 
     # Extract frames based on video duration
     frames = extract_basic_frames(video_path, video_duration)
@@ -188,14 +188,14 @@ def summarize_video_basic(video_path, api_key, username, custom_prompt):
     # Analyze each frame
     summaries = []
     for i, frame in enumerate(frames):
-        print(f"Analyzing frame {i + 1}/{len(frames)}")
+        logger.info(f"Analyzing frame {i + 1}/{len(frames)}")
         encoded_image = encode_image(frame)
         analysis_result = analyze_frame_basic(encoded_image, api_key, username)
-        print(f"Frame {i + 1} analysis result: {analysis_result}")
+        logger.info(f"Frame {i + 1} analysis result: {analysis_result}")
         summaries.append(analysis_result)
 
     combined_summary = " ".join(summaries)
-    print(f"Combined summary of all frames: {combined_summary}")  # Print combined summary of frames
+    logger.info(f"Combined summary of all frames: {combined_summary}")  # Print combined summary of frames
 
     # Generate sequential summary
     sequential_summary = generate_basic_summary(combined_summary, api_key, username)
@@ -207,5 +207,5 @@ def summarize_video_basic(video_path, api_key, username, custom_prompt):
     # Generate the final summary using the custom prompt and sequential summary
     final_summary = summarize_text_basic(sequential_summary, word_limit, api_key, custom_prompt, username)
 
-    print(f"Generated summary: {final_summary}")
+    logger.info(f"Generated summary: {final_summary}")
     return final_summary

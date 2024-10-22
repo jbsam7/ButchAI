@@ -1,6 +1,8 @@
 import sqlite3
 import hashlib
 from data_utils import get_db_connection
+from logger import logger
+
 
 def init_db():
     conn = get_db_connection()

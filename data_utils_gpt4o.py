@@ -1,4 +1,5 @@
 import sqlite3
+from logger import logger
 
 # --- Authentication Logic ---
 def get_db_connection():
@@ -50,14 +51,14 @@ def log_token_usage_and_cost_gpt4o(username, input_tokens, output_tokens, video_
     # Verify the database saved successfully
     cursor.execute('SELECT video_duration FROM users WHERE username = ?', (username,))
     updated_video_duration = cursor.fetchone()[0]
-    print(f"Updated video duration in DB for {username}: {updated_video_duration} seconds")
+    logger.info(f"Updated video duration in DB for {username}: {updated_video_duration} seconds")
     conn.close()
 
-    print(f"Username: {username}")
-    print(f"Input tokens: {input_tokens}")
-    print(f"Output tokens: {output_tokens}")
-    print(f"Video duration: {video_duration_increment} seconds")
-    print(f"Total cost: ${total_cost:.4f} USD")
+    logger.info(f"Username: {username}")
+    logger.info(f"Input tokens: {input_tokens}")
+    logger.info(f"Output tokens: {output_tokens}")
+    logger.info(f"Video duration: {video_duration_increment} seconds")
+    logger.info(f"Total cost: ${total_cost:.4f} USD")
     
 
 

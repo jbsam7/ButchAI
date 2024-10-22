@@ -1,6 +1,7 @@
 import random
 import math
 import re
+from logger import logger
 
 def calculate_word_count(target_duration, words_per_minute=150):
     # Calculate the expected word count based on target duration
@@ -48,10 +49,10 @@ def add_pauses_to_text(text, target_word_count):
 def adjust_text_for_duration(text, target_duration, words_per_minute=150):
     # Adjust the input text by adding pauses to match the desired narration length
     target_word_count = calculate_word_count(target_duration, words_per_minute)
-    print(f"Target word count needed: {target_word_count}")
-    print(f'Original text word count: {len(text.split())}')
+    logger.info(f"Target word count needed: {target_word_count}")
+    logger.info(f'Original text word count: {len(text.split())}')
 
     adjusted_text = add_pauses_to_text(text, target_word_count)
-    print(f"Adjusted text word count: {len(adjusted_text.split())}")
+    logger.info(f"Adjusted text word count: {len(adjusted_text.split())}")
     
     return adjusted_text

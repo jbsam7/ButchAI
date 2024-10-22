@@ -3,6 +3,7 @@ import logging
 import os
 from logging.handlers import RotatingFileHandler
 
+
 # Create a logger
 logger = logging.getLogger('app_logger')
 

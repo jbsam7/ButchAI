@@ -1,4 +1,5 @@
 import sqlite3
+from logger import logger
 
 # --- Authentication Logic ---
 def get_db_connection():
@@ -47,7 +48,7 @@ def log_token_usage_and_cost(username, input_tokens, output_tokens):
     conn.commit()
     conn.close()
 
-    print(f"Username: {username}")
-    print(f"Input tokens: {input_tokens}")
-    print(f"Output tokens: {output_tokens}")
-    print(f"Total cost: ${total_cost:.8f} USD")
+    logger.info(f"Username: {username}")
+    logger.info(f"Input tokens: {input_tokens}")
+    logger.info(f"Output tokens: {output_tokens}")
+    logger.info(f"Total cost: ${total_cost:.8f} USD")

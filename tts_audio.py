@@ -1,6 +1,7 @@
 # tts_audio.py
 from pathlib import Path
 from openai import OpenAI
+from logger import logger
 import os
 
 def generate_audio_with_openai(input_text, voice="fable"):

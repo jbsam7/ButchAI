@@ -3,6 +3,7 @@
 from functools import wraps
 from flask import redirect, url_for, flash, session
 from data_utils import get_db_connection
+from logger import logger
 
 def basic_required(f):
     @wraps(f)
