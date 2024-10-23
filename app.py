@@ -74,21 +74,20 @@ def is_REMOVED_valid(REMOVED):
     REMOVED_regex = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$'
     return re.match(REMOVED_regex, REMOVED) is not None
 
-def signup(username, REMOVED, first_name, last_name, dob, email):
-    REMOVED_hash = hash_REMOVED(REMOVED)
-
+def signup(username, REMOVED_hash, first_name, last_name, dob, email, tier, subscription_id, customer_id):
     conn = get_db_connection()
     cursor = conn.cursor()
     try:
         cursor.execute('''
-                       INSERT INTO users (username, REMOVED_hash, first_name, last_name, dob, email, video_duration, subscription_status) 
-                       VALUES (?, ?, ?, ?, ?, ?, ?, ?)''',
-                       (username, REMOVED_hash, first_name, last_name, dob, email, 0.0, 'inactive')
-                    )
-        
+            INSERT INTO users (
+                username, REMOVED_hash, first_name, last_name, dob, email, video_duration,
+                tier, subscription_id, stripe_customer_id, subscription_status
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (username, REMOVED_hash, first_name, last_name, dob, email, 0.0 , tier, subscription_id, customer_id, 'active'))
         conn.commit()
         return True
     except sqlite3.IntegrityError:
+        # Username already exists
         return False
     finally:
         conn.close()
@@ -191,53 +190,60 @@ def signup_route():
         store_otp(email, otp)
         send_otp_email(email, otp)
 
-        # Store user details in session temporarily for verification
-        session['temp_signup_data'] = {
-            'username': username,
-            'REMOVED': REMOVED,
-            'first_name': first_name,
-            'last_name': last_name,
-            'dob': dob, 
-            'email': email, 
-            'subscription_tier': subscription_tier
-        }
+        # Hash the REMOVED baby
+        REMOVED_hash = hash_REMOVED(REMOVED)
+
+        # Store users details temporarily in a database
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('''
+            INSERT INTO temp_users (username, REMOVED_hash, first_name, last_name, dob, email, tier, video_duration, subscription_status) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (username, REMOVED_hash, first_name, last_name, dob, email, subscription_tier, 0.0, 'inactive'))
+        conn.commit()
+        conn.close()
+
+        # Store email in session to track the user through the signup process
+        session['email'] = email
+
         flash('Signup successful! Please check your email for the OTP to verify your account.')
         return redirect(url_for('verify_otp_signup_route'))
-    
+
     return render_template('signup.html', tier=request.args.get('tier'))
 
 
-@app.route('/verify-otp-signup', methods=['GET','POST'])
+@app.route('/verify-otp-signup', methods=['GET', 'POST'])
 def verify_otp_signup_route():
-    if 'temp_signup_data' not in session:
+    if 'email' not in session:
         return redirect(url_for('signup_route'))
-    
+
+    email = session['email']
+
     if request.method == 'POST':
         otp_entered = bleach.clean(request.form['otp'])
-        temp_signup_data = session['temp_signup_data']
-      
-        email = temp_signup_data['email']
 
         is_valid, message = validate_otp(email, otp_entered)
         if is_valid:
             flash('OTP verified successfully. Redirecting to payment...')
 
-            # Save user details to database after OTP verification
-            if signup(temp_signup_data['username'], temp_signup_data['REMOVED'], temp_signup_data['first_name'], temp_signup_data['last_name'], temp_signup_data['dob'], temp_signup_data['email']):
-                session['username'] = temp_signup_data['username']
-                session['logged_in'] = True
-                session['subscription_tier'] = temp_signup_data['subscription_tier']
-                session['subscription_status'] = 'inactive'  # Set initial subscription status
+            # Fetch user data from temp_users
+            conn = get_db_connection()
+            conn.row_factory = sqlite3.Row 
+            cursor = conn.cursor()
+            cursor.execute('SELECT * FROM temp_users WHERE email = ?', (email,))
+            temp_signup_data = cursor.fetchone()
+            conn.close()
 
+            if temp_signup_data:
                 # Create Stripe checkout session based on the subscription tier
                 try:
-                    subscription_tier = temp_signup_data['subscription_tier']
+                    subscription_tier = temp_signup_data['tier']
                     if subscription_tier == 'basic':
                         price_id = 'price_1PyQBqGWB2OjKBV44jdpOtqm'  # Replace with actual Basic Price ID
                     elif subscription_tier == 'premium':
                         price_id = 'price_1PyQDpGWB2OjKBV4LL3FTYS2'  # Replace with actual Premium Price ID
-                    
-                    # Use price ID for the subscription tier
+
+                    # Include email in metadata
                     checkout_session = stripe.checkout.Session.create(
                         payment_method_types=['card'],
                         line_items=[{
@@ -247,14 +253,17 @@ def verify_otp_signup_route():
                         mode='subscription',
                         success_url=url_for('payment_successful', _external=True) + "?session_id={CHECKOUT_SESSION_ID}",
                         cancel_url=url_for('signup_route', _external=True),
+                        metadata={'email': email},
                     )
-                    # Remove temporary signup data from session
-                    session.pop('temp_signup_data', None)
+
+                    # Remove email from session
+                    session.pop('email', None)
                     return redirect(checkout_session.url, code=303)
                 except Exception as e:
                     return str(e)
             else:
-                flash('Username already exists!')
+                flash('User data not found. Please sign up again.')
+                return redirect(url_for('signup_route'))
         else:
             flash(message)  # Display OTP error message (e.g., "OTP expired" or "Invalid OTP")
 
@@ -262,33 +271,54 @@ def verify_otp_signup_route():
     
 
 @app.route('/payment-successful')
-@login_required
 def payment_successful():
     # Retrieve session and Stripe subscription
-    
     checkout_session = stripe.checkout.Session.retrieve(request.args.get('session_id'))
 
     # Get subscription ID and customer ID from Stripe
     subscription_id = checkout_session.subscription  # Get subscription ID from Stripe
     customer_id = checkout_session.customer  # Get customer ID
 
+    # Get email from metadata
+    email = checkout_session.metadata.get('email')
 
-    # Update subscription status in the database
+    if not email:
+        flash('Unable to retrieve user data. Please contact support.')
+        return redirect(url_for('signup_route'))
+
+    # Fetch user data from temp_users
     conn = get_db_connection()
+    conn.row_factory = sqlite3.Row 
     cursor = conn.cursor()
-    cursor.execute('''
-        UPDATE users
-        SET subscription_status = 'active',
-            subscription_id = ?, -- Store the Stripe subscription ID
-            stripe_customer_id = ?, -- Store the Stripe customer ID
-            tier = ?
-        WHERE username = ?
-    ''', (subscription_id, customer_id, session['subscription_tier'], session['username']))
-    conn.commit()
-    conn.close()
+    cursor.execute('SELECT * FROM temp_users WHERE email = ?', (email,))
+    temp_signup_data = cursor.fetchone()
 
-    # Update session status
-    session['subscription_status'] = 'active'
+    if temp_signup_data:
+        # Call signup function to add user to users table
+        signup_success = signup(
+            temp_signup_data['username'],
+            temp_signup_data['REMOVED_hash'],
+            temp_signup_data['first_name'],
+            temp_signup_data['last_name'],
+            temp_signup_data['dob'],
+            temp_signup_data['email'],
+            temp_signup_data['tier'],
+            subscription_id,
+            customer_id
+        )
+
+        if signup_success:
+            # Delete user data from temp_users
+            cursor.execute('DELETE FROM temp_users WHERE email = ?', (email,))
+            conn.commit()
+        else:
+            flash('Error adding user to the database.')
+            return redirect(url_for('signup_route'))
+    else:
+        flash('User data not found. Please sign up again.')
+        return redirect(url_for('signup_route'))
+
+    conn.close()
 
     # Redirect user to the login page
     flash('Payment successful! Please log in to verify your email and continue.')

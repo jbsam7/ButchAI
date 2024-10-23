@@ -30,6 +30,21 @@ def init_db():
         stripe_customer_id TEXT -- Add customer_id column here
     )
     ''')
+
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS temp_users (
+        id INTEGER PRIMARY KEY,
+        username TEXT UNIQUE NOT NULL,
+        REMOVED_hash TEXT NOT NULL,
+        subscription_status TEXT DEFAULT 'inactive',
+        first_name TEXT,
+        last_name TEXT,
+        dob TEXT,
+        email TEXT UNIQUE,
+        tier TEXT DEFAULT 'basic',
+        video_duration REAL DEFAULT 0.0
+    )
+    ''')
     conn.commit()
     conn.close()
 
