@@ -508,12 +508,13 @@ def contact():
         email = 'REMOVED'
         message = bleach.clean(request.form.get('message'))
         subject = f"Contact Form Message from {name}"
-        message = f'''Mr. Butch AI,\n\n 
-                    You have received a new message in your contact form. \n\n
-                    Name: {name}
-                    Email: {user_email}
-                    Message:
-                    {message}'''
+        message = (
+            f"Mr. Butch AI,\n"
+            f"You have received a new message in your contact form.\n\n"
+            f"Name: {name}\n"
+            f"Email: {user_email}\n"
+            f"Message: {message}"
+)
 
         
         # Send the user email information to contact support
