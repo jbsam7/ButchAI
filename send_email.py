@@ -44,9 +44,9 @@ def send_otp_email(recipient_email, otp):
         server.login(SMTP_USERNAME, SMTP_PASSWORD)
         server.sendmail(SENDER, recipient_email, msg.as_string())
         server.quit()
-        print(f"OTP sent to {recipient_email}")
+        logger.info(f"OTP sent to {recipient_email}")
     except Exception as e:
-        print(f"Error sending OTP: {e}")
+        logger.info(f"Error sending OTP: {e}")
 
 # Store OTP for a recipient and set expiration time
 def store_otp(recipient_email, otp):
@@ -81,7 +81,7 @@ def verify_REMOVED_reset_token(token, expiration=3600):
     try:
         email = s.loads(token, salt=os.getenv('SECURITY_PASSWORD_SALT'), max_age=expiration)
     except Exception as e:
-        print(f"Token verification error: {e}")
+        logger.info(f"Token verification error: {e}")
         return None
     return email
 
@@ -104,9 +104,9 @@ def send_REMOVED_reset_email(recipient_email, reset_link):
         server.login(SMTP_USERNAME, SMTP_PASSWORD)
         server.sendmail(SENDER, recipient_email, msg.as_string())
         server.quit()
-        print(f"Password reset email sent to {recipient_email}")
+        logger.info(f"Password reset email sent to {recipient_email}")
     except Exception as e:
-        print(f"Error sending REMOVED reset email: {e}")
+        logger.info(f"Error sending REMOVED reset email: {e}")
 
 def send_email(recipient_email, subject, body_text):
     msg = MIMEMultipart()
@@ -122,6 +122,6 @@ def send_email(recipient_email, subject, body_text):
         server.login(SMTP_USERNAME, SMTP_PASSWORD)
         server.sendmail(SENDER, recipient_email, msg.as_string())
         server.quit()
-        print(f"Email sent to {recipient_email}")
+        logger.info(f"Email sent to {recipient_email}")
     except Exception as e:
-        print(f"Error sending email: {e}")
+        logger.info(f"Error sending email: {e}")
