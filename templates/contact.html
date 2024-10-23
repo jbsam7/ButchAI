@@ -317,6 +317,21 @@
             opacity: 1;
         }
 
+        .flash-messages {
+            margin-bottom: 20px; /* Add some space below the flash messages */
+            padding: 15px;
+            background-color: #333333; /* Dark background to make it noticeable */
+            border-radius: 5px;
+            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.5);
+        }
+
+        .flash-message {
+            color: yellow; /* Matches the overall theme */
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+        }
+
         /* Mobile Styles */
         @media only screen and (max-width: 768px) {
             /* Show Hamburger Menu */
@@ -451,10 +466,19 @@
 
         <!-- Contact Form with Grey Background -->
         <div class="contact-form-container">
-            <form class="contact-form" action="#" method="post">
-                <input type="text" name="name" placeholder="Your Name" required>
-                <input type="email" name="email" placeholder="Your Email" required>
-                <textarea name="message" placeholder="Your Message" required></textarea>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="flash-messages">
+                        {% for message in messages %}
+                            <p class="flash-message">{{ message }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            <form class="contact-form" action="/contact" method="post">
+                <input type="text" name="name" placeholder="Your Name" required maxlength="50">
+                <input type="email" name="email" placeholder="Your Email" required maxlength="100">
+                <textarea name="message" placeholder="Your Message" required maxlength="500"></textarea>
                 <button type="submit">Send Message</button>
             </form>
         </div>

@@ -12,6 +12,7 @@ import logging
 import bleach
 import mimetypes
 from werkzeug.utils import secure_filename
+from datetime import timedelta
 from anthropic import Anthropic
 from pydub import AudioSegment
 from dotenv import load_dotenv
@@ -42,6 +43,8 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv('FLASK_SECRET_KEY')   # Required for session management and flashing messages
 
+# Set session to log out and remove cookies after 30 minutes
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
 
 @app.route('/test-logging')
 def test_logging():
@@ -470,6 +473,7 @@ def login_route():
 @app.route('/logout')
 def logout():
     session.pop('logged_in', None)  # Remove logged_in from session
+    session.clear()
     flash('You have been logged out.')
     return redirect(url_for('login_route'))
 
@@ -494,8 +498,29 @@ def pricing():
     return render_template('pricing.html')
 
 # Contact page route
-@app.route('/contact')
+@app.route('/contact', methods=['GET','POST'])
 def contact():
+    if request.method == 'POST':
+        
+        # Get the user input from contact form
+        name = bleach.clean(request.form.get('name'))
+        user_email = bleach.clean(request.form.get('email'))
+        email = 'REMOVED'
+        message = bleach.clean(request.form.get('message'))
+        subject = f"Contact Form Message from {name}"
+        message = f'''Mr. Butch AI,\n\n 
+                    You have received a new message in your contact form. \n\n
+                    Name: {name}
+                    Email: {user_email}
+                    Message:
+                    {message}'''
+
+        
+        # Send the user email information to contact support
+        send_email(email, subject, message)
+        flash('Your message has been sent successfully! We will get back to you soon.')
+
+
     return render_template('contact.html')
 
 # Account page route
