@@ -590,13 +590,18 @@
                 special.style.color = "red";
             }
 
-            // Check if REMOVED and confirm REMOVED match
-            if (REMOVED === confirmPassword) {
-                match.style.color = "green";
-                match.innerText = "Passwords match";
+            // Check if both fields are not empty
+            if (REMOVED !== '' && confirmPassword !== '') {
+                if (REMOVED === confirmPassword) {
+                    match.style.color = "green";
+                    match.innerText = "Passwords match";
+                } else {
+                    match.style.color = "red";
+                    match.innerText = "Passwords do not match";
+                }
             } else {
-                match.style.color = "red";
-                match.innerText = "Passwords do not match";
+                // Clear the message if one or both fields are empty
+                match.innerText = "";
             }
         }
     </script>
