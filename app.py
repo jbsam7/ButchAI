@@ -117,8 +117,8 @@ def main_route():
 def home():
     return render_template('index.html')
 
-SIGNUP_ENABLED = False # Set to False to disable signups
-MAX_USERS = 6
+SIGNUP_ENABLED = True # Set to False to disable signups
+MAX_USERS = 10
 @app.route('/signup', methods=['GET', 'POST'])
 @limiter.limit("5 per minute")
 def signup_route():
@@ -164,40 +164,81 @@ def signup_route():
         if not is_REMOVED_valid(REMOVED):
             flash('Password must be at least 8 characters long, contain both uppercase and lowercase letters, one number, and one special character.')
             return redirect(url_for('signup_route'))
+        
+        # Generate OTP and send to user's email
+        otp = generate_otp()
+        store_otp(email, otp)
+        send_otp_email(email, otp)
 
-        if signup(username, REMOVED, first_name, last_name, dob, email):
-            session['username'] = username
-            session['logged_in'] = True
-            session['subscription_tier'] = subscription_tier  # Ensure tier is stored in session
-            session['subscription_status'] = 'inactive'  # Set initial subscription status
-
-            flash('Signup successful! Redirecting to payment...')
-
-            # Create Stripe checkout session based on the subscription tier
-            try:
-                if subscription_tier == 'basic':
-                    price_id = 'price_1PyQBqGWB2OjKBV44jdpOtqm'  # Replace with actual Basic Price ID
-                elif subscription_tier == 'premium':
-                    price_id = 'price_1PyQDpGWB2OjKBV4LL3FTYS2'  # Replace with actual Premium Price ID
-                
-                # Use price ID for the subscription tier
-                checkout_session = stripe.checkout.Session.create(
-                    payment_method_types=['card'],
-                    line_items=[{
-                        'price': price_id,
-                        'quantity': 1,
-                    }],
-                    mode='subscription',
-                    success_url=url_for('payment_successful', _external=True) + "?session_id={CHECKOUT_SESSION_ID}",
-                    cancel_url=url_for('signup_route', _external=True),
-                )
-                return redirect(checkout_session.url, code=303)
-            except Exception as e:
-                return str(e)
-        else:
-            flash('Username already exists!')
+        # Store user details in session temporarily for verification
+        session['temp_signup_data'] = {
+            'username': username,
+            'REMOVED': REMOVED,
+            'first_name': first_name,
+            'last_name': last_name,
+            'dob': dob, 
+            'email': email, 
+            'subscription_tier': subscription_tier
+        }
+        flash('Signup successful! Please check your email for the OTP to verify your account.')
+        return redirect(url_for('verify_otp_signup_route'))
+    
     return render_template('signup.html', tier=request.args.get('tier'))
 
+
+@app.route('/verify-otp-signup', methods=['GET','POST'])
+def verify_otp_signup_route():
+    if 'temp_signup_data' not in session:
+        return redirect(url_for('signup_route'))
+    
+    if request.method == 'POST':
+        otp_entered = bleach.clean(request.form['otp'])
+        temp_signup_data = session['temp_signup_data']
+      
+        email = temp_signup_data['email']
+
+        is_valid, message = validate_otp(email, otp_entered)
+        if is_valid:
+            flash('OTP verified successfully. Redirecting to payment...')
+
+            # Save user details to database after OTP verification
+            if signup(temp_signup_data['username'], temp_signup_data['REMOVED'], temp_signup_data['first_name'], temp_signup_data['last_name'], temp_signup_data['dob'], temp_signup_data['email']):
+                session['username'] = temp_signup_data['username']
+                session['logged_in'] = True
+                session['subscription_tier'] = temp_signup_data['subscription_tier']
+                session['subscription_status'] = 'inactive'  # Set initial subscription status
+
+                # Create Stripe checkout session based on the subscription tier
+                try:
+                    subscription_tier = temp_signup_data['subscription_tier']
+                    if subscription_tier == 'basic':
+                        price_id = 'price_1PyQBqGWB2OjKBV44jdpOtqm'  # Replace with actual Basic Price ID
+                    elif subscription_tier == 'premium':
+                        price_id = 'price_1PyQDpGWB2OjKBV4LL3FTYS2'  # Replace with actual Premium Price ID
+                    
+                    # Use price ID for the subscription tier
+                    checkout_session = stripe.checkout.Session.create(
+                        payment_method_types=['card'],
+                        line_items=[{
+                            'price': price_id,
+                            'quantity': 1,
+                        }],
+                        mode='subscription',
+                        success_url=url_for('payment_successful', _external=True) + "?session_id={CHECKOUT_SESSION_ID}",
+                        cancel_url=url_for('signup_route', _external=True),
+                    )
+                    # Remove temporary signup data from session
+                    session.pop('temp_signup_data', None)
+                    return redirect(checkout_session.url, code=303)
+                except Exception as e:
+                    return str(e)
+            else:
+                flash('Username already exists!')
+        else:
+            flash(message)  # Display OTP error message (e.g., "OTP expired" or "Invalid OTP")
+
+    return render_template('signup_otp.html')
+    
 
 @app.route('/payment-successful')
 @login_required

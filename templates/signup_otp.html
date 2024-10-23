@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Verification - Signup</title>
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            background-color: black;
+            color: yellow;
+            font-family: 'Poppins', sans-serif;
+            height: 100%;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header Styles */
+        header {
+            display: flex;
+            justify-content: space-between; /* Space between left and right sections */
+            align-items: center;
+            padding: 10px 20px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.9); /* Semi-transparent for better visibility */
+            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.5);
+            z-index: 1000;
+        }
+
+        /* Left Section: Logo and Navigation Links */
+        .left-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* Logo Styling */
+        .logo {
+            height: 60px;
+            width: auto;
+            transition: box-shadow 0.3s ease-in-out;
+            border-radius: 6px;
+            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.5);
+        }
+
+        .logo:hover {
+            box-shadow: 0 0 30px rgba(255, 255, 0, 1);
+        }
+
+        /* Navigation Links Containers */
+        .nav-links-left, .nav-links-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* Left Navigation Links */
+        .nav-links-left a {
+            color: yellow;
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+
+        .nav-links-left a:hover {
+            color: rgba(255, 255, 0, 0.8);
+        }
+
+        /* Right Navigation Links (Sign Up and Login) */
+        .nav-links-right a {
+            color: yellow;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 10px 20px;
+            border: 2px solid yellow;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
+            transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+        }
+
+        .nav-links-right a:hover {
+            background-color: yellow;
+            color: black;
+            box-shadow: 0 0 20px rgba(255, 255, 0, 0.8);
+        }
+
+        /* Banner Styles */
+        .banner {
+            background: linear-gradient(to right, yellow, rgba(255, 255, 0, 0.1));
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Center the text */
+            padding: 100px 20px; /* Adjusted padding to accommodate fixed header */
+            margin-top: 60px; /* Adjusted to prevent overlap with fixed header */
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .banner-text {
+            font-size: 36px;
+            font-weight: bold;
+            color: black; /* Text color contrasting with the background */
+            max-width: 90%;
+            overflow: hidden;
+            white-space: nowrap;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+            animation: none; /* Removed typing animation for simplicity */
+            margin-bottom: 20px;
+        }
+
+        /* OTP Box Styles */
+        .otp-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            padding: 20px;
+        }
+
+        .otp-box {
+            background-color: black;
+            color: yellow;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0px 8px 20px rgba(255, 255, 0, 0.6);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .otp-box h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: yellow;
+        }
+
+        .otp-box form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .otp-box input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid yellow;
+            border-radius: 5px;
+            font-size: 18px;
+            background-color: black;
+            color: yellow;
+        }
+
+        .otp-box input::placeholder {
+            color: rgba(255, 255, 0, 0.7);
+        }
+
+        .otp-box button {
+            padding: 10px 20px;
+            background-color: yellow;
+            color: black;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        .otp-box button:hover {
+            background-color: #ffeb3b;
+            box-shadow: 0px 8px 20px rgba(255, 255, 0, 0.8);
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #121212;
+            color: rgba(255, 255, 255, 0.8);
+            padding: 30px 0;
+            text-align: center;
+            font-size: 14px;
+            width: 100%;
+            margin-top: auto; /* Pushes footer to the bottom */
+        }
+
+        footer a {
+            color: yellow;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .social-icons {
+            margin-top: 20px;
+        }
+
+        .social-icons img {
+            width: 30px;
+            margin: 0 10px;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        .social-icons img:hover {
+            opacity: 1;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="left-section">
+            <img src="{{ url_for('static', filename='images/logobaby.png') }}" alt="ButchAI Logo" class="logo">
+
+            <div class="nav-links-left">
+                <a href="/">Home</a>
+                <a href="/pricing">Pricing</a>
+                <a href="/contact">Contact</a>
+            </div>
+        </div>
+
+        <div class="nav-links-right">
+            <a href="/signup">Sign Up</a>
+            <a href="/login">Login</a>
+        </div>
+    </header>
+
+    <!-- Banner Section -->
+    <div class="banner">
+        <div class="banner-text">
+            Two-Factor Authentication
+        </div>
+        <div class="banner-subtext">
+            Please enter the OTP sent to your email.
+        </div>
+    </div>
+
+    <!-- OTP Form Section -->
+    <div class="otp-container">
+        <div class="otp-box">
+            <h2>Check Your Email</h2>
+            <p>Please enter the One-Time Password (OTP) sent to your registered email address to verify your account.</p>
+            <form action="/verify-otp-signup" method="POST">
+                <input type="text" id="otp" name="otp" placeholder="Enter your OTP" required>
+                <button type="submit">Verify OTP</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 ButchAI. All rights reserved.</p>
+        <p>
+            <a href="/terms">Terms</a>
+            <a href="/privacy">Privacy Policy</a>
+        </p>
+        <!-- Social Media Icons -->
+        <div class="social-icons">
+            <a href="#"><img src="{{ url_for('static', filename='images/x.png') }}" alt="X"></a>
+            <a href="#"><img src="{{ url_for('static', filename='images/yt.png') }}" alt="YouTube"></a>
+            <a href="#"><img src="{{ url_for('static', filename='images/tiktok.png') }}" alt="TikTok"></a>
+            <a href="#"><img src="{{ url_for('static', filename='images/insta.png') }}" alt="Instagram"></a>
+        </div> 
+    </footer>
+</body>
+</html>
