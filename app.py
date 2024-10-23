@@ -122,7 +122,7 @@ def home():
 
 SIGNUP_ENABLED = True # Set to False to disable signups
 MAX_USERS = 10
-HCAPTCHA_SECRET_KEY = 'ES_043389b052d6427d91830cc3aac7de56'
+HCAPTCHA_SECRET_KEY = os.getenv('HCAPTCHA_SECRET_KEY')
 @app.route('/signup', methods=['GET', 'POST'])
 @limiter.limit("5 per minute")
 def signup_route():
