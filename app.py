@@ -144,13 +144,13 @@ def signup_route():
 
     if request.method == 'POST':
         # Sanitize user inputs using bleach
-        first_name = bleach.clean(request.form['first_name'])
-        last_name = bleach.clean(request.form['last_name'])
-        dob = bleach.clean(request.form['dob'])
-        username = bleach.clean(request.form['username'])
-        REMOVED = bleach.clean(request.form['REMOVED'])
-        confirm_REMOVED = bleach.clean(request.form['confirm_REMOVED'])
-        email = bleach.clean(request.form['email'])
+        first_name = bleach.clean(request.form['first_name']).strip()
+        last_name = bleach.clean(request.form['last_name']).strip()
+        dob = bleach.clean(request.form['dob']).strip()
+        username = bleach.clean(request.form['username']).strip()
+        REMOVED = bleach.clean(request.form['REMOVED']).strip()
+        confirm_REMOVED = bleach.clean(request.form['confirm_REMOVED']).strip()
+        email = bleach.clean(request.form['email']).strip()
         subscription_tier = request.form['subscription_tier']
 
         # Ensure the subscription tier is one of the allowed values
