@@ -122,7 +122,7 @@ def home():
 
 SIGNUP_ENABLED = True # Set to False to disable signups
 MAX_USERS = 10
-RECAPTCHA_SECRET_KEY = '6LcDnmMqAAAAABVjzVnrLsmSSii9qfBjOl1ROLP-'
+HCAPTCHA_SECRET_KEY = 'ES_043389b052d6427d91830cc3aac7de56'
 @app.route('/signup', methods=['GET', 'POST'])
 @limiter.limit("5 per minute")
 def signup_route():
@@ -144,17 +144,21 @@ def signup_route():
 
 
     if request.method == 'POST':
-        # Verify reCAPTCHA token
-        recaptcha_response = request.form.get('g-recaptcha-response')
+        # Get the hCaptcha response token from the form
+        hcaptcha_response = request.form.get('h-captcha-response')
+
+        # Verify hCaptcha response with hCaptcha API
         payload = {
-            'secret': RECAPTCHA_SECRET_KEY,
-            'response': recaptcha_response
+            'secret': HCAPTCHA_SECRET_KEY,
+            'response': hcaptcha_response,
+            'remoteip': request.remote_addr  # Optional but recommended
         }
-        recaptcha_verify = requests.post('https://www.google.com/recaptcha/api/siteverify', data=payload)
-        result = recaptcha_verify.json()
+
+        hcaptcha_verify = requests.post('https://hcaptcha.com/siteverify', data=payload)
+        result = hcaptcha_verify.json()
 
         if not result.get('success'):
-            flash('reCAPTCHA verification failed. Please try again.')
+            flash('hCaptcha verification failed. Please try again.')
             return redirect(url_for('signup_route'))
 
         # Sanitize user inputs using bleach
