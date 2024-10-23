@@ -120,8 +120,9 @@ def main_route():
 def home():
     return render_template('index.html')
 
-SIGNUP_ENABLED = False # Set to False to disable signups
+SIGNUP_ENABLED = True # Set to False to disable signups
 MAX_USERS = 10
+RECAPTCHA_SECRET_KEY = '6LcDnmMqAAAAABVjzVnrLsmSSii9qfBjOl1ROLP-'
 @app.route('/signup', methods=['GET', 'POST'])
 @limiter.limit("5 per minute")
 def signup_route():
@@ -143,6 +144,19 @@ def signup_route():
 
 
     if request.method == 'POST':
+        # Verify reCAPTCHA token
+        recaptcha_response = request.form.get('g-recaptcha-response')
+        payload = {
+            'secret': RECAPTCHA_SECRET_KEY,
+            'response': recaptcha_response
+        }
+        recaptcha_verify = requests.post('https://www.google.com/recaptcha/api/siteverify', data=payload)
+        result = recaptcha_verify.json()
+
+        if not result.get('success'):
+            flash('reCAPTCHA verification failed. Please try again.')
+            return redirect(url_for('signup_route'))
+
         # Sanitize user inputs using bleach
         first_name = bleach.clean(request.form['first_name']).strip()
         last_name = bleach.clean(request.form['last_name']).strip()
