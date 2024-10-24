@@ -211,7 +211,7 @@ def signup_route():
 
     return render_template('signup.html', tier=request.args.get('tier'))
 
-
+STRIPE_ENABLED = True # Set to False to bypass Stripe for now
 @app.route('/verify-otp-signup', methods=['GET', 'POST'])
 def verify_otp_signup_route():
     if 'email' not in session:
@@ -235,52 +235,72 @@ def verify_otp_signup_route():
             conn.close()
 
             if temp_signup_data:
-                # Create Stripe checkout session based on the subscription tier
-                try:
-                    subscription_tier = temp_signup_data['tier']
-                    if subscription_tier == 'basic':
-                        price_id = 'price_1PyQBqGWB2OjKBV44jdpOtqm'  # Replace with actual Basic Price ID
-                    elif subscription_tier == 'premium':
-                        price_id = 'price_1PyQDpGWB2OjKBV4LL3FTYS2'  # Replace with actual Premium Price ID
+                # Check if Stripe is enabled
+                if STRIPE_ENABLED:
+                    # Create Stripe checkout session based on the subscription tier
+                    try:
+                        subscription_tier = temp_signup_data['tier']
+                        if subscription_tier == 'basic':
+                            price_id = 'price_1PyQBqGWB2OjKBV44jdpOtqm'  # Replace with actual Basic Price ID
+                        elif subscription_tier == 'premium':
+                            price_id = 'price_1PyQDpGWB2OjKBV4LL3FTYS2'  # Replace with actual Premium Price ID
 
-                    # Include email in metadata
-                    checkout_session = stripe.checkout.Session.create(
-                        payment_method_types=['card'],
-                        line_items=[{
-                            'price': price_id,
-                            'quantity': 1,
-                        }],
-                        mode='subscription',
-                        success_url=url_for('payment_successful', _external=True) + "?session_id={CHECKOUT_SESSION_ID}",
-                        cancel_url=url_for('signup_route', _external=True),
-                        metadata={'email': email},
-                    )
 
-                    # Remove email from session
-                    session.pop('email', None)
-                    return redirect(checkout_session.url, code=303)
-                except Exception as e:
-                    return str(e)
+                        # Include email in metadata
+                        checkout_session = stripe.checkout.Session.create(
+                            payment_method_types=['card'],
+                            line_items=[{
+                                'price': price_id,
+                                'quantity': 1,
+                            }],
+                            mode='subscription',
+                            success_url=url_for('payment_successful', _external=True) + "?session_id={CHECKOUT_SESSION_ID}",
+                            cancel_url=url_for('signup_route', _external=True),
+                            metadata={'email': email},
+                        )
+
+                        # Remove email from session
+                        session.pop('email', None)
+                        return redirect(checkout_session.url, code=303)
+                    except Exception as e:
+                        return str(e)
+                else:
+                    flash('Payment bypassed as Stripe is disabled.')
+                    # Simulate subscription ID and customer ID
+                    subscription_id = 'test_subscription_id'
+                    customer_id = 'test_customer_id'
+                    # Call the payment_successful route to finalize the signup
+                    return redirect(url_for('payment_successful', session_id='test_session_id'))
             else:
-                flash('User data not found. Please sign up again.')
-                return redirect(url_for('signup_route'))
+                flash(message)  # Display OTP error message (e.g., "OTP expired" or "Invalid OTP")
         else:
-            flash(message)  # Display OTP error message (e.g., "OTP expired" or "Invalid OTP")
+            flash(message)
 
     return render_template('signup_otp.html')
     
 
 @app.route('/payment-successful')
 def payment_successful():
-    # Retrieve session and Stripe subscription
-    checkout_session = stripe.checkout.Session.retrieve(request.args.get('session_id'))
+    # If Stripe is disabled, use the test session data
+    if not STRIPE_ENABLED:
+        checkout_session = {
+            'subscription': 'test_subscription_id',
+            'customer': 'test_customer_id',
+            'metadata': {'email': session.get('email', 'test_email@example.com')}
+        }
+        subscription_id = checkout_session['subscription']
+        customer_id = checkout_session['customer']
+        email = checkout_session['metadata']['email']
+    else:
+        # Retrieve session and Stripe subscription if enabled
+        checkout_session = stripe.checkout.Session.retrieve(request.args.get('session_id'))
 
-    # Get subscription ID and customer ID from Stripe
-    subscription_id = checkout_session.subscription  # Get subscription ID from Stripe
-    customer_id = checkout_session.customer  # Get customer ID
+        # Get subscription ID and customer ID from Stripe
+        subscription_id = checkout_session.subscription  # Get subscription ID from Stripe
+        customer_id = checkout_session.customer  # Get customer ID
 
-    # Get email from metadata
-    email = checkout_session.metadata.get('email')
+        # Get email from metadata
+        email = checkout_session.metadata.get('email')
 
     if not email:
         flash('Unable to retrieve user data. Please contact support.')
@@ -487,6 +507,7 @@ def reset_REMOVED_route(token):
     return render_template('reset_REMOVED.html', token=token)
 
 @app.route('/login', methods=['GET', 'POST'])
+@limiter.limit("5 per minute")
 def login_route():
     if request.method == 'POST':
         username = bleach.clean(request.form['username'])
