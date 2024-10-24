@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - Butch AI</title>
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* General Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            background-color: black;
+            color: yellow;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Header Styles */
+        header {
+            display: flex;
+            justify-content: space-between; /* Space between left and right sections */
+            align-items: center;
+            padding: 3px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.9); /* Semi-transparent for better visibility */
+            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.5);
+            z-index: 1000;
+        }
+
+        /* Left Section: Logo and Navigation Links */
+        .left-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* Logo Styling */
+        .logo {
+            height: 60px;
+            width: auto;
+            transition: box-shadow 0.3s ease-in-out;
+            border-radius: 6px;
+            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.5);
+        }
+
+        .logo:hover {
+            box-shadow: 0 0 30px rgba(255, 255, 0, 1);
+        }
+
+        /* Navigation Links Containers */
+        .nav-links-left, .nav-links-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* Left Navigation Links */
+        .nav-links-left a {
+            color: yellow;
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+
+        .nav-links-left a:hover {
+            color: rgba(255, 255, 0, 0.8);
+        }
+
+        /* Dropdown Menu */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown > a::after {
+            content: " ▼";
+            font-size: 12px;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: black;
+            min-width: 150px;
+            box-shadow: 0 4px 8px rgba(255, 255, 0, 0.2);
+            z-index: 1;
+            text-align: left;
+            border-radius: 8px;
+        }
+
+        .dropdown-content a {
+            color: yellow;
+            padding: 10px;
+            text-decoration: none;
+            display: block;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown-content a:hover {
+            background-color: rgba(255, 255, 0, 0.2);
+            color: white;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* Right Navigation Links (Sign Up and Login) */
+        .nav-links-right a {
+            color: yellow;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 10px 20px;
+            border: 2px solid yellow;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
+            transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+        }
+
+        .nav-links-right a:hover {
+            background-color: yellow;
+            color: black;
+            box-shadow: 0 0 20px rgba(255, 255, 0, 0.8);
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none; /* Hidden by default, shown on mobile via media queries */
+            cursor: pointer;
+            padding: 6px;
+            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.8);
+            border-radius: 4px;
+        }
+
+        .hamburger div {
+            width: 30px;
+            height: 4px;
+            background-color: yellow;
+            margin: 5px 0;
+            border-radius: 2px;
+            box-shadow: 0 2px 5px rgba(255, 255, 0, 0.5);
+        }
+
+        /* Banner Styles */
+        .banner {
+            background-color: black; /* Removed the image and gradient */
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Center the text */
+            padding: 100px 20px; /* Increased top padding to accommodate fixed header */
+            margin-top: 60px; /* Adjusted to prevent overlap with fixed header */
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .banner-text {
+            font-size: 48px;
+            font-weight: bold;
+            color: yellow; /* Changed to yellow for better contrast */
+            max-width: 90%;
+            overflow: hidden;
+            white-space: nowrap;
+            /* Optional: Add text shadow for better visibility */
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+            animation: none; /* Removed typing animation for simplicity */
+        }
+
+        /* Privacy Section */
+        .section {
+            padding: 50px 20px;
+            background-color: #121212;
+            color: yellow;
+            text-align: center;
+        }
+
+        .section h2 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 3px rgba(255, 255, 0, 0.3);
+        }
+
+        .privacy-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: left; /* Left align the privacy policy text */
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        .privacy-content h3 {
+            margin-top: 20px;
+            color: yellow;
+        }
+
+        .privacy-content p, .privacy-content ul {
+            margin-bottom: 15px;
+        }
+
+        .privacy-content ul {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #121212;
+            color: rgba(255, 255, 255, 0.8);
+            padding: 30px 0;
+            text-align: center;
+            font-size: 14px;
+            margin-top: 50px;
+            width: 100%;
+        }
+
+        footer a {
+            color: yellow;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .social-icons {
+            margin-top: 20px;
+        }
+
+        .social-icons img {
+            width: 30px;
+            margin: 0 10px;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        .social-icons img:hover {
+            opacity: 1;
+        }
+
+        /* Mobile Styles */
+        @media only screen and (max-width: 768px) {
+            /* Show Hamburger Menu */
+            .hamburger {
+                display: block; /* Show hamburger on mobile */
+            }
+
+            /* Hide navigation links by default */
+            .nav-links-left,
+            .nav-links-right {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background-color: #000;
+                padding: 10px 0;
+                z-index: 1000;
+                text-align: center;
+            }
+
+            .nav-links-left a,
+            .nav-links-right a {
+                font-size: 18px;
+                padding: 15px 0;
+                text-decoration: none;
+                color: yellow;
+                display: block;
+                width: 100%;
+            }
+
+            /* Show navigation links when menu is open */
+            .menu-open .nav-links-left,
+            .menu-open .nav-links-right {
+                display: flex;
+            }
+            .banner {
+                padding-top: 70px;
+                padding-bottom: 50px;
+            }
+            /* Adjust banner text */
+            .banner-text {
+                font-size: 32px;
+                white-space: normal;
+                line-height: 1.4;
+                
+            }
+
+            /* Adjust section content */
+            .privacy-content {
+                font-size: 14px;
+            }
+
+            /* Adjust footer */
+            footer {
+                padding: 20px 0;
+            }
+
+            .social-icons img {
+                width: 25px;
+                margin: 0 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <!-- Left Section: Logo and Navigation Links -->
+        <div class="left-section">
+            <!-- Logo -->
+            <img src="{{ url_for('static', filename='images/logobaby.png') }}" alt="ButchAI Logo" class="logo">
+
+            <!-- Left Navigation Links -->
+            <div class="nav-links-left">
+                <a href="/">Home</a>
+                <div class="dropdown">
+                    <a href="#">Features</a>
+                    <div class="dropdown-content">
+                        <a href="/how-to-prompt">How to Prompt</a>
+                        <a href="/basic">Basic</a>
+                        <a href="/premium">Premium</a>
+                    </div>
+                </div>
+                <a href="/pricing">Pricing</a>
+                <a href="/contact">Contact</a>
+            </div>
+        </div>
+
+        <!-- Right Navigation Links -->
+        <div class="nav-links-right">
+            <a href="/signup">Sign Up</a>
+            <a href="/login">Login</a>
+        </div>
+
+        <!-- Hamburger Menu Icon -->
+        <div class="hamburger" onclick="toggleMenu()" aria-label="Toggle navigation menu" role="button" tabindex="0">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </header>
+
+    <!-- Banner Section -->
+    <div class="banner">
+        <div class="banner-text">
+            Privacy Policy
+        </div>
+    </div>
+
+    <!-- Privacy Section -->
+    <div class="section">
+        <div class="privacy-content">
+            <p><strong>Effective Date:</strong> October 24, 2024</p>
+
+            <h3>1. Introduction</h3>
+            <p>
+                Welcome to <strong>Butch AI</strong> ("we," "our," "us"). We are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy outlines how we collect, use, disclose, and safeguard your information when you visit our website <a href="https://thebutchai.com/">thebutchai.com</a> and use our services.
+            </p>
+            <p>
+                By accessing or using our services, you agree to the terms of this Privacy Policy.
+            </p>
+
+            <h3>2. Business Information</h3>
+            <ul>
+                <li><strong>Business Name:</strong> Butch AI</li>
+                <li><strong>Contact Email:</strong> <a href="mailto:REMOVED">REMOVED</a></li>
+                <li><strong>Website URL:</strong> <a href="https://thebutchai.com/">thebutchai.com</a></li>
+            </ul>
+            <p>
+                *Note:* We do not have a physical address listed. All communications and services are handled securely through our designated contact channels.
+            </p>
+
+            <h3>3. Data We Collect</h3>
+            <p>We collect the following types of information to provide and improve our services:</p>
+            <ul>
+                <li><strong>Personal Information:</strong>
+                    <ul>
+                        <li><strong>Name:</strong> First and last name.</li>
+                        <li><strong>Email Address:</strong> For account creation, communication, and support.</li>
+                        <li><strong>Date of Birth (DOB):</strong> To verify age eligibility and for personalization.</li>
+                    </ul>
+                </li>
+                <li><strong>Payment Information:</strong>
+                    <ul>
+                        <li><strong>Stripe:</strong> We use Stripe as our payment processor to handle transactions securely.</li>
+                    </ul>
+                </li>
+                <li><strong>Content Data:</strong>
+                    <ul>
+                        <li><strong>Videos and Audio Files:</strong> Users upload videos, which our AI processes to generate customized audio narrations. We retain these files to deliver the service and may delete them as needed.</li>
+                    </ul>
+                </li>
+                <li><strong>Technical Data:</strong>
+                    <ul>
+                        <li><strong>Browser Types and Devices:</strong> Information about the devices and browsers used to access our services.</li>
+                        <li><strong>Error Logs:</strong> Data related to errors encountered during usage to help us improve our services.</li>
+                    </ul>
+                </li>
+            </ul>
+            <p>
+                *Note:* We do not actively log IP addresses; however, some server logs may inadvertently capture them.
+            </p>
+
+            <h3>4. How We Use Your Information</h3>
+            <p>We use the collected data for the following purposes:</p>
+            <ul>
+                <li><strong>Service Delivery:</strong> To process uploaded videos and generate customized audio narrations using our AI technology.</li>
+                <li><strong>Account Management:</strong> To manage your subscription, billing, and account settings.</li>
+                <li><strong>Customer Support:</strong> To respond to your inquiries, troubleshoot issues, and provide assistance.</li>
+                <li><strong>Service Improvement:</strong> To analyze usage patterns and improve our services and features.</li>
+                <li><strong>Communication:</strong> To send important updates, notifications about policy changes, and service-related communications.</li>
+            </ul>
+
+            <h3>5. Data Sharing and Third Parties</h3>
+            <p>We may share your information with trusted third-party service providers to facilitate our services:</p>
+            <ul>
+                <li><strong>Stripe:</strong> For processing payments securely.</li>
+                <li><strong>DigitalOcean:</strong> As our cloud service provider for storing and managing data.</li>
+                <li><strong>Flask and SQLite:</strong> For managing sessions and database operations.</li>
+            </ul>
+            <p><strong>Data Sharing Details:</strong></p>
+            <ul>
+                <li><strong>Purpose:</strong> These third parties assist us in operating our website, conducting our business, or serving our users.</li>
+                <li><strong>Data Access:</strong> They have access to your personal information only to perform specific tasks on our behalf and are obligated not to disclose or use it for any other purpose.</li>
+                <li><strong>Data Security:</strong> We ensure that these third parties implement appropriate security measures to protect your data.</li>
+            </ul>
+            <p><strong>No Data Selling:</strong></p>
+            <p>We do not sell, trade, or otherwise transfer your personal information to outside parties for marketing purposes.</p>
+
+            <h3>6. Data Retention</h3>
+            <ul>
+                <li><strong>Subscription Data:</strong> We retain your personal information and uploaded content for <strong>one year</strong> after you decide to unsubscribe from our services.</li>
+                <li><strong>Account Termination:</strong> Upon account termination, we retain your data for an additional period as needed to comply with legal obligations or for legitimate business purposes. You can request the deletion of your data at any time by contacting us at <a href="mailto:REMOVED">REMOVED</a>.</li>
+            </ul>
+
+            <h3>7. Your Rights</h3>
+            <p>You have the following rights regarding your personal data:</p>
+            <ul>
+                <li><strong>Access:</strong> You can request access to the personal data we hold about you.</li>
+                <li><strong>Rectification:</strong> You can request corrections to any inaccurate or incomplete data.</li>
+                <li><strong>Erasure:</strong> You can request the deletion of your personal data, except where retention is required by law.</li>
+                <li><strong>Restriction of Processing:</strong> You can request that we limit the processing of your data under certain circumstances.</li>
+                <li><strong>Data Portability:</strong> You can request a copy of your personal data in a structured, commonly used format.</li>
+                <li><strong>Withdrawal of Consent:</strong> If you have provided consent for data processing, you can withdraw it at any time.</li>
+            </ul>
+            <p>
+                *Note:* Currently, our system allows you to access your name, date of birth, and email address. Uploaded videos and audio files are deleted as needed, and access to them is not provided upon request. To request data deletion, please contact us at <a href="mailto:REMOVED">REMOVED</a>.
+            </p>
+
+            <h3>8. Data Security</h3>
+            <p>We implement a variety of security measures to maintain the safety of your personal information:</p>
+            <ul>
+                <li><strong>Technical Safeguards:</strong> Use of firewalls, secure servers (DigitalOcean), and encrypted connections (HTTPS).</li>
+                <li><strong>Organizational Safeguards:</strong> Regular security assessments, employee training, and strict access controls.</li>
+                <li><strong>Data Sanitization:</strong> All user inputs are sanitized using `bleach.clean` to prevent malicious data injection.</li>
+                <li><strong>SQL Protection:</strong> Use of parameterized queries to guard against SQL injection attacks.</li>
+            </ul>
+
+            <h3>9. International Data Transfers</h3>
+            <p>Our services are primarily offered within the <strong>United States</strong>, specifically <strong>South Dakota</strong>. If we transfer data internationally, we ensure that appropriate safeguards are in place to protect your data, such as standard contractual clauses or compliance with relevant data protection regulations.</p>
+
+            <h3>10. Cookies and Tracking Technologies</h3>
+            <ul>
+                <li><strong>Session Cookies:</strong> We use cookies to manage user sessions. These cookies expire after <strong>30 minutes</strong> of inactivity, ensuring that your session data is not retained longer than necessary.</li>
+                <li><strong>No Analytics Cookies:</strong> We do not use cookies for analytics or marketing purposes.</li>
+                <li><strong>Cookie Management:</strong> Currently, users do not have direct control over cookie settings on our platform. Cookies are used solely to track active sessions while logged in to provide necessary functionalities like messaging and notifications.</li>
+            </ul>
+
+            <h3>11. Children's Privacy</h3>
+            <p>Our services are intended for users who are <strong>13 years of age or older</strong>. We do not knowingly collect personal information from minors. If we become aware that we have inadvertently collected data from a minor, we will take steps to delete that information promptly.</p>
+            <p>
+                *Note:* While minors can use our service, we ensure that their data is handled with the same level of security and privacy as adult users. We do not sell or share data collected from minors with third parties.
+            </p>
+
+            <h3>12. Changes to This Privacy Policy</h3>
+            <p>We may update our Privacy Policy from time to time. Any changes will be communicated to you via email to the address provided or by posting the new Privacy Policy on our website with a new "Effective Date."</p>
+
+            <h3>13. Contact Us</h3>
+            <p>If you have any questions or concerns about this Privacy Policy or our data practices, please contact us at:</p>
+            <p><strong>Email:</strong> <a href="mailto:REMOVED">REMOVED</a></p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 ButchAI. All rights reserved.</p>
+        <p>
+            <a href="/terms">Terms</a>
+            <a href="/privacy">Privacy Policy</a>
+        </p>
+        <!-- Social Media Icons -->
+        <div class="social-icons">
+            <a href="#"><img src="{{ url_for('static', filename='images/x.png') }}" alt="X"></a>
+            <a href="#"><img src="{{ url_for('static', filename='images/yt.png') }}" alt="YouTube"></a>
+            <a href="#"><img src="{{ url_for('static', filename='images/tiktok.png') }}" alt="TikTok"></a>
+            <a href="#"><img src="{{ url_for('static', filename='images/insta.png') }}" alt="Instagram"></a>
+        </div> 
+    </footer>
+
+    <!-- JavaScript for Hamburger Menu Toggle -->
+    <script>
+        function toggleMenu() {
+            const header = document.querySelector('header');
+            header.classList.toggle('menu-open');
+        }
+
+        // Allow toggling menu with keyboard (Enter key)
+        document.querySelector('.hamburger').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                toggleMenu();
+            }
+        });
+    </script>
+</body>
+</html>

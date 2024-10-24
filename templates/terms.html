@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms and Conditions - Butch AI</title>
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* General Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            background-color: black;
+            color: yellow;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Header Styles */
+        header {
+            display: flex;
+            justify-content: space-between; /* Space between left and right sections */
+            align-items: center;
+            padding: 3px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.9); /* Semi-transparent for better visibility */
+            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.5);
+            z-index: 1000;
+        }
+
+        /* Left Section: Logo and Navigation Links */
+        .left-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* Logo Styling */
+        .logo {
+            height: 60px;
+            width: auto;
+            transition: box-shadow 0.3s ease-in-out;
+            border-radius: 6px;
+            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.5);
+        }
+
+        .logo:hover {
+            box-shadow: 0 0 30px rgba(255, 255, 0, 1);
+        }
+
+        /* Navigation Links Containers */
+        .nav-links-left, .nav-links-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* Left Navigation Links */
+        .nav-links-left a {
+            color: yellow;
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+
+        .nav-links-left a:hover {
+            color: rgba(255, 255, 0, 0.8);
+        }
+
+        /* Dropdown Menu */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown > a::after {
+            content: " ▼";
+            font-size: 12px;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: black;
+            min-width: 150px;
+            box-shadow: 0 4px 8px rgba(255, 255, 0, 0.2);
+            z-index: 1;
+            text-align: left;
+            border-radius: 8px;
+        }
+
+        .dropdown-content a {
+            color: yellow;
+            padding: 10px;
+            text-decoration: none;
+            display: block;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown-content a:hover {
+            background-color: rgba(255, 255, 0, 0.2);
+            color: white;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* Right Navigation Links (Sign Up and Login) */
+        .nav-links-right a {
+            color: yellow;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 10px 20px;
+            border: 2px solid yellow;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
+            transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+        }
+
+        .nav-links-right a:hover {
+            background-color: yellow;
+            color: black;
+            box-shadow: 0 0 20px rgba(255, 255, 0, 0.8);
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none; /* Hidden by default, shown on mobile via media queries */
+            cursor: pointer;
+            padding: 6px;
+            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.8);
+            border-radius: 4px;
+        }
+
+        .hamburger div {
+            width: 30px;
+            height: 4px;
+            background-color: yellow;
+            margin: 5px 0;
+            border-radius: 2px;
+            box-shadow: 0 2px 5px rgba(255, 255, 0, 0.5);
+        }
+
+        /* Banner Styles */
+        .banner {
+            background-color: black; /* Removed the image and gradient */
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Center the text */
+            padding: 100px 20px; /* Increased top padding to accommodate fixed header */
+            margin-top: 60px; /* Adjusted to prevent overlap with fixed header */
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .banner-text {
+            font-size: 48px;
+            font-weight: bold;
+            color: yellow; /* Changed to yellow for better contrast */
+            max-width: 90%;
+            overflow: hidden;
+            white-space: nowrap;
+            /* Optional: Add text shadow for better visibility */
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+            animation: none; /* Removed typing animation for simplicity */
+        }
+
+        /* Terms Section */
+        .section {
+            padding: 50px 20px;
+            background-color: #121212;
+            color: yellow;
+            text-align: center;
+        }
+
+        .section h2 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 3px rgba(255, 255, 0, 0.3);
+        }
+
+        .terms-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: left; /* Left align the terms text */
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        .terms-content h3 {
+            margin-top: 20px;
+            color: yellow;
+        }
+
+        .terms-content p, .terms-content ul {
+            margin-bottom: 15px;
+        }
+
+        .terms-content ul {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #121212;
+            color: rgba(255, 255, 255, 0.8);
+            padding: 30px 0;
+            text-align: center;
+            font-size: 14px;
+            margin-top: 50px;
+            width: 100%;
+        }
+
+        footer a {
+            color: yellow;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .social-icons {
+            margin-top: 20px;
+        }
+
+        .social-icons img {
+            width: 30px;
+            margin: 0 10px;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        .social-icons img:hover {
+            opacity: 1;
+        }
+
+        /* Mobile Styles */
+        @media only screen and (max-width: 768px) {
+            /* Show Hamburger Menu */
+            .hamburger {
+                display: block; /* Show hamburger on mobile */
+            }
+
+            /* Hide navigation links by default */
+            .nav-links-left,
+            .nav-links-right {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background-color: #000;
+                padding: 10px 0;
+                z-index: 1000;
+                text-align: center;
+            }
+
+            .nav-links-left a,
+            .nav-links-right a {
+                font-size: 18px;
+                padding: 15px 0;
+                text-decoration: none;
+                color: yellow;
+                display: block;
+                width: 100%;
+            }
+
+            /* Show navigation links when menu is open */
+            .menu-open .nav-links-left,
+            .menu-open .nav-links-right {
+                display: flex;
+            }
+            .banner {
+                padding-top: 70px;
+                padding-bottom: 50px;
+            }
+            /* Adjust banner text */
+            .banner-text {
+                font-size: 32px;
+                white-space: normal;
+                line-height: 1.4;
+                
+            }
+
+            /* Adjust section content */
+            .terms-content {
+                font-size: 14px;
+            }
+
+            /* Adjust footer */
+            footer {
+                padding: 20px 0;
+            }
+
+            .social-icons img {
+                width: 25px;
+                margin: 0 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <!-- Left Section: Logo and Navigation Links -->
+        <div class="left-section">
+            <!-- Logo -->
+            <img src="{{ url_for('static', filename='images/logobaby.png') }}" alt="ButchAI Logo" class="logo">
+
+            <!-- Left Navigation Links -->
+            <div class="nav-links-left">
+                <a href="/">Home</a>
+                <div class="dropdown">
+                    <a href="#">Features</a>
+                    <div class="dropdown-content">
+                        <a href="/how-to-prompt">How to Prompt</a>
+                        <a href="/basic">Basic</a>
+                        <a href="/premium">Premium</a>
+                    </div>
+                </div>
+                <a href="/pricing">Pricing</a>
+                <a href="/contact">Contact</a>
+            </div>
+        </div>
+
+        <!-- Right Navigation Links -->
+        <div class="nav-links-right">
+            <a href="/signup">Sign Up</a>
+            <a href="/login">Login</a>
+        </div>
+
+        <!-- Hamburger Menu Icon -->
+        <div class="hamburger" onclick="toggleMenu()" aria-label="Toggle navigation menu" role="button" tabindex="0">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </header>
+
+    <!-- Banner Section -->
+    <div class="banner">
+        <div class="banner-text">
+            Terms and Conditions
+        </div>
+    </div>
+
+    <!-- Terms Section -->
+    <div class="section">
+        <div class="terms-content">
+            <p><strong>Effective Date:</strong> October 24, 2024</p>
+
+            <h3>1. Introduction</h3>
+            <p>
+                Welcome to <strong>Butch AI</strong> ("we," "our," "us"). These <strong>Terms and Conditions</strong> ("Terms") govern your use of our website <a href="https://thebutchai.com/">thebutchai.com</a> and the services we provide. By accessing or using our services, you agree to be bound by these Terms.
+            </p>
+
+            <h3>2. Description of Services</h3>
+            <p>
+                <strong>Butch AI</strong> offers a digital product that provides AI-generated audio narrations tailored to your uploaded videos. We offer two subscription plans:
+            </p>
+            <ul>
+                <li><strong>Basic Plan:</strong>
+                    <ul>
+                        <li>10 minutes of narration per month</li>
+                        <li>Basic text-to-speech capabilities</li>
+                        <li>Customizable narration tone</li>
+                        <li>Upgrade options available</li>
+                    </ul>
+                </li>
+                <li><strong>Premium Plan:</strong>
+                    <ul>
+                        <li>10 minutes of narration per month</li>
+                        <li>Advanced text-to-speech capabilities</li>
+                        <li>Enhanced customization options</li>
+                        <li>Priority support</li>
+                        <li>Key frame-based narration</li>
+                    </ul>
+                </li>
+            </ul>
+            <p>
+                <em>Note:</em> Both plans allow users to upload videos, which our AI processes to generate customized audio narrations based on key frame AI analysis of images in the video.
+            </p>
+
+            <h3>3. User Accounts</h3>
+            <p>
+                <strong>Account Creation:</strong> To use our services, you must create an account by providing accurate and complete information, including your name, email address, and date of birth. Our services are intended for users who are <strong>13 years of age or older</strong>.
+            </p>
+            <p>
+                <strong>Account Security:</strong> You are responsible for maintaining the confidentiality of your account credentials. Notify us immediately if you suspect any unauthorized use of your account.
+            </p>
+            <p>
+                <strong>Account Termination:</strong> We reserve the right to terminate or suspend your account at our discretion, especially if you violate these Terms.
+            </p>
+
+            <h3>4. Subscription and Payment Terms</h3>
+            <p>
+                <strong>Billing Cycles:</strong> Subscriptions are billed on a <strong>monthly</strong> basis. Your subscription will automatically renew each month unless canceled.
+            </p>
+            <p>
+                <strong>Pricing:</strong> The prices for each subscription plan are currently under development and will be announced soon.
+            </p>
+            <p>
+                <strong>Automatic Renewals:</strong> By subscribing, you agree to automatic renewals. You can cancel your subscription at any time through your account settings.
+            </p>
+            <p>
+                <strong>Refund Policy:</strong> Please note that all sales are final. We do not offer refunds for any subscription plans or services.
+            </p>
+
+            <h3>5. User Responsibilities and Conduct</h3>
+            <p>
+                <strong>Acceptable Use:</strong> You agree to use our services only for lawful purposes and in accordance with these Terms.
+            </p>
+            <p>
+                <strong>Prohibited Activities:</strong>
+            </p>
+            <ul>
+                <li>Uploading content that is illegal, infringing, or violates the rights of others.</li>
+                <li>Attempting to interfere with or disrupt the integrity of our services.</li>
+                <li>Using automated systems to access our services without permission.</li>
+            </ul>
+            <p>
+                <strong>Content Ownership:</strong>
+            </p>
+            <ul>
+                <li><strong>User Content:</strong> You retain ownership of all videos and audio files you upload. However, by using our services, you grant us a non-exclusive, worldwide, royalty-free license to process, store, and delete your content as necessary to provide the service.</li>
+                <li><strong>Generated Content:</strong> The AI-generated audio narrations are provided for your personal use. You are permitted to use, sell, and distribute these narrations as you see fit. However, you may not claim ownership over the AI-generated content or use it in a way that misrepresents its origin.</li>
+            </ul>
+
+            <h3>6. Intellectual Property</h3>
+            <p>
+                <strong>Our Rights:</strong> All content, trademarks, service marks, logos, and intellectual property displayed on our website are owned by or licensed to <strong>Butch AI</strong>. You are prohibited from using these materials without our prior written consent.
+            </p>
+            <p>
+                <strong>User-Generated Content:</strong> While you retain ownership of your uploaded videos and audio, you grant us the necessary rights to process and manage this content to deliver our services.
+            </p>
+            <p>
+                <strong>Restrictions:</strong> You agree not to reverse engineer, decompile, disassemble, or otherwise attempt to derive the source code or underlying structure of our services.
+            </p>
+
+            <h3>7. Disclaimers and Limitations of Liability</h3>
+            <p>
+                <strong>Service "As Is":</strong> Our services are provided "as is" without any warranties of any kind, either express or implied.
+            </p>
+            <p>
+                <strong>AI Narrations Accuracy:</strong> While we strive to provide accurate and high-quality audio narrations, the AI technology may occasionally produce errors or imperfect outputs. These narrations are experimental and not guaranteed to be flawless.
+            </p>
+            <p>
+                <strong>Limitation of Liability:</strong> To the fullest extent permitted by law, <strong>Butch AI</strong> shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising out of your use or inability to use our services.
+            </p>
+            <p>
+                <strong>Indemnification:</strong> You agree to indemnify, defend, and hold harmless <strong>Butch AI</strong>, its officers, directors, employees, and agents from and against any claims, liabilities, damages, losses, and expenses arising out of your use of our services or violation of these Terms.
+            </p>
+
+            <h3>8. Termination</h3>
+            <p>
+                <strong>By User:</strong> You may cancel your subscription at any time through your account settings. Upon cancellation, your access to premium features will cease at the end of the current billing cycle.
+            </p>
+            <p>
+                <strong>By Us:</strong> We may terminate or suspend your account immediately, without prior notice or liability, if you breach any of these Terms or for any other reason.
+            </p>
+            <p>
+                <strong>Effects of Termination:</strong> Upon termination, your right to use the services will immediately cease. We will delete your personal data in accordance with our Privacy Policy.
+            </p>
+
+            <h3>9. Governing Law and Dispute Resolution</h3>
+            <p>
+                <strong>Jurisdiction:</strong> These Terms shall be governed and construed in accordance with the laws of <strong>South Dakota, United States</strong>, without regard to its conflict of law provisions.
+            </p>
+            <p>
+                <strong>Dispute Resolution:</strong> Any disputes arising out of or related to these Terms or the services provided by <strong>Butch AI</strong> shall be resolved through binding arbitration in <strong>South Dakota</strong>, except that you may assert claims in small claims court if applicable.
+            </p>
+
+            <h3>10. Privacy</h3>
+            <p>
+                Please refer to our <a href="/privacy">Privacy Policy</a> for information on how we collect, use, disclose, and safeguard your personal data.
+            </p>
+
+            <h3>11. Miscellaneous</h3>
+            <p>
+                <strong>Severability:</strong> If any provision of these Terms is found to be invalid or unenforceable, the remaining provisions will continue in full force and effect.
+            </p>
+            <p>
+                <strong>Entire Agreement:</strong> These Terms constitute the entire agreement between you and <strong>Butch AI</strong> regarding your use of our services and supersede all prior agreements and understandings.
+            </p>
+            <p>
+                <strong>No Waiver:</strong> Our failure to enforce any right or provision of these Terms will not be deemed a waiver of such rights.
+            </p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 ButchAI. All rights reserved.</p>
+        <p>
+            <a href="/terms">Terms</a>
+            <a href="/privacy">Privacy Policy</a>
+        </p>
+        <!-- Social Media Icons -->
+        <div class="social-icons">
+            <a href="#"><img src="{{ url_for('static', filename='images/x.png') }}" alt="X"></a>
+            <a href="#"><img src="{{ url_for('static', filename='images/yt.png') }}" alt="YouTube"></a>
+            <a href="#"><img src="{{ url_for('static', filename='images/tiktok.png') }}" alt="TikTok"></a>
+            <a href="#"><img src="{{ url_for('static', filename='images/insta.png') }}" alt="Instagram"></a>
+        </div> 
+    </footer>
+
+    <!-- JavaScript for Hamburger Menu Toggle -->
+    <script>
+        function toggleMenu() {
+            const header = document.querySelector('header');
+            header.classList.toggle('menu-open');
+        }
+
+        // Allow toggling menu with keyboard (Enter key)
+        document.querySelector('.hamburger').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                toggleMenu();
+            }
+        });
+    </script>
+</body>
+</html>

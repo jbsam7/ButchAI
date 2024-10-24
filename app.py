@@ -120,7 +120,7 @@ def home():
     return render_template('index.html')
 
 SIGNUP_ENABLED = True # Set to False to disable signups
-MAX_USERS = 1
+MAX_USERS = 3
 HCAPTCHA_SECRET_KEY = os.getenv('HCAPTCHA_SECRET_KEY')
 @app.route('/signup', methods=['GET', 'POST'])
 @limiter.limit("5 per minute")
@@ -603,10 +603,10 @@ def waitlist():
         message = bleach.clean(request.form.get('additional_info'))
         email = 'REMOVED'
 
-        subject = f"Contact Form Message from {name}"
+        subject = f"Waitlist Form Message from {name}"
         message = (
             f"Mr. Butch AI,\n"
-            f"You have received a new message in your contact form.\n\n"
+            f"You have received a new message in your waitlist form.\n\n"
             f"Name: {name}\n"
             f"Email: {user_email}\n"
             f"Message: {message}"
@@ -839,6 +839,15 @@ def unsubscribe():
 
     return redirect(url_for('account'))
 
+# Terms route
+@app.route('/terms')
+def terms():
+    return render_template('terms.html')
+
+@app.route('/privacy')
+def privacy():
+    return render_template('privacy.html')
+
 # Subscription routes
 @app.route('/subscribe-basic')
 @login_required
@@ -959,7 +968,6 @@ def stripe_webhook_route():
 
 # --- Video Processing Logic ---
 ELEVENLABS_API_KEY = os.getenv('ELEVENLABS_API_KEY')
-
 
 def summarize_video(video_path, frame_interval, max_frame_for_last_key, api_key, custom_prompt, custom_prompt_frame, username):
     logger.info("Starting video summarization process...")
