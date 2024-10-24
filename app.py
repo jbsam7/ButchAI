@@ -120,7 +120,7 @@ def home():
     return render_template('index.html')
 
 SIGNUP_ENABLED = True # Set to False to disable signups
-MAX_USERS = 10
+MAX_USERS = 1
 HCAPTCHA_SECRET_KEY = os.getenv('HCAPTCHA_SECRET_KEY')
 @app.route('/signup', methods=['GET', 'POST'])
 @limiter.limit("5 per minute")
@@ -139,7 +139,7 @@ def signup_route():
 
     if user_count >= MAX_USERS:
         flash('Maximum number of users reached. Signups are currently closed.')
-        return redirect(url_for('login_route'))
+        return redirect(url_for('waitlist'))
 
 
     if request.method == 'POST':
@@ -592,6 +592,33 @@ def contact():
 
 
     return render_template('contact.html')
+
+# Waitlist page
+@app.route('/waitlist', methods=['GET', 'POST'])
+@limiter.limit("10 per minute")
+def waitlist():
+    if request.method == 'POST':
+        name = bleach.clean(request.form.get('name'))
+        user_email = bleach.clean(request.form.get('email'))
+        message = bleach.clean(request.form.get('additional_info'))
+        email = 'REMOVED'
+
+        subject = f"Contact Form Message from {name}"
+        message = (
+            f"Mr. Butch AI,\n"
+            f"You have received a new message in your contact form.\n\n"
+            f"Name: {name}\n"
+            f"Email: {user_email}\n"
+            f"Message: {message}"
+)
+        # Send the user email information to contact support
+        send_email(email, subject, message)
+        flash('Your message has been sent successfully! We will get back to you soon.')
+
+
+    return render_template('waitlist.html')
+
+
 
 # Account page route
 @app.route('/account', methods=['GET', 'POST'])
