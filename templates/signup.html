@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up - Butch AI</title>
 
-    <!-- Replace Google reCAPTCHA widget with hCaptcha widget -->
-    <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
-
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+    <!-- hCaptcha Widget -->
+    <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
+
     <style>
         /* Global Styles */
         * {
@@ -19,95 +20,91 @@
         }
 
         html, body {
-            background-color: #121212;
+            background-color: #1a1a1a;
             color: yellow;
             font-family: 'Poppins', sans-serif;
-            height: 100%;
-            min-height: 100vh;
             margin: 0;
             padding: 0;
             overflow-x: hidden;
             display: flex;
             flex-direction: column;
+            min-height: 100vh;
         }
 
         /* Header Styles */
         header {
             display: flex;
-            justify-content: space-between; /* Space between left and right sections */
+            flex-wrap: wrap;
             align-items: center;
             padding: 2px;
             position: fixed;
             top: 0;
             width: 100%;
-            background-color: rgba(0, 0, 0, 0.9); /* Semi-transparent for better visibility */
-            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.5);
             z-index: 1000;
+            background-color: #1a1a1a;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
         }
 
-        /* Left Section: Logo and Navigation Links */
-        .left-section {
+        /* Logo Text */
+        .logo-text {
+            font-size: 32px;
+            font-weight: 700;
+            color: #FFFF31;
+            margin-right: 20px;
+            transition: color 0.3s ease-in-out;
+            cursor: default;
+            padding-left: 8px;
+        }
+
+        .logo-text:hover {
+            color: rgba(255, 255, 0, 0.8);
+        }
+
+        .logo-text .ai {
+            color: #FFD700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+
+        /* Navigation Links */
+        .nav-links-left {
             display: flex;
-            align-items: center;
+            flex-wrap: wrap;
             gap: 20px;
-        }
-
-        /* Logo Styling */
-        .logo {
-            height: 60px;
-            width: auto;
-            transition: box-shadow 0.3s ease-in-out;
-            border-radius: 6px;
-            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.5);
-        }
-
-        .logo:hover {
-            box-shadow: 0 0 30px rgba(255, 255, 0, 1);
-        }
-
-        /* Navigation Links Containers */
-        .nav-links-left, .nav-links-right {
-            display: flex;
             align-items: center;
-            gap: 20px;
+            padding-top: 3px;
         }
 
-        /* Left Navigation Links */
         .nav-links-left a {
-            color: yellow;
+            color: #FFD700;
             text-decoration: none;
             font-size: 18px;
-            transition: color 0.3s;
         }
 
         .nav-links-left a:hover {
             color: rgba(255, 255, 0, 0.8);
         }
 
-        /* Dropdown Menu */
         .dropdown {
             position: relative;
-        }
-
-        .dropdown > a::after {
-            content: " ▼";
-            font-size: 12px;
         }
 
         .dropdown-content {
             display: none;
             position: absolute;
-            background-color: black;
-            min-width: 150px;
-            box-shadow: 0 4px 8px rgba(255, 255, 0, 0.2);
+            background-color: rgba(0, 0, 0, 0.8);
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(255, 255, 0, 0.3);
             z-index: 1;
             text-align: left;
             border-radius: 8px;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            transform: translateY(10px);
+            opacity: 0;
         }
 
         .dropdown-content a {
-            color: yellow;
-            padding: 10px;
+            color: #FFD700;
+            padding: 12px 16px;
             text-decoration: none;
             display: block;
             font-size: 16px;
@@ -121,102 +118,114 @@
 
         .dropdown:hover .dropdown-content {
             display: block;
+            opacity: 1;
+            transform: translateY(0);
         }
 
-        /* Right Navigation Links (Sign Up and Login) */
+        .dropdown::after {
+            content: " ▼";
+            font-size: 12px;
+        }
+
+        .nav-links-right {
+            margin-left: auto;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-right: 1%;
+        }
+
         .nav-links-right a {
-            color: yellow;
+            color: black;
             text-decoration: none;
-            font-size: 18px;
-            padding: 10px 20px;
-            border: 2px solid yellow;
+            padding: 7px 14px;
+            border: 2px solid #FFD700;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
-            transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+            background-color: #FFD700;
         }
 
         .nav-links-right a:hover {
-            background-color: yellow;
+            background-color: #FFFF31;
             color: black;
-            box-shadow: 0 0 20px rgba(255, 255, 0, 0.8);
+            box-shadow: 0 0 20px rgba(255, 255, 0, 0.5);
+            border: 2px solid #FFFF31;
         }
 
         /* Hamburger Menu */
         .hamburger {
-            display: none; /* Hidden by default, shown on mobile via media queries */
+            display: none;
             cursor: pointer;
-            padding: 6px;
-            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.8);
-            border-radius: 4px;
+            position: relative;
+            right: 10px;
         }
 
         .hamburger div {
-            width: 30px;
-            height: 4px;
-            background-color: yellow;
-            margin: 5px 0;
-            border-radius: 2px;
-            box-shadow: 0 2px 5px rgba(255, 255, 0, 0.5);
+            width: 40px;
+            height: 6.5px;
+            background-color: #FFD700;
+            margin: 6px 0;
+            border-radius: 4px;
         }
 
         /* Banner Styles */
         .banner {
-            background: linear-gradient(to right, yellow, rgba(255, 255, 0, 0.1));
+            background: #FFD700;
             display: flex;
             align-items: center;
-            justify-content: center; /* Center the text */
-            padding: 70px 20px; /* Adjusted padding to accommodate fixed header */
-            margin-top: 80px; /* Adjusted to prevent overlap with fixed header */
+            justify-content: center;
+            padding: 100px 20px;
+            margin-top: 40px;
             flex-direction: column;
             text-align: center;
         }
 
         .banner-text {
-            font-size: 48px;
+            font-size: 56px;
             font-weight: bold;
-            color: black; /* Text color contrasting with the background */
+            color: #1c1c1c;
             max-width: 90%;
             overflow: hidden;
-            white-space: nowrap;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
-            animation: none; /* Removed typing animation for simplicity */
+           
         }
+
+       
 
         /* Form Container */
         .form-container {
-            background-color: black;
+            background-color: #FFD700;
             padding: 40px;
             border-radius: 15px;
-            box-shadow: 0px 4px 10px rgba(255, 255, 0, 1);
             width: 90%;
             max-width: 600px;
             text-align: center;
-            margin: 50px auto 30px auto; /* Adjusted margins */
-            flex: 1; /* Allows the form container to grow and fill available space */
+            margin: 50px auto 30px auto;
+            flex: 1;
+            color:#1a1a1a;
         }
 
         /* Form Title */
         .form-container h1 {
             margin-bottom: 30px;
             font-size: 24px;
-            box-shadow: 0 0 30px rgba(255, 255, 0, 1);
             padding: 15px;
             border-radius: 10px;
-            color: black;
-            background-color: yellow;
+            color: white;
+            background-color:#1c1c1c;
         }
 
-        /* Form fields and labels */
+        /* Form Fields */
         .form-group {
             margin-bottom: 20px;
-            text-align: left; /* Align labels to the left */
+            text-align: left;
         }
 
         .form-group label {
             margin-bottom: 5px;
             display: block;
-            color: yellow;
+            color: white;
             font-size: 16px;
+            text-shadow: #121212 1px 0px 10px;
         }
 
         .form-group input[type="text"],
@@ -226,25 +235,19 @@
             width: 100%;
             padding: 10px;
             border-radius: 5px;
-            border: 2px solid yellow;
-            background-color: black;
-            color: yellow;
+            border: 2px solid white;
+            background-color: #1a1a1a;
+            color: white;
             box-shadow: 0px 4px 10px rgba(255, 255, 0, 0.5);
             transition: box-shadow 0.3s ease-in-out;
             font-size: 16px;
         }
 
-        .form-group input[type="text"]::placeholder,
-        .form-group input[type="date"]::placeholder,
-        .form-group input[type="email"]::placeholder,
-        .form-group input[type="REMOVED"]::placeholder {
-            color: rgba(255, 255, 0, 0.7);
+        .form-group input::placeholder {
+            color: white;
         }
 
-        .form-group input[type="text"]:focus,
-        .form-group input[type="date"]:focus,
-        .form-group input[type="email"]:focus,
-        .form-group input[type="REMOVED"]:focus {
+        .form-group input:focus {
             box-shadow: 0px 6px 15px rgba(255, 255, 0, 0.8);
             outline: none;
         }
@@ -263,16 +266,16 @@
 
         /* Button styling */
         .btn-primary {
-            background-color: yellow;
+            background-color: white;
             color: black;
-            border: none;
-            padding: 15px 0; /* Adjusted padding for consistency */
+            border: solid black 3px;
+            padding: 15px 0;
             border-radius: 5px;
             box-shadow: 0px 8px 20px rgba(255, 255, 0, 0.8);
             cursor: pointer;
             transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
             margin-top: 20px;
-            width: 100%; /* Ensure button spans full width */
+            width: 100%;
             font-size: 18px;
             font-weight: bold;
             text-decoration: none;
@@ -280,17 +283,17 @@
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0px 12px 30px rgba(255, 255, 0, 1);
+            background-color:#FFFF31;
         }
 
         /* Footer Styles */
         footer {
-            background-color: black;
+            background-color: #121212;
             color: rgba(255, 255, 255, 0.8);
             padding: 30px 0;
             text-align: center;
             font-size: 14px;
-            width: 100%;
+            margin-top: 50px;
         }
 
         footer a {
@@ -320,12 +323,21 @@
 
         /* Mobile Styles */
         @media only screen and (max-width: 768px) {
-            /* Show Hamburger Menu */
-            .hamburger {
-                display: block; /* Show hamburger on mobile */
+            /* Header */
+            header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0 1px;
+                height: auto;
             }
 
-            /* Hide navigation links by default */
+            /* Hamburger Menu */
+            .hamburger {
+                display: block;
+            }
+
+            /* Navigation Links */
             .nav-links-left,
             .nav-links-right {
                 display: none;
@@ -350,48 +362,47 @@
                 width: 100%;
             }
 
-            /* Show navigation links when menu is open */
+            /* Show menu when open */
             .menu-open .nav-links-left,
             .menu-open .nav-links-right {
                 display: flex;
             }
-           
-            /* Adjust banner text */
+
+            /* Banner */
+            .banner {
+                padding: 60px 20px;
+            }
+
             .banner-text {
-                font-size: 32px; /* Reduced font size */
-                padding: 0 10px;
-                white-space: normal; /* Allow text to wrap */
-                line-height: 1.4; /* Improve readability */
-                text-align: center; /* Ensure centered alignment */
+                font-size: 32px !important;
+                max-width: 100%;
+                white-space: normal;
+                overflow: hidden;
+            
             }
 
-            /* Adjust form container */
+
+            /* Form Container */
             .form-container {
-                margin: 50px auto 20px auto; /* Adjust margins for better spacing */
-                padding: 30px; /* Reduce padding for smaller screens */
-                max-width: 90%; /* Allow slight flexibility */
+                margin: 50px auto 20px auto;
+                padding: 30px;
+                max-width: 90%;
             }
 
-            /* Adjust form-group labels and inputs */
             .form-group label {
                 font-size: 16px;
             }
 
-            .form-group input[type="text"],
-            .form-group input[type="date"],
-            .form-group input[type="email"],
-            .form-group input[type="REMOVED"] {
+            .form-group input {
                 font-size: 14px;
                 padding: 8px;
             }
 
-            /* Adjust button */
             .btn-primary {
                 padding: 12px 0;
                 font-size: 16px;
             }
 
-            /* Adjust footer */
             footer {
                 padding: 20px 0;
             }
@@ -406,38 +417,38 @@
 <body>
     <!-- Header -->
     <header>
-        <!-- Left Section: Logo and Navigation Links -->
-        <div class="left-section">
-            <!-- Logo -->
-            <img src="{{ url_for('static', filename='images/logobaby.png') }}" alt="ButchAI Logo" class="logo">
+        <!-- Logo Text -->
+        <div class="logo-text" aria-label="ButchAI">
+            Butch<span class="ai">AI</span>
+        </div>
 
-            <!-- Left Navigation Links -->
-            <div class="nav-links-left">
-                <a href="/">Home</a>
-                <div class="dropdown">
-                    <a href="#">Features</a>
-                    <div class="dropdown-content">
-                        <a href="/how-to-prompt">How to Prompt</a>
-                        <a href="/basic">Basic</a>
-                        <a href="/premium">Premium</a>
-                    </div>
+        <!-- Hamburger Menu Icon -->
+        <div class="hamburger" onclick="toggleMenu()">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+
+        <!-- Navigation Links -->
+        <div class="nav-links-left">
+            <a href="/">Home</a>
+            <!-- Dropdown for Features -->
+            <div class="dropdown">
+                <a href="#">Features</a>
+                <div class="dropdown-content">
+                    <a href="/how-to-prompt">How to Prompt</a>
+                    <a href="/basic">Basic</a>
+                    <a href="/premium">Premium</a>
                 </div>
-                <a href="/pricing">Pricing</a>
-                <a href="/contact">Contact</a>
             </div>
+            <a href="/pricing">Pricing</a>
+            <a href="/contact">Contact</a>
         </div>
 
         <!-- Right Navigation Links -->
         <div class="nav-links-right">
             <a href="/signup">Sign Up</a>
             <a href="/login">Login</a>
-        </div>
-
-        <!-- Hamburger Menu Icon -->
-        <div class="hamburger" onclick="toggleMenu()" aria-label="Toggle navigation menu" role="button" tabindex="0">
-            <div></div>
-            <div></div>
-            <div></div>
         </div>
     </header>
 
@@ -476,7 +487,7 @@
                 <label for="REMOVED">Password:</label>
                 <input type="REMOVED" class="form-control" id="REMOVED" name="REMOVED" required minlength="8" maxlength="50" oninput="validatePassword()" placeholder="Create a REMOVED">
                 <!-- Password criteria feedback -->
-                <ul id="REMOVEDCriteria" style="color: yellow; margin-left: 0; padding-left: 20px; list-style-type: none;">
+                <ul id="REMOVEDCriteria" style="color: white; margin-left: 0; padding-left: 20px; list-style-type: none;">
                     <li id="minLength" style="color: red;">At least 8 characters</li>
                     <li id="uppercase" style="color: red;">At least one uppercase letter</li>
                     <li id="lowercase" style="color: red;">At least one lowercase letter</li>
@@ -487,8 +498,8 @@
             <div class="form-group">
                 <label for="confirm_REMOVED">Confirm Password:</label>
                 <input type="REMOVED" class="form-control" id="confirm_REMOVED" name="confirm_REMOVED" required minlength="8" maxlength="50" oninput="validatePassword()" placeholder="Confirm your REMOVED">
-                <!-- Add the small tag to show REMOVED match feedback -->
-                <small id="REMOVEDMatch" style="color: red;"></small> <!-- Feedback for REMOVED match -->
+                <!-- Password match feedback -->
+                <small id="REMOVEDMatch" style="color: red;"></small>
             </div>
 
             <!-- Subscription Tier Selection -->
@@ -516,7 +527,7 @@
     <footer>
         <p>&copy; 2024 ButchAI. All rights reserved.</p>
         <p>
-            <a href="/terms">Terms</a> |
+            <a href="/terms">Terms</a>
             <a href="/privacy">Privacy Policy</a>
         </p>
         <!-- Social Media Icons -->
@@ -525,42 +536,28 @@
             <a href="#"><img src="{{ url_for('static', filename='images/yt.png') }}" alt="YouTube"></a>
             <a href="#"><img src="{{ url_for('static', filename='images/tiktok.png') }}" alt="TikTok"></a>
             <a href="#"><img src="{{ url_for('static', filename='images/insta.png') }}" alt="Instagram"></a>
-        </div> 
+        </div>
     </footer>
 
-    <!-- JavaScript for Hamburger Menu Toggle and Dropdown -->
+    <!-- JavaScript -->
     <script>
+        // Hamburger Menu Toggle
         function toggleMenu() {
             const header = document.querySelector('header');
             header.classList.toggle('menu-open');
         }
 
-        // Allow toggling menu with keyboard (Enter key)
-        document.querySelector('.hamburger').addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                toggleMenu();
-            }
-        });
-
-        // Toggle dropdown on mobile
-        const dropdownToggle = document.querySelector('.dropdown-toggle');
-        if (dropdownToggle) {
-            dropdownToggle.addEventListener('click', function() {
-                this.parentElement.classList.toggle('active');
-            });
-        }
-
         // Password Validation Function
         function validatePassword() {
             const REMOVED = document.getElementById("REMOVED").value;
-            const confirmPassword = document.getElementById("confirm_REMOVED").value; // Grab confirm REMOVED value
+            const confirmPassword = document.getElementById("confirm_REMOVED").value;
             // Elements for feedback
             const minLength = document.getElementById("minLength");
             const uppercase = document.getElementById("uppercase");
             const lowercase = document.getElementById("lowercase");
             const number = document.getElementById("number");
             const special = document.getElementById("special");
-            const match = document.getElementById("REMOVEDMatch"); // Feedback for REMOVED match
+            const match = document.getElementById("REMOVEDMatch");
 
             // Minimum length (8 characters)
             if (REMOVED.length >= 8) {
@@ -597,7 +594,7 @@
                 special.style.color = "red";
             }
 
-            // Check if both fields are not empty
+            // Check if REMOVEDs match
             if (REMOVED !== '' && confirmPassword !== '') {
                 if (REMOVED === confirmPassword) {
                     match.style.color = "green";
@@ -607,11 +604,9 @@
                     match.innerText = "Passwords do not match";
                 }
             } else {
-                // Clear the message if one or both fields are empty
                 match.innerText = "";
             }
         }
-
 
     </script>
 </body>
