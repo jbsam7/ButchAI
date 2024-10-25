@@ -46,6 +46,17 @@
             animation: fadeInOut 3s ease forwards;
         }
 
+        .intro-text .welcome {
+            color: #FFD700;
+        }
+
+        .intro-text .butch {
+            color: #FFFF31; /* Bright yellow color for 'Butch' */
+        }
+        .intro-text .ai {
+            color: #FFD700; /* Gold color for 'AI' */
+        }
+
         /* Fade-in and Fade-out animation */
         @keyframes fadeInOut {
             0% {
@@ -68,32 +79,37 @@
 
         header {
             display: flex;
-            flex-wrap: wrap; /* Allows items to wrap to the next line on small screens */
+            flex-wrap: wrap; /* Allows items to wrap to the next #1a1a1a line on small screens */
             align-items: center;
             padding: 2px;
             position: fixed;
+            padding-bottom: 6px;
             top: 0;
             width: 100%;
             z-index: 1000;
-            background-color: black;
-            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.5);
-            backdrop-filter: blur(10px);
+            background-color: #1a1a1a;
+            
+           
             transition: background-color 0.3s ease, box-shadow 0.3s ease;
         }
-
-        .logo {
-            height: 60px;
-            width: auto;
+        /* Add styles for the logo text */
+        .logo-text {
+            font-size: 32px;
+            font-weight: 700;
+            color: #FFFF31;
             margin-right: 20px;
-            transition: box-shadow 0.3s ease-in-out;
-            border-radius: 6px;
-            margin-left: -2px;
-            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.5);
-            
+            transition: color 0.3s ease-in-out;
+            cursor: default;
+            padding-left: 8px;
+        }
+        .logo-text:hover {
+            color: rgba(255, 255, 0, 0.8);
         }
 
-        .logo:hover {
-            box-shadow: 0 0 30px rgba(255, 255, 0, 1);
+        /* Style for the 'AI' part */
+        .logo-text .ai {
+            color: #FFD700; /* Gold color for 'AI' */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Optional: Enhance readability */
         }
 
         .nav-links-left {
@@ -101,10 +117,11 @@
             flex-wrap: wrap;
             gap: 20px;
             align-items: center;
+            padding-top: 3px;
         }
 
         .nav-links-left a {
-            color: yellow;
+            color: #FFD700;
             text-decoration: none;
             font-size: 18px;
         }
@@ -134,7 +151,7 @@
 
         /* Links inside the dropdown */
         .dropdown-content a {
-            color: yellow;
+            color: #FFD700;
             padding: 12px 16px;
             text-decoration: none;
             display: block;
@@ -171,43 +188,46 @@
         }
 
         .nav-links-right a {
-            color: yellow;
+            color: black;
             text-decoration: none;
-            padding: 10px 20px;
-            border: 2px solid yellow;
+            padding: 7px 14px;
+            border: 2px solid #FFD700;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
+            background-color: #FFD700;
            
         }
 
         .nav-links-right a:hover {
-            background-color: yellow;
+            background-color: #FFFF31;
             color: black;
-            box-shadow: 0 0 20px rgba(255, 255, 0, 0.8);
+            box-shadow: 0 0 20px rgba(255, 255, 0, 0.5);
+            border: 2px solid #FFFF31;
         }
 
         /* Banner section */
         .banner {
-            background: linear-gradient(to right, yellow, rgba(255, 255, 0, 0.1));
+            background: #FFD700;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 50px 20px;
-            margin-top: 80px;
+            padding: 180px 20px; /* Increased padding for a larger banner */
+            margin-top: 40px;
             flex-direction: column;
             text-align: center;
         }
 
         .banner-text {
-            font-size: 48px;
+            font-size: 56px; /* Increased font size */
             font-weight: bold;
-            color: black;
+            color: #1c1c1c;
             max-width: 90%;
             overflow: hidden;
             border-right: 4px solid black;
             white-space: nowrap;
             animation: typing 6s steps(46, end) forwards, cursorBlink 0.75s step-end infinite;
         }
+
 
         /* Typing effect */
         @keyframes typing {
@@ -221,70 +241,108 @@
             50% { border-color: black; }
         }
 
-        /* Second banner section */
+        /* Second banner adjustments */
         .second-banner {
             background: linear-gradient(to right, black, rgb(27, 23, 23));
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 35px;
-            color: yellow;
+            color: #1a1a1a;
+            padding: 70px;
             text-align: center;
             font-family: 'Poppins', sans-serif;
+            display: flex;
+            flex-direction: column; /* Change to column to stack content vertically */
+            align-items: center; /* Center align items */
         }
 
-        .second-banner-text {
-            max-width: 1000px;
-            padding: 30px;
-            
+        .second-banner-content {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            max-width: 1200px; /* Optional: constrain max width */
+            margin-bottom: 40px; /* Space between content and scroll text */
         }
 
-        .second-banner h2 {
-            font-size: 42px;
-            font-weight: 700;
-            margin-bottom: 15px;
-            line-height: 1.3;
-            text-shadow: 1px 1px 3px rgba(255, 255, 0, 0.3);
+        .second-banner-left, .second-banner-right {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .second-banner p {
-            font-size: 20px;
-            line-height: 1.6;
-            color: rgba(255, 255, 0, 0.8);
-            text-shadow: 1px 1px 3px rgba(255, 255, 0, 0.3);
-            
-            
-        }
-
-        .second-banner-text-container {
-            background-color: rgba(0, 0, 0, 0.8);
+        .second-banner-text-container, .call-to-action {
+            background-color: #FFD700;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0px 4px 15px rgba(255, 255, 0, 0.8);
+            border: 4px solid #FFFF31;
             backdrop-filter: blur(5px);
-            max-width: 100%;
+            width: 90%;
+            max-width: 500px;
         }
 
         .scroll-banner-text {
             font-size: 32px;
             font-weight: bold;
-            color: yellow;
+            color: #FFD700;
             white-space: nowrap;
             overflow: hidden;
-            border-right: 4px solid yellow;
+            border-right: 4px solid #FFD700;
             width: 0;
             visibility: hidden;
-            max-width: 100%;
             display: inline-block;
             text-align: center;
             margin-top: 20px;
-            padding-top: 10%;
+            animation: none; /* Prevent animation until triggered */
         }
+        .second-banner h2 {
+            font-size: 32px;
+            font-weight: bold;
+            color: #1c1c1c;
+            text-align: center;
+        }
+
+        .second-banner p {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1c1c1c;
+            margin: 30px 0px;
+            line-height: 2;
+        }
+
+        .call-to-action h3 {
+            font-size: 32px;
+            font-weight: bold;
+            color: #1c1c1c;
+            margin-bottom: 15px;
+        }
+
+        .call-to-action p {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1c1c1c;
+            margin-bottom: 20px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: black;
+            color: yellow;
+            padding: 15px 30px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        .cta-button:hover {
+            background-color: #1a1a1a;
+            box-shadow: 0 0 10px yellow;
+        }
+
+    
 
         /* Typing keyframes */
         @keyframes typingScroll {
             from { width: 0; }
-            to { width: 100%; }
+            to { width: 34%; }
         }
 
         /* Cursor blink animation */
@@ -305,7 +363,7 @@
         }
 
         #playPauseBtn {
-            background-color: yellow;
+            background-color: #FFD700;
             border: none;
             border-radius: 50%;
             width: 60px;
@@ -319,7 +377,7 @@
         }
 
         #playPauseBtn:hover {
-            background-color: #ffd700; /* Slightly darker yellow on hover */
+            background-color: yellow; /* Slightly darker yellow on hover */
         }
 
         #playPauseBtn:focus {
@@ -466,30 +524,44 @@
             padding: 0 1px;
             height: auto;
         }
-
+        /* Adjust banner padding */
+        .banner {
+            padding: 60px 20px; /* Adjusted padding for mobile */
+        }
+        /* Adjust banner text for mobile */
+        .banner-text {
+            font-size: 32px !important;
+            max-width: 100%;
+            white-space: normal; /* Allow text to wrap */
+            overflow: hidden;
+            border-right: none; /* Remove cursor for the new animation */
+            animation: revealText 3s ease forwards; /* New animation */
+            clip-path: inset(0 0 100% 0); /* Start by hiding the text */
+        }
+        /* New keyframes for revealing text */
+        @keyframes revealText {
+            from {
+                clip-path: inset(0 0 100% 0); /* Text is hidden */
+            }
+            to {
+                clip-path: inset(0 0 0 0); /* Text is fully revealed */
+            }
+        }
         /* Hamburger menu styling */
         .hamburger {
             display: block; /* Show hamburger on mobile */
             cursor: pointer;
             position: relative;
-            left: -1px;
-            border:  rgba(255, 255, 0);
-            padding: 6px;
-            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.8);
-            border-radius: 4px;
-            padding-right: 6%;
-            padding-left: 6%;
-            
+            right: 10px;
 
         }
 
         .hamburger div {
             width: 40px;
             height: 6.5px;
-            background-color: yellow;
+            background-color: #FFD700;
             margin: 6px 0;
             border-radius: 4px;
-            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.5);
         }
 
         .logo {
@@ -499,27 +571,68 @@
             box-shadow: 0 4px 10px rgba(255, 255, 0, 0.6);
 
         }
-        .second-banner-text-container {
-            /* Allow full width on mobile */
-            padding: 10px 15px;
-            width: 100%; 
-
+        /* Adjust .second-banner */
+        .second-banner {
+            padding: 20px 0; /* Reduce horizontal padding */
+            align-items: stretch; /* Allow child items to stretch full width */
         }
-        .second-banner-text {
+
+        /* Adjust .second-banner-content */
+        .second-banner-content {
+            flex-direction: column;
+            align-items: stretch; /* Stretch child items to full width */
             width: 100%;
-            text-align: center;
-
         }
-        .banner {
-            padding: 40px;
 
+        .second-banner-left, .second-banner-right {
+            width: 100%;
+            margin-bottom: 20px;
         }
-        .banner-text {
-            font-size: 13px !important;
-            font-weight: bold;
-         
 
+        .second-banner-text-container, .call-to-action {
+            width: 100%;
+            max-width: 80%; /* Remove max-width constraint */
+            margin: 0; /* Remove margins */
         }
+
+        .scroll-banner-text {
+            font-size: 24px;
+            margin-top: -10px;
+    
+        }
+
+        /* Typing keyframes */
+        @keyframes typingScroll {
+            from { width: 0%; }
+            to { width: 100%; }
+        }
+
+        /* Cursor blink animation */
+        @keyframes blinkScroll {
+            from, to { border-color: transparent; }
+            50% { border-color: yellow; }
+        }
+
+        .second-banner h2 {
+            font-size: 24px;
+        }
+
+        .second-banner p {
+            font-size: 16px;
+        }
+
+        .call-to-action h3 {
+            font-size: 24px;
+        }
+
+        .call-to-action p {
+            font-size: 16px;
+        }
+
+        .cta-button {
+            padding: 12px 24px;
+        }
+
 
     
         
@@ -579,15 +692,6 @@
             color: yellow; /* Text color to match other links */
         }
 
-         
-
-
-        /* Ensure banner text and other elements are styled properly */
-        .banner-text {
-            font-size: 32px;
-            max-width: 100%;
-        }
-
         .second-banner h2 {
             font-size: 32px;
         }
@@ -617,10 +721,6 @@
             text-align: center; /* Center text on mobile */
         }
         
-
-        .scroll-banner-text {
-            font-size: 24px;
-        }
     }
     
     </style>
@@ -628,12 +728,20 @@
 <body>
     <!-- Intro Overlay -->
     <div class="intro-overlay">
-        <div class="intro-text">Welcome to Butch AI</div>
+        <div class="intro-text">
+            <span class="welcome">Welcome to</span>
+            <span class="butch">Butch</span>
+            <span class="ai"> AI</span>
+        </div>
     </div> 
 
     <header>
         <!-- Insert the logo here-->
-        <img src="{{ url_for('static', filename='images/logobaby.png') }}" alt="ButchAI Logo" class="logo">
+        <!--img src="{{ url_for('static', filename='images/logobaby.png') }}" alt="ButchAI Logo" class="logo"-->
+        <!-- Insert the logo text here-->
+        <div class="logo-text" aria-label="ButchAI">
+            Butch<span class="ai">AI</span>
+        </div>
 
             <!-- Hamburger menu icon -->
         <div class="hamburger" onclick="toggleMenu()">
@@ -672,25 +780,34 @@
         </div>
     </div>
 
-    <!-- Second banner section-->
     <div class="second-banner">
-        <div class="second-banner-text-container">
-            <div class="second-banner-text">
-                <h2>The First Narration Tool to Use Key Frames</h2>
-                <p> 
-                    We create custom narrations using key frames of your video to provide
-                    personalized voiceover content that stands out. This unique approach allows us
-                    to offer narration that enhances your storytelling, ensuring every key moment
-                    is highlighted with precision.
-                </p>
+        <!-- Container for left and right sections -->
+        <div class="second-banner-content">
+            <div class="second-banner-left">
+                <div class="second-banner-text-container">
+                    <div class="second-banner-text">
+                        <h2>The First Narration Tool to Use Key Frames</h2>
+                        <p> 
+                            We create custom narrations using key frames of your video to provide
+                            personalized voiceover content that stands out. This unique approach allows us
+                            to offer narration that enhances your storytelling, ensuring every key moment
+                            is highlighted with precision.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="second-banner-right">
+                <div class="call-to-action">
+                    <h3>Get Started Today!</h3>
+                    <p>Experience the future of narration.</p>
+                    <a href="/signup" class="cta-button">Sign Up Now</a>
+                </div>
             </div>
         </div>
-
-        <div>
-            <div class="scroll-banner-text">
-                Narrate an ad for Butch AI<br>
-            </div> 
-        </div>
+        <!-- Scroll banner text -->
+        <div class="scroll-banner-text">
+            Narrate an ad for Butch AI<br>
+        </div> 
     </div>
     <div class="audio-container">
         <audio id="audioPlayer">
