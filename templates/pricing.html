@@ -7,7 +7,6 @@
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        /* General Styles */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -15,7 +14,7 @@
         }
 
         html, body {
-            background-color: black;
+            background-color: #1a1a1a;
             color: yellow;
             font-family: 'Poppins', sans-serif;
             margin: 0;
@@ -25,162 +24,120 @@
             position: relative;
         }
 
-        /* Header Styles */
+        /* Header */
         header {
             display: flex;
-            justify-content: space-between; /* Space between left and right sections */
+            justify-content: space-between;
             align-items: center;
-            padding: 3px;
+            padding: 10px 20px;
             position: fixed;
             top: 0;
             width: 100%;
-            background-color: rgba(0, 0, 0, 0.9); /* Semi-transparent for better visibility */
-            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.5);
             z-index: 1000;
+            background-color: #1a1a1a;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
         }
 
-        /* Left Section: Logo and Navigation Links */
-        .left-section {
+        .logo-text {
+            font-size: 32px;
+            font-weight: 700;
+            color: #FFFF31;
+        }
+
+        .logo-text .ai {
+            color: #FFD700;
+        }
+
+        .nav-links-left {
             display: flex;
-            align-items: center;
             gap: 20px;
-        }
-
-        /* Logo Styling */
-        .logo {
-            height: 60px;
-            width: auto;
-            transition: box-shadow 0.3s ease-in-out;
-            border-radius: 6px;
-            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.5);
-        }
-
-        .logo:hover {
-            box-shadow: 0 0 30px rgba(255, 255, 0, 1);
-        }
-
-        /* Navigation Links Containers */
-        .nav-links-left, .nav-links-right {
-            display: flex;
             align-items: center;
-            gap: 20px;
         }
 
-        /* Left Navigation Links */
         .nav-links-left a {
-            color: yellow;
+            color: #FFD700;
             text-decoration: none;
             font-size: 18px;
-            transition: color 0.3s;
         }
 
         .nav-links-left a:hover {
             color: rgba(255, 255, 0, 0.8);
         }
 
-        /* Dropdown Menu */
         .dropdown {
             position: relative;
-        }
-
-        .dropdown > a::after {
-            content: " ▼";
-            font-size: 12px;
         }
 
         .dropdown-content {
             display: none;
             position: absolute;
-            background-color: black;
-            min-width: 150px;
-            box-shadow: 0 4px 8px rgba(255, 255, 0, 0.2);
+            background-color: rgba(0, 0, 0, 0.8);
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(255, 255, 0, 0.3);
             z-index: 1;
-            text-align: left;
             border-radius: 8px;
         }
 
         .dropdown-content a {
-            color: yellow;
-            padding: 10px;
+            color: #FFD700;
+            padding: 12px 16px;
             text-decoration: none;
             display: block;
             font-size: 16px;
-            transition: background-color 0.3s ease;
-        }
-
-        .dropdown-content a:hover {
-            background-color: rgba(255, 255, 0, 0.2);
-            color: white;
         }
 
         .dropdown:hover .dropdown-content {
             display: block;
         }
 
-        /* Right Navigation Links (Sign Up and Login) */
+        .dropdown::after {
+            content: " ▼";
+            font-size: 12px;
+        }
+
+        .nav-links-right {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
         .nav-links-right a {
-            color: yellow;
+            color: black;
             text-decoration: none;
-            font-size: 18px;
-            padding: 10px 20px;
-            border: 2px solid yellow;
+            padding: 7px 14px;
+            border: 2px solid #FFD700;
             border-radius: 5px;
-            box-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
-            transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+            background-color: #FFD700;
         }
 
         .nav-links-right a:hover {
-            background-color: yellow;
+            background-color: #FFFF31;
             color: black;
-            box-shadow: 0 0 20px rgba(255, 255, 0, 0.8);
         }
 
-        /* Hamburger Menu */
+        /* Hide hamburger menu on desktop */
         .hamburger {
-            display: none; /* Hidden by default, shown on mobile via media queries */
-            cursor: pointer;
-            padding: 6px;
-            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.8);
-            border-radius: 4px;
+            display: none;
         }
 
-        .hamburger div {
-            width: 30px;
-            height: 4px;
-            background-color: yellow;
-            margin: 5px 0;
-            border-radius: 2px;
-            box-shadow: 0 2px 5px rgba(255, 255, 0, 0.5);
-        }
-
-        /* Banner Styles */
+        /* Banner */
         .banner {
-            background-color: black; /* Removed the image and gradient */
-            display: flex;
-            align-items: center;
-            justify-content: center; /* Center the text */
-            padding: 100px 20px; /* Increased top padding to accommodate fixed header */
-            margin-top: 60px; /* Adjusted to prevent overlap with fixed header */
-            flex-direction: column;
+            background-color: #1a1a1a;
+            padding: 100px 20px;
             text-align: center;
+            margin-top: 60px; /* Adjusted for header height */
         }
 
         .banner-text {
             font-size: 48px;
             font-weight: bold;
-            color: yellow; /* Changed to yellow for better contrast */
-            max-width: 90%;
-            overflow: hidden;
-            white-space: nowrap;
-            /* Optional: Add text shadow for better visibility */
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
-            animation: none; /* Removed typing animation for simplicity */
+            color: yellow;
         }
 
         /* Pricing Section */
         .section {
             padding: 50px 20px;
-            background-color: #121212;
+            background-color: #1a1a1a;
             color: yellow;
             text-align: center;
         }
@@ -189,27 +146,25 @@
             font-size: 36px;
             font-weight: 700;
             margin-bottom: 15px;
-            text-shadow: 1px 1px 3px rgba(255, 255, 0, 0.3);
         }
 
         .pricing-table {
             display: flex;
             justify-content: center;
             gap: 30px;
-            margin-top: 30px;
-            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+            flex-wrap: wrap;
         }
 
         .pricing-plan {
-            background-color: black;
-            border: 2px solid yellow;
+            background-color: #FFD700;
+            border: 2px solid #FFFF31;
             border-radius: 15px;
             padding: 30px;
             max-width: 300px;
             text-align: center;
+            width: 100%;
             box-shadow: 0 4px 10px rgba(255, 255, 0, 0.5);
             transition: transform 0.3s, box-shadow 0.3s ease-in-out;
-            width: 100%; /* Make full width on smaller screens */
         }
 
         .pricing-plan:hover {
@@ -220,11 +175,13 @@
         .pricing-plan h3 {
             font-size: 28px;
             margin-bottom: 15px;
+            color: #1a1a1a;
         }
 
         .pricing-plan p {
             font-size: 18px;
             margin-bottom: 20px;
+            color: #1a1a1a;
         }
 
         .pricing-plan ul {
@@ -232,34 +189,32 @@
             padding: 0;
             font-size: 16px;
             margin-bottom: 20px;
-            text-align: left; /* Align list items to the left */
+            text-align: left;
+            color: #1a1a1a;
         }
 
         .pricing-plan ul li {
             margin-bottom: 10px;
         }
 
-        /* Updated CTA Button Styles */
         .cta-button {
-            display: block; /* Make the button a block element */
-            width: 100%; /* Occupy full width of the container */
-            background-color: yellow;
+            display: block;
+            width: 100%;
+            background-color: white;
             color: black;
-            padding: 15px 0; /* Adjusted padding: top and bottom only */
+            padding: 15px 0;
             text-decoration: none;
             font-size: 20px;
             font-weight: bold;
             border-radius: 5px;
-            box-shadow: 0px 8px 20px rgba(255, 255, 0, 0.8);
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 10px 5px 5px black;
         }
 
         .cta-button:hover {
-            background-color: #ffeb3b;
-            box-shadow: 0px 12px 30px rgba(255, 255, 0, 1);
+            background-color: #FFFF31;
         }
 
-        /* Footer Styles */
+        /* Footer */
         footer {
             background-color: #121212;
             color: rgba(255, 255, 255, 0.8);
@@ -267,13 +222,11 @@
             text-align: center;
             font-size: 14px;
             margin-top: 50px;
-            width: 100%;
         }
 
         footer a {
             color: yellow;
             text-decoration: none;
-            margin: 0 10px;
         }
 
         footer a:hover {
@@ -297,14 +250,21 @@
 
         /* Mobile Styles */
         @media only screen and (max-width: 768px) {
-            /* Show Hamburger Menu */
+            /* Show hamburger menu */
             .hamburger {
-                display: block; /* Show hamburger on mobile */
+                display: block;
+                margin-left: auto;
+                cursor: pointer;
             }
 
-            /* Hide navigation links by default */
-            .nav-links-left,
-            .nav-links-right {
+            .hamburger div {
+                width: 30px;
+                height: 4px;
+                background-color: yellow;
+                margin: 5px 0;
+            }
+
+            .nav-links-left, .nav-links-right {
                 display: none;
                 flex-direction: column;
                 position: absolute;
@@ -313,55 +273,35 @@
                 width: 100%;
                 background-color: #000;
                 padding: 10px 0;
-                z-index: 1000;
                 text-align: center;
             }
 
-            .nav-links-left a,
-            .nav-links-right a {
+            .nav-links-left a, .nav-links-right a {
                 font-size: 18px;
                 padding: 15px 0;
-                text-decoration: none;
                 color: yellow;
-                display: block;
                 width: 100%;
             }
 
-            /* Show navigation links when menu is open */
-            .menu-open .nav-links-left,
-            .menu-open .nav-links-right {
+            .menu-open .nav-links-left, .menu-open .nav-links-right {
                 display: flex;
             }
-            .banner {
-                padding-top: 70px;
-                padding-bottom: 50px;
-            }
-            /* Adjust banner text */
+
             .banner-text {
                 font-size: 32px;
-                white-space: normal;
-                line-height: 1.4;
-                
             }
 
-            /* Adjust pricing table */
             .pricing-table {
-                flex-direction: column; /* Stack vertically */
+                flex-direction: column;
                 gap: 20px;
             }
 
             .pricing-plan {
-                max-width: 100%; /* Full width on mobile */
+                max-width: 100%;
             }
 
-            /* Adjust footer */
             footer {
                 padding: 20px 0;
-            }
-
-            .social-icons img {
-                width: 25px;
-                margin: 0 8px;
             }
         }
     </style>
@@ -369,46 +309,35 @@
 <body>
     <!-- Header -->
     <header>
-        <!-- Left Section: Logo and Navigation Links -->
-        <div class="left-section">
-            <!-- Logo -->
-            <img src="{{ url_for('static', filename='images/logobaby.png') }}" alt="ButchAI Logo" class="logo">
-
-            <!-- Left Navigation Links -->
-            <div class="nav-links-left">
-                <a href="/">Home</a>
-                <div class="dropdown">
-                    <a href="#">Features</a>
-                    <div class="dropdown-content">
-                        <a href="/how-to-prompt">How to Prompt</a>
-                        <a href="/basic">Basic</a>
-                        <a href="/premium">Premium</a>
-                    </div>
-                </div>
-                <a href="/pricing">Pricing</a>
-                <a href="/contact">Contact</a>
-            </div>
+        <div class="logo-text">
+            Butch<span class="ai">AI</span>
         </div>
-
-        <!-- Right Navigation Links -->
+        <div class="nav-links-left">
+            <div class="dropdown">
+                <a href="#">Features</a>
+                <div class="dropdown-content">
+                    <a href="/how-to-prompt">How to Prompt</a>
+                    <a href="/basic">Basic</a>
+                    <a href="/premium">Premium</a>
+                </div>
+            </div>
+            <a href="/pricing">Pricing</a>
+            <a href="/contact">Contact</a>
+        </div>
         <div class="nav-links-right">
             <a href="/signup">Sign Up</a>
             <a href="/login">Login</a>
         </div>
-
-        <!-- Hamburger Menu Icon -->
-        <div class="hamburger" onclick="toggleMenu()" aria-label="Toggle navigation menu" role="button" tabindex="0">
+        <div class="hamburger" onclick="toggleMenu()">
             <div></div>
             <div></div>
             <div></div>
         </div>
     </header>
 
-    <!-- Banner Section -->
+    <!-- Banner -->
     <div class="banner">
-        <div class="banner-text">
-            Choose the Plan That’s Right for You
-        </div>
+        <div class="banner-text">Choose the Plan That’s Right for You</div>
     </div>
 
     <!-- Pricing Section -->
@@ -460,19 +389,11 @@
         </div> 
     </footer>
 
-    <!-- JavaScript for Hamburger Menu Toggle -->
     <script>
         function toggleMenu() {
             const header = document.querySelector('header');
             header.classList.toggle('menu-open');
         }
-
-        // Allow toggling menu with keyboard (Enter key)
-        document.querySelector('.hamburger').addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                toggleMenu();
-            }
-        });
     </script>
 </body>
 </html>
