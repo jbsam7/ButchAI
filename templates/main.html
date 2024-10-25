@@ -14,7 +14,7 @@
         }
 
         html, body {
-            background-color: black;
+            background-color: #1a1a1a;
             color: yellow;
             font-family: 'Poppins', sans-serif;
             margin: 0;
@@ -29,7 +29,7 @@
             left: 0;
             width: 100%;
             height: 100%; /* Use 100% instead of 100vh to prevent mobile viewport height issues */
-            background-color: black;
+            background-color: #1a1a1a;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -243,14 +243,19 @@
 
         /* Second banner adjustments */
         .second-banner {
-            background: linear-gradient(to right, black, rgb(27, 23, 23));
+            background: #1a1a1a;
             color: #1a1a1a;
-            padding: 70px;
+            padding: 100px;
             text-align: center;
             font-family: 'Poppins', sans-serif;
             display: flex;
             flex-direction: column; /* Change to column to stack content vertically */
             align-items: center; /* Center align items */
+          
+            margin-bottom: -100px;
+           
+
+            
         }
 
         .second-banner-content {
@@ -291,12 +296,14 @@
             text-align: center;
             margin-top: 20px;
             animation: none; /* Prevent animation until triggered */
+            
         }
         .second-banner h2 {
             font-size: 32px;
             font-weight: bold;
-            color: #1c1c1c;
+            color: white;
             text-align: center;
+            text-shadow: black 1px 0 10px;
         }
 
         .second-banner p {
@@ -305,13 +312,14 @@
             color: #1c1c1c;
             margin: 30px 0px;
             line-height: 2;
+            text-shadow: white 1px 0 10px;
         }
 
         .call-to-action h3 {
-            font-size: 32px;
+            font-size: 35px;
             font-weight: bold;
-            color: #1c1c1c;
-            margin-bottom: 15px;
+            color: white;
+            text-shadow: black 1px 0 10px;
         }
 
         .call-to-action p {
@@ -323,18 +331,18 @@
 
         .cta-button {
             display: inline-block;
-            background-color: black;
-            color: yellow;
+            background-color: white;
+            color: black;
             padding: 15px 30px;
             border-radius: 5px;
             text-decoration: none;
             font-weight: bold;
-            transition: background-color 0.3s, box-shadow 0.3s;
+            box-shadow: 10px 5px 5px black;
         }
 
         .cta-button:hover {
-            background-color: #1a1a1a;
-            box-shadow: 0 0 10px yellow;
+            background-color: #FFFF31;
+            box-shadow: 10px 5px 5px black;
         }
 
     
@@ -356,9 +364,9 @@
             align-items: center;
             justify-content: center;
             margin: 20px auto;
-            padding: 10px;
+            padding: 1% 0%;
             border-radius: 10px;
-            background-color: black; /* Optional: Background color for the container */
+            background-color: #1a1a1a; /* Optional: Background color for the container */
             max-width: fit-content;
         }
 
@@ -374,6 +382,7 @@
             align-items: center;
             justify-content: center;
             transition: background-color 0.3s;
+            
         }
 
         #playPauseBtn:hover {
@@ -387,14 +396,16 @@
         
         /* Third banner */
         .third-banner {
-            background: linear-gradient(to right, rgba(255, 255, 0, 0.1), yellow);
+            background: #1a1a1a;
             padding: 50px 20px;
             text-align: center;
             display: flex;
             flex-direction: column;
             gap: 30px;
             font-family: 'Poppins', sans-serif;
-            color: yellow;
+            color:antiquewhite;
+            font-weight: bold;
+            font-size: 40px;
         }
 
         .third-banner-section {
@@ -403,9 +414,9 @@
             justify-content: space-between;
             flex-wrap: wrap;
             padding: 30px;
-            background-color: black; /* Adds a subtle background to each section */
+            background-color: #FFD700; /* Adds a subtle background to each section */
             border-radius: 15px; /* Rounded corners for each section */
-            box-shadow: 0px 4px 15px yellow; /* Shadow for depth */
+        
         }
 
         .third-banner-section:nth-child(even) {
@@ -426,12 +437,14 @@
 
 
         .third-banner-section p {
-            font-size: 20px;
+            font-size: 25px;
             line-height: 1.6;
             width: 55%; /* Adjusted width to fit alongside the video */
             text-align: left;
             margin-right: 2%;
             margin-left: 2%;
+            text-shadow: black 1px 0 10px;
+
         }
 
         /* Subscription options */
@@ -450,7 +463,7 @@
             padding: 20px;
             border-radius: 15px;
             text-align: center;
-            background-color: black;
+            background-color: #FFD700;
             box-shadow: 0px 4px 10px rgba(255, 255, 0, 0.8);
             transition: transform 0.3s, box-shadow 0.3s;
             border: 2px solid transparent;
@@ -463,19 +476,31 @@
 
         .subscription-tier h3 {
             margin-bottom: 15px;
+            color: #1a1a1a;
+            text-shadow: white 5px 5px 15px;
+            font-size: 25px;
+           
+            border-radius: 4px;
         }
 
         .subscription-tier p {
             margin-bottom: 10px;
+            color:#1a1a1a;
+            font-weight: bold;
+            font-size: 18px;
         }
 
         .subscription-tier a {
             color: black;
-            background-color: yellow;
+            background-color: white;
             padding: 10px 20px;
             text-decoration: none;
             border-radius: 5px;
             display: inline-block;
+            font-weight: bold;
+            border: #FFFF31 solid 4px;
+            box-shadow: 10px 5px 5px red;  
+        
         }
 
         /* Footer section */
@@ -573,8 +598,12 @@
         }
         /* Adjust .second-banner */
         .second-banner {
-            padding: 20px 0; /* Reduce horizontal padding */
+            padding: 50px 0; /* Reduce horizontal padding */
             align-items: stretch; /* Allow child items to stretch full width */
+            margin-bottom: -50px;
+            margin-top: 10px;
+           
+          
         }
 
         /* Adjust .second-banner-content */
@@ -582,6 +611,7 @@
             flex-direction: column;
             align-items: stretch; /* Stretch child items to full width */
             width: 100%;
+
         }
 
         .second-banner-left, .second-banner-right {
@@ -841,12 +871,12 @@
     <!-- Subscription options-->
     <div id="subscriptions" class="subscription-options">
         <div class="subscription-tier">
-            <h3>Basic Tier - $5/month</h3>
+            <h3>Basic Tier  $5/month</h3>
             <p>Access to basic narration services.</p>
             <a href="/signup">Subscribe to Basic</a> 
         </div>
         <div class="subscription-tier">
-            <h3>Premium Tier - $15/month</h3>
+            <h3>Premium Tier  $15/month</h3>
             <p>Advanced narration with key frame analysis.</p>
             <a href="/signup">Subscribe to Premium</a>
         </div>
