@@ -1055,18 +1055,22 @@ def summarize_video(video_path, frame_interval, max_frame_for_last_key, api_key,
         return "Error: Could not generate key frame phrases"
 
 
-@app.route('/upload', methods=['POST'])
-@limiter.limit("3 per minute")
+@app.route('/upload', methods=['GET', 'POST'])
+@limiter.limit("10 per minute")
 @login_required
 @basic_required
 @premium_required
 def upload_video():
+    if request.method == 'GET':
+        # Return the upload form on a GET request
+        return render_template('index.html')
+    
     # Log that the upload route has been accessed
     logger.info("Received a file upload request.")
     # Debugging logger.info to check received data
     logger.info(request.form)
-    custom_prompt = request.form.get('custom_prompt', '')
-    custom_prompt_frame = request.form.get('custom_prompt_frame', '') # Get the custom frame prompt
+    custom_prompt = bleach.clean(request.form.get('custom_prompt', ''))
+    custom_prompt_frame = bleach.clean(request.form.get('custom_prompt_frame', '')) # Get the custom frame prompt
 
     if custom_prompt == '':
         app.logger.warning("Custom prompt is empty.")
@@ -1144,6 +1148,10 @@ def upload_video():
         video_duration_increment = frame_count / fps
         vidcap.release() 
 
+        if video_duration_increment > 60:
+            flash("Please upload a video less than 60 seconds long")
+            return redirect(url_for('upload_video'))
+
         # Update the users total video duration in the database
         new_total_video_duration = video_duration + video_duration_increment
         logger.info(f"Updated video duration for user {session['username']}: {new_total_video_duration} seconds.")
@@ -1185,9 +1193,14 @@ def upload_video():
 @login_required
 @basic_required
 def text_to_speech():
+    if request.method == 'GET':
+        # Return the upload form on a GET request
+        return render_template('index.html')
+
+
     if request.method == 'POST':
         # Retrieve prompt and video details from the form
-        user_prompt = request.form.get('custom_prompt')
+        user_prompt = bleach.clean(request.form.get('custom_prompt'))
         if not user_prompt:
             flash('Please enter some text to generate speech')
             return render_template('tts.html')
@@ -1217,6 +1230,9 @@ def text_to_speech():
         frame_count = int(vidcap.get(cv2.CAP_PROP_FRAME_COUNT))
         video_duration = frame_count / fps
         vidcap.release()
+
+        if video_duration > 60:
+            return redirect(url_for('text_to_speech'))
 
         if fps == 0 or frame_count == 0:
             flash('Error: Invalid video file or could not determine FPS/frame count.')
