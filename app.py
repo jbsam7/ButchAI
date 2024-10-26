@@ -44,6 +44,10 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv('FLASK_SECRET_KEY')   # Required for session management and flashing messages
 
+# Initialize CSRF protection
+csrf = CSRFProtect()
+csrf.init_app(app)
+
 # Set session to log out and remove cookies after 30 minutes
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
 
@@ -56,9 +60,6 @@ app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 #Prevents JavaScript from accessing the cookies, mitigating the risk of XSS attacks stealing session cookies.
 app.config['SESSION_COOKIE_HTTPONLY'] = True
 
-# Initialize CSRF protection
-csrf = CSRFProtect()
-csrf.init_app(app)
 
 # Initialize rate limiter with a limit of 100 requests per minute per IP
 limiter = Limiter(get_remote_address, app=app, default_limits=["100 per minute"])
