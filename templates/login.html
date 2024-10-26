@@ -359,15 +359,30 @@
             font-weight: bold;
             text-align: center;
         }
+     
 
         /* Mobile Styles */
         @media only screen and (max-width: 768px) {
             /* Show Hamburger Menu */
+            /* Show Hamburger Menu */
             .hamburger {
                 display: block;
-                margin-left: 310px;
-                
+                cursor: pointer;
+                /* Remove relative positioning */
+                position: absolute;
+                right: 20px; /* Position it 20px from the right */
+                top: 50%;
+                transform: translateY(-50%); /* Center vertically */
+                z-index: 1001; /* Ensure it stays above the menu */
             }
+            .hamburger div {
+                width: 30px; /* Adjust width for better fit */
+                height: 4px;  /* Adjust height for aesthetics */
+                background-color: #FFD700;
+                margin: 5px 0; /* Adjust spacing */
+                border-radius: 4px;
+            }
+            
 
             /* Hide navigation links by default */
             .nav-links-left,
@@ -383,9 +398,22 @@
                 z-index: 1000;
                 text-align: center;
             }
-
-            .nav-links-left a,
+            /* Override Sign Up and Login buttons */
             .nav-links-right a {
+                background-color: #1a1a1a; /* Set to black */
+                color: #FFD700; /* Maintain yellow text for contrast */
+                box-shadow: none; /* Remove box-shadow if undesired */
+                padding: 10px 0; /* Adjust padding for better touch targets */
+                border: none;
+            }
+
+            .nav-links-right a:hover {
+                background-color: #333333; /* Darker shade on hover */
+                color: #FFFF31; /* Slightly different yellow for hover */
+                box-shadow: none; /* Remove box-shadow on hover if applied above */
+                border: none;
+            }
+            .nav-links-left a {
                 font-size: 18px;
                 padding: 15px 0;
                 text-decoration: none;
@@ -444,8 +472,12 @@
                 padding: 10px 0;
                 font-size: 16px;
             }
-
-            .h-capt
+            #h-captcha-container {
+                /* Optional: Adjust padding or alignment for mobile */
+                width: auto;
+                height: auto;
+                max-width: 10px;
+            }
 
             /* Adjust footer */
             footer {
