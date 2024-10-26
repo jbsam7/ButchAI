@@ -463,6 +463,8 @@
     <div class="form-container">
         <h1>Create Your Account</h1>
         <form action="{{ url_for('signup_route') }}" method="post">
+            {{ csrf_token() }}  <!-- This adds the CSRF token to the form -->
+
             <div class="form-group">
                 <label for="first_name">First Name:</label>
                 <input type="text" class="form-control" id="first_name" name="first_name" required maxlength="50" placeholder="Enter your first name">

@@ -397,6 +397,8 @@
             <h2>Check Your Email</h2>
             <p>Please enter the One-Time Password (OTP) sent to your registered email address to verify your account.</p>
             <form action="/verify-otp" method="POST">
+                {{ csrf_token() }}  <!-- This adds the CSRF token to the form -->
+
                 <input type="text" id="otp" name="otp" placeholder="Enter your OTP" required>
                 <button type="submit">Verify OTP</button>
             </form>

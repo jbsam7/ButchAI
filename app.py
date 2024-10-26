@@ -11,6 +11,7 @@ import stripe
 import logging
 import bleach
 import mimetypes
+from flask_wtf.csrf import CSRFProtect
 from werkzeug.utils import secure_filename
 from datetime import timedelta
 from anthropic import Anthropic
@@ -46,10 +47,18 @@ app.secret_key = os.getenv('FLASK_SECRET_KEY')   # Required for session manageme
 # Set session to log out and remove cookies after 30 minutes
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
 
-@app.route('/test-logging')
-def test_logging():
-    logger.info("Test logging route accessed.")
-    return "Logging is working!"
+# Ensures cookies are only through https
+app.config['SESSION_COOKIE_SECURE'] = True
+
+# Helps prevent Cross-Site Request Forgery (CSRF) by ensuring that cookies are only sent in a first-party context.
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax' 
+
+#Prevents JavaScript from accessing the cookies, mitigating the risk of XSS attacks stealing session cookies.
+app.config['SESSION_COOKIE_HTTPONLY'] = True
+
+# Initialize CSRF protection
+csrf = CSRFProtect()
+csrf.init_app(app)
 
 # Initialize rate limiter with a limit of 100 requests per minute per IP
 limiter = Limiter(get_remote_address, app=app, default_limits=["100 per minute"])

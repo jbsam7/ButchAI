@@ -268,6 +268,8 @@
         <h1 class="banner-heading">Upload Your Video!</h1>
         <div class="banner-form">
             <form action="{{ url_for('text_to_speech') }}" method="post" enctype="multipart/form-data">
+                {{ csrf_token() }}  <!-- This adds the CSRF token to the form -->
+                
                 <label for="file">Upload Video File:</label>
                 <input type="file" id="file" name="file" accept="video/*" required>
 

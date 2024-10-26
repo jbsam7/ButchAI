@@ -551,6 +551,8 @@
         
         <!-- Login Form -->
         <form method="POST" action="/login" class="login-form">
+            {{ csrf_token() }}  <!-- This adds the CSRF token to the form -->
+            
             <input type="text" name="username" placeholder="Username" required maxlength="50">
             <input type="REMOVED" name="REMOVED" placeholder="Password" required maxlength="50">
             <input type="submit" value="Login">

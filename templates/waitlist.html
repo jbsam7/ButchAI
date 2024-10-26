@@ -474,13 +474,15 @@
                 {% endif %}
             {% endwith %}
             <form class="waitlist-form" action="{{ url_for('waitlist') }}" method="post">
+                {{ csrf_token() }}  <!-- This adds the CSRF token to the form -->
+                
                 <input type="text" name="name" placeholder="Your Name" required maxlength="50">
                 <input type="email" name="email" placeholder="Your Email" required maxlength="100">
                 <textarea name="additional_info" placeholder="Tell us a bit about yourself (optional)" maxlength="500"></textarea>
 
                 <!-- hCaptcha Widget -->
                 <div class="h-captcha" data-sitekey="4a78635c-db18-4b7e-ae10-ab8eca3a57f2"></div>
-                
+
                 <button type="submit">Join Waitlist</button>
             </form>
         </div>

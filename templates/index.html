@@ -434,6 +434,8 @@
         <!-- Form -->
         <div class="banner-form">
             <form action="/upload" method="post" enctype="multipart/form-data">
+                {{ csrf_token() }}  <!-- This adds the CSRF token to the form -->
+                
                 <label for="file">Choose Video File:</label>
                 <input type="file" id="file" name="file" accept="video/*" required>
 
