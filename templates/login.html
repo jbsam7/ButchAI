@@ -7,6 +7,9 @@
     
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+    <!-- hCaptcha Widget -->
+    <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
     
     <style>
         /* Global Styles */
@@ -220,6 +223,7 @@
             flex: 1;
             color: #FFD700;
             transition: background-color 0.3s ease, box-shadow 0.3s ease;
+           
         }
 
         /* Login Form Title */
@@ -296,6 +300,10 @@
         .login-container a:hover {
             color: #FFFF31;
             text-shadow: 0px 0px 10px rgba(255, 215, 0, 0.8);
+        }
+
+        .h-captcha {
+            padding-top: 15px;
         }
 
         /* Footer Styles */
@@ -437,6 +445,8 @@
                 font-size: 16px;
             }
 
+            .h-capt
+
             /* Adjust footer */
             footer {
                 padding: 20px 0;
@@ -512,6 +522,9 @@
             <input type="text" name="username" placeholder="Username" required maxlength="50">
             <input type="REMOVED" name="REMOVED" placeholder="Password" required maxlength="50">
             <input type="submit" value="Login">
+
+            <!-- hCaptcha Widget -->
+            <div class="h-captcha" data-sitekey="4a78635c-db18-4b7e-ae10-ab8eca3a57f2"></div>
         </form>
         <!-- Additional Links -->
         <a href="/forgot-username">Forgot your username?</a>

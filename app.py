@@ -511,6 +511,30 @@ def reset_REMOVED_route(token):
 @limiter.limit("5 per minute")
 def login_route():
     if request.method == 'POST':
+
+        # Get the hCaptcha response token from the form
+        hcaptcha_response = request.form.get('h-captcha-response')
+
+        # Verify hCaptcha response with hCaptcha API
+        payload = {
+            'secret': HCAPTCHA_SECRET_KEY,
+            'response': hcaptcha_response,
+            'remoteip': request.remote_addr  # Optional but recommended
+        }
+
+        try:
+            hcaptcha_verify = requests.post('https://hcaptcha.com/siteverify', data=payload)
+            hcaptcha_verify.raise_for_status()  # Raises an HTTPError if the response was unsuccessful
+            result = hcaptcha_verify.json()
+        except requests.RequestException as e:
+            logger.error(f"hCaptcha request failed: {e}")
+            flash('hCaptcha verification failed. Please try again.')
+            return redirect(url_for('login'))
+
+        if not result.get('success'):
+            flash('hCaptcha verification failed. Please try again.')
+            return redirect(url_for('login'))
+        
         username = bleach.clean(request.form['username'])
         REMOVED = bleach.clean(request.form['REMOVED'])
         if login(username, REMOVED):
@@ -570,6 +594,23 @@ def pricing():
 @app.route('/contact', methods=['GET','POST'])
 def contact():
     if request.method == 'POST':
+
+        # Get the hCaptcha response token from the form
+        hcaptcha_response = request.form.get('h-captcha-response')
+
+        # Verify hCaptcha response with hCaptcha API
+        payload = {
+            'secret': HCAPTCHA_SECRET_KEY,
+            'response': hcaptcha_response,
+            'remoteip': request.remote_addr  # Optional but recommended
+        }
+
+        hcaptcha_verify = requests.post('https://hcaptcha.com/siteverify', data=payload)
+        result = hcaptcha_verify.json()
+
+        if not result.get('success'):
+            flash('hCaptcha verification failed. Please try again.')
+            return redirect(url_for('contact'))
         
         # Get the user input from contact form
         name = bleach.clean(request.form.get('name'))
@@ -598,6 +639,30 @@ def contact():
 @limiter.limit("10 per minute")
 def waitlist():
     if request.method == 'POST':
+
+        # Get the hCaptcha response token from the form
+        hcaptcha_response = request.form.get('h-captcha-response')
+
+        # Verify hCaptcha response with hCaptcha API
+        payload = {
+            'secret': HCAPTCHA_SECRET_KEY,
+            'response': hcaptcha_response,
+            'remoteip': request.remote_addr  # Optional but recommended
+        }
+
+        try:
+            hcaptcha_verify = requests.post('https://hcaptcha.com/siteverify', data=payload)
+            hcaptcha_verify.raise_for_status()  # Raises an HTTPError if the response was unsuccessful
+            result = hcaptcha_verify.json()
+        except requests.RequestException as e:
+            logger.error(f"hCaptcha request failed: {e}")
+            flash('hCaptcha verification failed. Please try again.')
+            return redirect(url_for('login'))
+
+        if not result.get('success'):
+            flash('hCaptcha verification failed. Please try again.')
+            return redirect(url_for('waitlist'))
+        
         name = bleach.clean(request.form.get('name'))
         user_email = bleach.clean(request.form.get('email'))
         message = bleach.clean(request.form.get('additional_info'))

@@ -9,6 +9,10 @@
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+    <!-- hCaptcha Widget -->
+    <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
+
     <style>
         /* Global Styles */
         * {
@@ -473,6 +477,10 @@
                 <input type="text" name="name" placeholder="Your Name" required maxlength="50">
                 <input type="email" name="email" placeholder="Your Email" required maxlength="100">
                 <textarea name="additional_info" placeholder="Tell us a bit about yourself (optional)" maxlength="500"></textarea>
+
+                <!-- hCaptcha Widget -->
+                <div class="h-captcha" data-sitekey="4a78635c-db18-4b7e-ae10-ab8eca3a57f2"></div>
+                
                 <button type="submit">Join Waitlist</button>
             </form>
         </div>
