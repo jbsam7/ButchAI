@@ -403,6 +403,7 @@ def verify_otp_route():
                     # Update the session with subscription details
                     session['subscription_status'] = subscription_status
                     session['subscription_tier'] = tier
+                    session['logged_in'] = True
 
                     # Redirect based on subscription status and tier
                     if subscription_status == 'active':
@@ -527,7 +528,6 @@ def login_route():
                 send_otp_email(email, otp) # Send OTP to user's email
 
                 session['username'] = username
-                session['logged_in'] = True
                 session['otp_sent'] = True
                 logger.info(username)
 

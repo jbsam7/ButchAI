@@ -52,10 +52,12 @@ def send_otp_email(recipient_email, otp):
 def store_otp(recipient_email, otp):
     expiration_time = datetime.now() + timedelta(minutes=5)  # OTP expires in 5 minutes
     otp_storage[recipient_email] = {'otp': otp, 'expires_at': expiration_time}
+    logger.info(f"Time of otp generation: {datetime.now()}, time otp expires {expiration_time}.")
 
 # Validate the OTP entered by the user
 def validate_otp(recipient_email, otp_entered):
     otp_info = otp_storage.get(recipient_email)
+    logger.info(f"Data entered in otp_storage for email {recipient_email}: OTP storage {otp_storage}.")
     if not otp_info:
         return False, "No OTP sent or OTP expired"
     
