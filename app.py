@@ -60,6 +60,10 @@ app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 #Prevents JavaScript from accessing the cookies, mitigating the risk of XSS attacks stealing session cookies.
 app.config['SESSION_COOKIE_HTTPONLY'] = True
 
+#Content Security Policy (CSP) header
+app.config['CSP'] = "default-src 'self'; script-src 'self'; object-src 'none'; style-src 'self';"
+
+
 
 # Initialize rate limiter with a limit of 100 requests per minute per IP
 limiter = Limiter(get_remote_address, app=app, default_limits=["100 per minute"])
@@ -122,6 +126,15 @@ def login_required(f):
 @app.route('/')
 def main_route():
     return render_template('main.html')
+
+
+@app.after_request
+def apply_security_headers(response):
+    response.headers['Content-Security-Policy'] = "default-src 'self'; script-src 'self'; object-src 'none'; style-src 'self';"
+    response.headers['X-Frame-Options'] = 'SAMEORIGIN'
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    response.headers['X-XSS-Protection'] = '1; mode=block'
+    return response
 
 @app.route('/home')
 @login_required
