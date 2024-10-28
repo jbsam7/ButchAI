@@ -154,12 +154,14 @@
             color: rgba(255, 255, 0, 0.8);
         }
 
+        /* Ensure dropdown is positioned directly below the header */
         .dropdown {
-            position: relative;
+            position: relative; /* Already set */
         }
 
-        /* Dropdown content (hidden by default) */
         .dropdown-content {
+            top: 100%; /* Position it directly below the dropdown toggle */
+            left: 0;    /* Align it to the left */
             display: none;
             position: absolute;
             background-color: rgba(0, 0, 0, 0.9);
@@ -175,7 +177,7 @@
 
         .dropdown-content a {
             color: #FFD700;
-            padding: 12px 16px;
+            padding: 5px 10px;
             text-decoration: none;
             display: block;
             font-size: 16px;
@@ -194,10 +196,15 @@
             transform: translateY(0);
         }
 
-        /* Arrow for dropdown */
-        .dropdown::after {
-            content: " ▼";
-            font-size: 12px;
+        /* Remove caret from dropdown in mobile view */
+        .dropdown::after,
+        .dropdown-toggle::after {
+            content: none;
+        }
+
+        /* Optional: Adjust padding or styling if needed */
+        .dropdown-toggle {
+            padding-right: 0; /* Remove extra space if caret was adding padding */
         }
 
         /* Right side links (Sign up and login) */
@@ -619,6 +626,7 @@
                 top: 50%;
                 transform: translateY(-50%); /* Center vertically */
                 z-index: 1001; /* Ensure it stays above the menu */
+                
             }
 
             .hamburger div {
@@ -648,6 +656,7 @@
             .menu-open .nav-links-left,
             .menu-open .nav-links-right {
                 display: flex; /* Show when menu is open */
+                margin-top: -13px;
             }
 
             /* Ensure links are visible when menu is open */
@@ -672,6 +681,7 @@
                 background: none; /* No background */
                 border: none; /* No border */
                 text-align: center; /* Align text in the center */
+                
             }
 
             /* Hover effect for all links */
@@ -681,6 +691,9 @@
                 color: #FFFF31; /* Slightly different yellow for hover */
             }
 
+            .dropdown {
+                padding-top: 60px;
+            }
             /* Dropdown toggle link */
             .dropdown-toggle {
                 color: #FFD700;
@@ -690,6 +703,7 @@
                 text-decoration: none;
                 position: relative;
                 display: inline-block;
+            
             }
 
             .dropdown-toggle::after {
@@ -718,6 +732,7 @@
                 display: block;
                 opacity: 1;
                 transform: translateY(0);
+                margin-left: -50px;
             }
 
             /* Links inside the dropdown */
@@ -734,6 +749,7 @@
             .dropdown-content a:hover {
                 background-color: rgba(255, 255, 0, 0.2);
                 color: white;
+                border-radius: 4px;
             }
 
             /* Banner adjustments */
@@ -903,14 +919,14 @@
         <div class="logo-text" aria-label="ButchAI">
             Butch<span class="ai">AI</span>
         </div>
-
+    
         <!-- Hamburger menu icon -->
         <div class="hamburger" onclick="toggleMenu()" aria-label="Toggle navigation menu" role="button" tabindex="0">
             <div></div>
             <div></div>
             <div></div>
         </div>
-
+    
         <!-- Left Navigation links -->
         <div class="nav-links-left">
             <a href="/">Home</a>
