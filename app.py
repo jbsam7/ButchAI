@@ -48,6 +48,9 @@ app.secret_key = os.getenv('FLASK_SECRET_KEY')   # Required for session manageme
 csrf = CSRFProtect()
 csrf.init_app(app)
 
+# Set max upload for now to 100MB
+app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024  # 100MB file size limit
+
 # Set session to log out and remove cookies after 30 minutes
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
 
@@ -224,6 +227,7 @@ def signup_route():
 
 STRIPE_ENABLED = True # Set to False to bypass Stripe for now
 @app.route('/verify-otp-signup', methods=['GET', 'POST'])
+@limiter.limit("10 per minute")
 def verify_otp_signup_route():
     if 'email' not in session:
         return redirect(url_for('signup_route'))
@@ -291,6 +295,7 @@ def verify_otp_signup_route():
     
 
 @app.route('/payment-successful')
+@limiter.limit("10 per minute")
 def payment_successful():
     # If Stripe is disabled, use the test session data
     if not STRIPE_ENABLED:
@@ -380,6 +385,7 @@ def send_otp_route():
     return render_template('otp_verification.html')  # Render OTP verification page
 
 @app.route('/verify-otp', methods=['GET', 'POST'])
+@limiter.limit("10 per minute")
 def verify_otp_route():
     logger.info(session)
     if 'username' not in session:
@@ -437,6 +443,7 @@ def verify_otp_route():
     return render_template('otp_verification.html')
 
 @app.route('/forgot-username', methods=['GET', 'POST'])
+@limiter.limit("10 per minute")
 def forgot_username_route():
     if request.method == 'POST':
         email = bleach.clean(request.form['email'])
@@ -460,6 +467,7 @@ def forgot_username_route():
     return render_template('forgot_username.html')
 
 @app.route('/forgot-REMOVED', methods=['GET', 'POST'])
+@limiter.limit("10 per minute")
 def forgot_REMOVED_route():
     if request.method == 'POST':
         email = bleach.clean(request.form['email'])
@@ -486,6 +494,7 @@ def forgot_REMOVED_route():
     return render_template('forgot_REMOVED.html')
 
 @app.route('/reset-REMOVED/<token>', methods=['GET', 'POST'])
+@limiter.limit("10 per minute")
 def reset_REMOVED_route(token):
     token = bleach.clean(token)
     # Verify the token and fetch the user's email
@@ -603,6 +612,7 @@ def pricing():
 
 # Contact page route
 @app.route('/contact', methods=['GET','POST'])
+@limiter.limit("5 per minute")
 def contact():
     if request.method == 'POST':
 
@@ -1130,7 +1140,13 @@ def summarize_video(video_path, frame_interval, max_frame_for_last_key, api_key,
     else:
         return "Error: Could not generate key frame phrases"
 
+# Check video file extensions for security purposes
+ALLOWED_EXTENSIONS = {'mp4', 'mov', 'avi'}
 
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+# PREMIUM PAGE
 @app.route('/upload', methods=['GET', 'POST'])
 @limiter.limit("10 per minute")
 @login_required
@@ -1198,6 +1214,12 @@ def upload_video():
     if file.filename == '':
         app.logger.error("No file selected for upload.")
         return "No selected file"
+    
+    if not allowed_file(file.filename):
+        app.logger.error(f"Invalid file type: {file.filename}. Only .mp4, .mov, and .avi files are allowed.")
+        flash("Invalid file type. Please upload only .mp4, .mov, or .avi video files.")
+        return redirect(url_for('upload_video'))
+    
     if file:
         # Ensure the filename is secure
         filename = secure_filename(file.filename)
@@ -1293,6 +1315,11 @@ def text_to_speech():
             return render_template('tts.html')
 
         file = request.files['file']
+
+        # Validate the file type
+        if not allowed_file(file.filename):
+            flash("Invalid file type. Please upload only .mp4, .mov, or .avi video files.")
+            return render_template('tts.html')
 
         # Ensure the filename is secure
         filename = secure_filename(file.filename)
