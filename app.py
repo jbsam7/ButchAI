@@ -1215,6 +1215,11 @@ def upload_video():
         custom_prompt = request.form.get('custom_prompt', '')
 
         vidcap = cv2.VideoCapture(video_path)
+        if not vidcap.isOpened():
+            flash("Uploaded file is not a valid video.")
+            os.remove(video_path)
+            return render_template('index.html')
+        
         fps = vidcap.get(cv2.CAP_PROP_FPS)
         frame_count = int(vidcap.get(cv2.CAP_PROP_FRAME_COUNT))
         if fps == 0 or frame_count == 0:
@@ -1225,6 +1230,7 @@ def upload_video():
         vidcap.release() 
 
         if video_duration_increment > 60:
+            os.remove(video_path)
             flash("Please upload a video less than 60 seconds long")
             return redirect(url_for('upload_video'))
 
@@ -1300,18 +1306,26 @@ def text_to_speech():
         video_path = os.path.join('uploads', filename)
         file.save(video_path)
 
-        # Capture video properties for duration
+        # Validate if the file is a valid video using OpenCV
         vidcap = cv2.VideoCapture(video_path)
+        if not vidcap.isOpened():
+            flash("Uploaded file is not a valid video.")
+            os.remove(video_path)
+            return render_template('tts.html')
+        
         fps = vidcap.get(cv2.CAP_PROP_FPS)
         frame_count = int(vidcap.get(cv2.CAP_PROP_FRAME_COUNT))
+
         video_duration = frame_count / fps
         vidcap.release()
 
         if video_duration > 60:
+            os.remove(video_path)
             return redirect(url_for('text_to_speech'))
 
         if fps == 0 or frame_count == 0:
             flash('Error: Invalid video file or could not determine FPS/frame count.')
+            os.remove(video_path)
             return render_template('tts.html')
 
         logger.info(f"Video duration: {video_duration} seconds")
