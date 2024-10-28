@@ -90,13 +90,14 @@
             display: flex;
             flex-wrap: wrap; /* Allows items to wrap to the next line on small screens */
             align-items: center;
-            padding: 2px;
+            padding: 5px;
             position: fixed;
             top: 0;
             width: 100%;
             z-index: 1000;
             background-color: #1a1a1a;
             transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            
         }
 
         /* Logo Text */
@@ -653,10 +654,14 @@
             }
 
             /* Show navigation links when menu is open */
-            .menu-open .nav-links-left,
+            
             .menu-open .nav-links-right {
                 display: flex; /* Show when menu is open */
                 margin-top: -13px;
+            }
+            .menu-open .nav-links-left {
+                display: flex;
+                margin-top: 25px;
             }
 
             /* Ensure links are visible when menu is open */
@@ -665,12 +670,11 @@
                 display: block;
                 color: #FFD700; /* Consistent color */
                 background: none;
-                border: none;
                 text-align: center;
+
             }
 
             /* Remove display: none; from links */
-            .nav-links-left a,
             .nav-links-right a {
                 font-size: 18px;
                 padding: 15px 0; /* Consistent padding for all links */
@@ -682,6 +686,18 @@
                 border: none; /* No border */
                 text-align: center; /* Align text in the center */
                 
+            }
+
+            .nav-links-left a { 
+                font-size: 18px;
+                padding: 5px 0; /* Consistent padding for all links */
+                text-decoration: none;
+                color: #FFD700; /* Text color to match other links */
+                display: block; /* Ensure links are visible */
+                width: 100%; /* Make links span full width for a clean look */
+                background: none; /* No background */
+                border: none; /* No border */
+                text-align: center; /* Align text in the center */
             }
 
             /* Hover effect for all links */

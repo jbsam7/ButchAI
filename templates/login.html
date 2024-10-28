@@ -363,6 +363,12 @@
 
         /* Mobile Styles */
         @media only screen and (max-width: 768px) {
+
+            header {
+                padding: 0px 1px;
+                height: auto;
+
+            }
             /* Show Hamburger Menu */
             /* Show Hamburger Menu */
             .hamburger {
@@ -385,27 +391,24 @@
             
 
             /* Hide navigation links by default */
-            .nav-links-left,
+          
             .nav-links-right {
                 display: none;
                 flex-direction: column;
                 position: absolute;
-                top: 60px;
+                top: 45px;
                 left: 0;
                 width: 100%;
                 background-color: #1a1a1a;
                 padding: 10px 0;
                 z-index: 1000;
                 text-align: center;
+               
+            
+              
             }
-            /* Override Sign Up and Login buttons */
-            .nav-links-right a {
-                background-color: #1a1a1a; /* Set to black */
-                color: #FFD700; /* Maintain yellow text for contrast */
-                box-shadow: none; /* Remove box-shadow if undesired */
-                padding: 10px 0; /* Adjust padding for better touch targets */
-                border: none;
-            }
+
+           
 
             .nav-links-right a:hover {
                 background-color: #333333; /* Darker shade on hover */
@@ -413,9 +416,23 @@
                 box-shadow: none; /* Remove box-shadow on hover if applied above */
                 border: none;
             }
+
+            .nav-links-left {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 160px;
+                left: 0;
+                width: 100%;
+                background-color: #1a1a1a;
+                padding: 10px 0;
+                z-index: 1000;
+                text-align: center;
+              
+            }
             .nav-links-left a {
                 font-size: 18px;
-                padding: 15px 0;
+                padding: 5px 0;
                 text-decoration: none;
                 color: #FFD700;
                 display: block;

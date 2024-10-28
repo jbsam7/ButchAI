@@ -21,28 +21,33 @@
 
         html, body {
             background-color: #1a1a1a;
-            color: yellow;
+            color: #FFD700; /* Consistent color */
             font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 0;
             overflow-x: hidden;
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
+        }
+
+        main {
+            flex: 1; /* Allow main to grow and take up available space */
+            display: flex;
+            flex-direction: column;
         }
 
         /* Header Styles */
         header {
             display: flex;
-            flex-wrap: wrap;
+            flex-wrap: wrap; /* Allows items to wrap to the next line on small screens */
             align-items: center;
-            padding: 2px;
+            padding: 0px;
             position: fixed;
             top: 0;
             width: 100%;
             z-index: 1000;
             background-color: #1a1a1a;
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            /* Removed transitions to exclude animations */
         }
 
         /* Logo Text */
@@ -51,18 +56,18 @@
             font-weight: 700;
             color: #FFFF31;
             margin-right: 20px;
-            transition: color 0.3s ease-in-out;
+            /* Removed transition to exclude animations */
             cursor: default;
             padding-left: 8px;
         }
-
         .logo-text:hover {
             color: rgba(255, 255, 0, 0.8);
         }
 
+        /* Style for the 'AI' part */
         .logo-text .ai {
-            color: #FFD700;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            color: #FFD700; /* Gold color for 'AI' */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Enhance readability */
         }
 
         /* Navigation Links */
@@ -71,35 +76,53 @@
             flex-wrap: wrap;
             gap: 20px;
             align-items: center;
-            padding-top: 3px;
+            padding-top: 0px;
         }
 
         .nav-links-left a {
             color: #FFD700;
             text-decoration: none;
             font-size: 18px;
+            position: relative;
+        }
+
+        .nav-links-left a::after {
+            content: "";
+            position: absolute;
+            width: 0%;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #FFD700;
+            /* Removed transition to exclude animations */
+        }
+
+        .nav-links-left a:hover::after {
+            width: 100%;
         }
 
         .nav-links-left a:hover {
             color: rgba(255, 255, 0, 0.8);
         }
 
+        /* Dropdown Styles */
         .dropdown {
-            position: relative;
+            position: relative; /* Ensure the dropdown is relative for absolute positioning of content */
         }
 
         .dropdown-content {
             display: none;
             position: absolute;
-            background-color: rgba(0, 0, 0, 0.8);
+            top: 100%; /* Position dropdown directly below the toggle */
+            left: 0;    /* Align to the left */
+            background-color: rgba(0, 0, 0, 0.9);
             min-width: 200px;
             box-shadow: 0 8px 16px rgba(255, 255, 0, 0.3);
             z-index: 1;
             text-align: left;
             border-radius: 8px;
-            transition: opacity 0.3s ease, transform 0.3s ease;
-            transform: translateY(10px);
-            opacity: 0;
+            /* Removed transitions to exclude animations */
+            /* Removed transform and opacity properties */
         }
 
         .dropdown-content a {
@@ -108,7 +131,7 @@
             text-decoration: none;
             display: block;
             font-size: 16px;
-            transition: background-color 0.3s ease;
+            /* Removed transition to exclude animations */
         }
 
         .dropdown-content a:hover {
@@ -116,17 +139,30 @@
             color: white;
         }
 
+        /* Show the dropdown menu on hover */
         .dropdown:hover .dropdown-content {
             display: block;
-            opacity: 1;
-            transform: translateY(0);
+            /* Removed opacity and transform properties */
         }
 
-        .dropdown::after {
-            content: " ▼";
-            font-size: 12px;
+        /* Remove caret from dropdown in mobile view */
+        .dropdown::after,
+        .dropdown-toggle::after {
+            content: none;
         }
 
+        /* Dropdown toggle link */
+        .dropdown-toggle {
+            color: #FFD700;
+            font-size: 18px;
+            padding: 15px 0;
+            cursor: pointer;
+            text-decoration: none;
+            position: relative;
+            display: inline-block;
+        }
+
+        /* Right side links (Sign up and login) */
         .nav-links-right {
             margin-left: auto;
             display: flex;
@@ -143,6 +179,7 @@
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
             background-color: #FFD700;
+            /* Removed transition to exclude animations */
         }
 
         .nav-links-right a:hover {
@@ -186,10 +223,8 @@
             color: #1c1c1c;
             max-width: 90%;
             overflow: hidden;
-           
+            /* Removed border-right and animations */
         }
-
-       
 
         /* Form Container */
         .form-container {
@@ -239,7 +274,7 @@
             background-color: #1a1a1a;
             color: white;
             box-shadow: 0px 4px 10px rgba(255, 255, 0, 0.5);
-            transition: box-shadow 0.3s ease-in-out;
+            /* Removed transition to exclude animations */
             font-size: 16px;
         }
 
@@ -273,7 +308,7 @@
             border-radius: 5px;
             box-shadow: 0px 8px 20px rgba(255, 255, 0, 0.8);
             cursor: pointer;
-            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            /* Removed transitions to exclude animations */
             margin-top: 20px;
             width: 100%;
             font-size: 18px;
@@ -282,7 +317,7 @@
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
+            /* Removed transform to exclude animations */
             background-color:#FFFF31;
         }
 
@@ -294,15 +329,19 @@
             text-align: center;
             font-size: 14px;
             margin-top: 50px;
+            width: 100%;
+            flex-shrink: 0;
         }
 
         footer a {
-            color: yellow;
+            color: #FFD700;
             text-decoration: none;
             margin: 0 10px;
+            /* Removed transition to exclude animations */
         }
 
         footer a:hover {
+            color: #FFFF31;
             text-decoration: underline;
         }
 
@@ -314,11 +353,16 @@
             width: 30px;
             margin: 0 10px;
             opacity: 0.7;
-            transition: opacity 0.3s ease;
+            /* Removed transition to exclude animations */
         }
 
         .social-icons img:hover {
             opacity: 1;
+        }
+
+        /* Prevent horizontal scrolling */
+        html, body {
+            overflow-x: hidden;
         }
 
         /* Mobile Styles */
@@ -330,42 +374,152 @@
                 align-items: center;
                 padding: 0 1px;
                 height: auto;
+
             }
 
             /* Hamburger Menu */
             .hamburger {
                 display: block;
+                cursor: pointer;
+                position: absolute;
+                right: 20px; /* Position it 20px from the right */
+                top: 50%;
+                transform: translateY(-50%); /* Center vertically */
+                z-index: 1001; /* Ensure it stays above the menu */
+            }
+
+            .hamburger div {
+                width: 30px; /* Adjust width for better fit */
+                height: 4px;  /* Adjust height for aesthetics */
+                background-color: #FFD700;
+                margin: 5px 0; /* Adjust spacing */
+                border-radius: 4px;
             }
 
             /* Navigation Links */
             .nav-links-left,
             .nav-links-right {
-                display: none;
-                flex-direction: column;
+                display: none; /* Hide the hamburger content by default */
+                flex-direction: column; /* Stack items vertically */
                 position: absolute;
                 top: 60px;
                 left: 0;
                 width: 100%;
-                background-color: #000;
+                background-color: #1a1a1a;
                 padding: 10px 0;
                 z-index: 1000;
                 text-align: center;
             }
 
-            .nav-links-left a,
-            .nav-links-right a {
-                font-size: 18px;
-                padding: 15px 0;
-                text-decoration: none;
-                color: yellow;
-                display: block;
-                width: 100%;
-            }
-
             /* Show menu when open */
-            .menu-open .nav-links-left,
+           
             .menu-open .nav-links-right {
                 display: flex;
+                margin-top: -20px;
+            }
+
+            .menu-open .nav-links-left {
+                display: flex;
+               
+                margin-top: 120px;
+            }
+
+            /* Ensure links are visible when menu is open */
+            .menu-open .nav-links-left a,
+            .menu-open .nav-links-right a {
+                display: block;
+                color: #FFD700; /* Consistent color */
+                background: none;
+                border: none;
+                text-align: center;
+               
+            }
+
+            /* Remove display: none; from links */
+            
+            .nav-links-right a {
+                font-size: 18px;
+                padding: 15px 0; /* Consistent padding for all links */
+                text-decoration: none;
+                color: #FFD700; /* Text color to match other links */
+                display: block; /* Ensure links are visible */
+                width: 100%; /* Make links span full width for a clean look */
+                background: none; /* No background */
+                border: none; /* No border */
+                text-align: center; /* Align text in the center */
+            }
+
+            .nav-links-left a {
+                font-size: 18px;
+                padding: 5px 0; /* Consistent padding for all links */
+                text-decoration: none;
+                color: #FFD700; /* Text color to match other links */
+                display: block; /* Ensure links are visible */
+                width: 100%; /* Make links span full width for a clean look */
+                background: none; /* No background */
+                border: none; /* No border */
+                text-align: center; /* Align text in the center */
+            }
+
+            /* Hover effect for all links */
+            .nav-links-left a:hover,
+            .nav-links-right a:hover {
+                background-color: #222; /* Darker background on hover */
+                color: #FFFF31; /* Slightly different yellow for hover */
+            }
+
+            /* Dropdown toggle link */
+            .dropdown-toggle {
+                color: #FFD700;
+                font-size: 18px;
+                padding: 15px 0;
+                cursor: pointer;
+                text-decoration: none;
+                position: relative;
+                display: inline-block;
+            }
+
+            /* Dropdown toggle caret removed */
+            .dropdown::after,
+            .dropdown-toggle::after {
+                content: none; /* Remove the caret */
+            }
+
+            /* Dropdown content */
+            .dropdown-content {
+                display: none;
+                position: absolute;
+                background-color: rgba(0, 0, 0, 0.8);
+                min-width: 200px;
+                box-shadow: 0 8px 16px rgba(255, 255, 0, 0.3);
+                z-index: 1;
+                text-align: left;
+                border-radius: 8px;
+                
+                /* Removed transitions to exclude animations */
+            }
+
+            /* Show dropdown content when active */
+            .dropdown.active .dropdown-content {
+                display: block;
+                /* Removed opacity and transform properties */
+            }
+
+            /* Links inside the dropdown */
+            .dropdown-content a {
+                color: #FFD700;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+                font-size: 16px;
+                /* Removed transition to exclude animations */
+            }
+
+            /* Dropdown hover effects */
+            .dropdown-content a:hover {
+                background-color: rgba(255, 255, 0, 0.2);
+                color: white;
+                border-radius: 4px;
             }
 
             /* Banner */
@@ -378,9 +532,8 @@
                 max-width: 100%;
                 white-space: normal;
                 overflow: hidden;
-            
+                /* Removed border-right and text-shadow */
             }
-
 
             /* Form Container */
             .form-container {
@@ -411,6 +564,11 @@
                 width: 25px;
                 margin: 0 8px;
             }
+
+            /* Ensure parent container aligns correctly */
+            footer {
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -423,7 +581,7 @@
         </div>
 
         <!-- Hamburger Menu Icon -->
-        <div class="hamburger" onclick="toggleMenu()">
+        <div class="hamburger" onclick="toggleMenu()" aria-label="Toggle navigation menu" role="button" tabindex="0">
             <div></div>
             <div></div>
             <div></div>
@@ -434,7 +592,7 @@
             <a href="/">Home</a>
             <!-- Dropdown for Features -->
             <div class="dropdown">
-                <a href="#">Features</a>
+                <a href="#" class="dropdown-toggle">Features</a>
                 <div class="dropdown-content">
                     <a href="/how-to-prompt">How to Prompt</a>
                     <a href="/basic">Basic</a>
@@ -548,6 +706,13 @@
             header.classList.toggle('menu-open');
         }
 
+        // Allow toggling menu with keyboard (Enter key)
+        document.querySelector('.hamburger').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                toggleMenu();
+            }
+        });
+
         // Password Validation Function
         function validatePassword() {
             const REMOVED = document.getElementById("REMOVED").value;
@@ -609,6 +774,28 @@
             }
         }
 
+        // Dropdown toggle for mobile
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropdownToggle = document.querySelector('.dropdown-toggle');
+            if (dropdownToggle) {
+                dropdownToggle.addEventListener('click', function(e) {
+                    e.preventDefault(); // Prevent default link behavior
+                    const dropdown = this.parentElement;
+                    dropdown.classList.toggle('active');
+                });
+            }
+
+            // Remove the intro overlay after the animation ends (if applicable)
+            // If not using intro overlay, this can be removed
+            /*
+            const introOverlay = document.querySelector('.intro-overlay');
+            document.body.style.overflow = 'hidden'; // Hide overflow during intro
+            setTimeout(() => {
+                introOverlay.style.display = 'none';
+                document.body.style.overflow = 'auto'; // Allow scrolling after intro
+            }, 3000); // Matches the animation duration
+            */
+        });
     </script>
 </body>
 </html>
