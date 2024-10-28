@@ -434,6 +434,7 @@
         <!-- Form -->
         <div class="banner-form">
             <form action="/upload" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 
 
                 <label for="file">Choose Video File:</label>

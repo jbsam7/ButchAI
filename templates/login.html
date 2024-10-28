@@ -551,8 +551,7 @@
         
         <!-- Login Form -->
         <form method="POST" action="/login" class="login-form">
-            
-
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <input type="text" name="username" placeholder="Username" required maxlength="50">
             <input type="REMOVED" name="REMOVED" placeholder="Password" required maxlength="50">
             <input type="submit" value="Login">
