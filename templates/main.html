@@ -15,11 +15,19 @@
 
         html, body {
             background-color: #1a1a1a;
-            color: yellow;
+            color: #FFD700; /* Consistent color */
             font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 0;
-            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        main {
+            flex: 1; /* Allow main to grow and take up available space */
+            display: flex;
+            flex-direction: column;
         }
 
         /* Full-screen intro overlay */
@@ -40,7 +48,7 @@
         .intro-text {
             font-size: 50px;
             font-weight: 700;
-            color: yellow;
+            color: #FFD700; /* Consistent color */
             opacity: 0;
             text-align: center; /* Ensure text is centered properly */
             animation: fadeInOut 3s ease forwards;
@@ -77,22 +85,21 @@
             }
         }
 
+        /* Header Styles */
         header {
             display: flex;
-            flex-wrap: wrap; /* Allows items to wrap to the next #1a1a1a line on small screens */
+            flex-wrap: wrap; /* Allows items to wrap to the next line on small screens */
             align-items: center;
             padding: 2px;
             position: fixed;
-            padding-bottom: 6px;
             top: 0;
             width: 100%;
             z-index: 1000;
             background-color: #1a1a1a;
-            
-           
             transition: background-color 0.3s ease, box-shadow 0.3s ease;
         }
-        /* Add styles for the logo text */
+
+        /* Logo Text */
         .logo-text {
             font-size: 32px;
             font-weight: 700;
@@ -109,9 +116,10 @@
         /* Style for the 'AI' part */
         .logo-text .ai {
             color: #FFD700; /* Gold color for 'AI' */
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Optional: Enhance readability */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Enhance readability */
         }
 
+        /* Navigation Links */
         .nav-links-left {
             display: flex;
             flex-wrap: wrap;
@@ -124,6 +132,22 @@
             color: #FFD700;
             text-decoration: none;
             font-size: 18px;
+            position: relative;
+        }
+
+        .nav-links-left a::after {
+            content: "";
+            position: absolute;
+            width: 0%;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #FFD700;
+            transition: width 0.3s;
+        }
+
+        .nav-links-left a:hover::after {
+            width: 100%;
         }
 
         .nav-links-left a:hover {
@@ -138,7 +162,7 @@
         .dropdown-content {
             display: none;
             position: absolute;
-            background-color: rgba(0, 0, 0, 0.8);
+            background-color: rgba(0, 0, 0, 0.9);
             min-width: 200px;
             box-shadow: 0 8px 16px rgba(255, 255, 0, 0.3);
             z-index: 1;
@@ -149,7 +173,6 @@
             opacity: 0;
         }
 
-        /* Links inside the dropdown */
         .dropdown-content a {
             color: #FFD700;
             padding: 12px 16px;
@@ -159,7 +182,6 @@
             transition: background-color 0.3s ease;
         }
 
-        /* Dropdown hover effects */
         .dropdown-content a:hover {
             background-color: rgba(255, 255, 0, 0.2);
             color: white;
@@ -195,7 +217,7 @@
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
             background-color: #FFD700;
-           
+            transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
         }
 
         .nav-links-right a:hover {
@@ -205,7 +227,23 @@
             border: 2px solid #FFFF31;
         }
 
-        /* Banner section */
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            position: relative;
+            right: 10px;
+        }
+
+        .hamburger div {
+            width: 40px;
+            height: 6.5px;
+            background-color: #FFD700;
+            margin: 6px 0;
+            border-radius: 4px;
+        }
+
+        /* Banner Styles */
         .banner {
             background: #FFD700;
             display: flex;
@@ -226,8 +264,8 @@
             border-right: 4px solid black;
             white-space: nowrap;
             animation: typing 6s steps(46, end) forwards, cursorBlink 0.75s step-end infinite;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
         }
-
 
         /* Typing effect */
         @keyframes typing {
@@ -251,11 +289,7 @@
             display: flex;
             flex-direction: column; /* Change to column to stack content vertically */
             align-items: center; /* Center align items */
-          
-            margin-bottom: -100px;
-           
-
-            
+            margin-bottom: 0; /* Removed negative margin */
         }
 
         .second-banner-content {
@@ -296,8 +330,8 @@
             text-align: center;
             margin-top: 20px;
             animation: none; /* Prevent animation until triggered */
-            
         }
+
         .second-banner h2 {
             font-size: 32px;
             font-weight: bold;
@@ -338,6 +372,7 @@
             text-decoration: none;
             font-weight: bold;
             box-shadow: 10px 5px 5px black;
+            transition: background-color 0.3s, box-shadow 0.3s;
         }
 
         .cta-button:hover {
@@ -345,11 +380,9 @@
             box-shadow: 10px 5px 5px black;
         }
 
-    
-
         /* Typing keyframes */
         @keyframes typingScroll {
-            from { width: 0; }
+            from { width: 0%; }
             to { width: 34%; }
         }
 
@@ -382,7 +415,6 @@
             align-items: center;
             justify-content: center;
             transition: background-color 0.3s;
-            
         }
 
         #playPauseBtn:hover {
@@ -393,7 +425,6 @@
             outline: none;
         }
 
-        
         /* Third banner */
         .third-banner {
             background: #1a1a1a;
@@ -403,7 +434,7 @@
             flex-direction: column;
             gap: 30px;
             font-family: 'Poppins', sans-serif;
-            color:antiquewhite;
+            color: antiquewhite;
             font-weight: bold;
             font-size: 40px;
         }
@@ -416,7 +447,6 @@
             padding: 30px;
             background-color: #FFD700; /* Adds a subtle background to each section */
             border-radius: 15px; /* Rounded corners for each section */
-        
         }
 
         .third-banner-section:nth-child(even) {
@@ -432,9 +462,7 @@
             margin-bottom: 0; /* Reset margin if needed */
             margin-right: 1%;
             margin-left: 1%;
-
         }
-
 
         .third-banner-section p {
             font-size: 25px;
@@ -444,7 +472,6 @@
             margin-right: 2%;
             margin-left: 2%;
             text-shadow: black 1px 0 10px;
-
         }
 
         /* Subscription options */
@@ -479,7 +506,6 @@
             color: #1a1a1a;
             text-shadow: white 5px 5px 15px;
             font-size: 25px;
-           
             border-radius: 4px;
         }
 
@@ -500,7 +526,6 @@
             font-weight: bold;
             border: #FFFF31 solid 4px;
             box-shadow: 10px 5px 5px red;  
-        
         }
 
         /* Footer section */
@@ -511,15 +536,19 @@
             text-align: center;
             font-size: 14px;
             margin-top: 50px;
+            width: 100%;
+            flex-shrink: 0;
         }
 
         footer a {
-            color: yellow;
+            color: #FFD700;
             text-decoration: none;
             margin: 0 10px;
+            transition: color 0.3s;
         }
 
         footer a:hover {
+            color: #FFFF31;
             text-decoration: underline;
         }
 
@@ -537,224 +566,326 @@
         .social-icons img:hover {
             opacity: 1;
         }
+        /* Prevent horizontal scrolling */
+        html, body {
+            overflow-x: hidden;
+        }
 
         /* Mobile styles */
         @media only screen and (max-width: 768px) {
+            
 
-        /* Header */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 1px;
-            height: auto;
-        }
-        /* Adjust banner padding */
-        .banner {
-            padding: 60px 20px; /* Adjusted padding for mobile */
-        }
-        /* Adjust banner text for mobile */
-        .banner-text {
-            font-size: 32px !important;
-            max-width: 100%;
-            white-space: normal; /* Allow text to wrap */
-            overflow: hidden;
-            border-right: none; /* Remove cursor for the new animation */
-            animation: revealText 3s ease forwards; /* New animation */
-            clip-path: inset(0 0 100% 0); /* Start by hiding the text */
-        }
-        /* New keyframes for revealing text */
-        @keyframes revealText {
-            from {
-                clip-path: inset(0 0 100% 0); /* Text is hidden */
+            /* Header */
+            header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0 1px;
+                height: auto;
             }
-            to {
-                clip-path: inset(0 0 0 0); /* Text is fully revealed */
+
+            /* Adjust banner padding */
+            .banner {
+                padding: 60px 20px; /* Adjusted padding for mobile */
             }
-        }
-        /* Hamburger menu styling */
-        .hamburger {
-            display: block; /* Show hamburger on mobile */
-            cursor: pointer;
-            position: relative;
-            right: 10px;
 
-        }
+            /* Adjust banner text for mobile */
+            .banner-text {
+                font-size: 32px !important;
+                max-width: 100%;
+                white-space: normal; /* Allow text to wrap */
+                overflow: hidden;
+                border-right: none; /* Remove cursor for the new animation */
+                animation: revealText 3s ease forwards; /* New animation */
+                clip-path: inset(0 0 100% 0); /* Start by hiding the text */
+            }
 
-        .hamburger div {
-            width: 40px;
-            height: 6.5px;
-            background-color: #FFD700;
-            margin: 6px 0;
-            border-radius: 4px;
-        }
+            /* New keyframes for revealing text */
+            @keyframes revealText {
+                from {
+                    clip-path: inset(0 0 100% 0); /* Text is hidden */
+                }
+                to {
+                    clip-path: inset(0 0 0 0); /* Text is fully revealed */
+                }
+            }
 
-        .logo {
-            width: 32%;
-            height: auto;
-            margin-left: 0.5%;
-            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.6);
+            /* Hamburger menu styling */
+            .hamburger {
+                display: block; /* Show hamburger on mobile */
+                cursor: pointer;
+                position: absolute;
+                right: 20px; /* Position it 20px from the right */
+                top: 50%;
+                transform: translateY(-50%); /* Center vertically */
+                z-index: 1001; /* Ensure it stays above the menu */
+            }
 
-        }
-        /* Adjust .second-banner */
-        .second-banner {
-            padding: 50px 0; /* Reduce horizontal padding */
-            align-items: stretch; /* Allow child items to stretch full width */
-            margin-bottom: -50px;
-            margin-top: 10px;
-           
-          
-        }
+            .hamburger div {
+                width: 30px; /* Adjust width for better fit */
+                height: 4px;  /* Adjust height for aesthetics */
+                background-color: #FFD700;
+                margin: 5px 0; /* Adjust spacing */
+                border-radius: 4px;
+            }
 
-        /* Adjust .second-banner-content */
-        .second-banner-content {
-            flex-direction: column;
-            align-items: stretch; /* Stretch child items to full width */
-            width: 100%;
+            /* Navigation Links */
+            .nav-links-left,
+            .nav-links-right {
+                display: none; /* Hide the hamburger content by default */
+                flex-direction: column; /* Stack items vertically */
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background-color: #1a1a1a;
+                padding: 10px 0;
+                z-index: 1000;
+                text-align: center;
+            }
 
-        }
+            /* Show navigation links when menu is open */
+            .menu-open .nav-links-left,
+            .menu-open .nav-links-right {
+                display: flex; /* Show when menu is open */
+            }
 
-        .second-banner-left, .second-banner-right {
-            width: 100%;
-            margin-bottom: 20px;
-        }
+            /* Ensure links are visible when menu is open */
+            .menu-open .nav-links-left a,
+            .menu-open .nav-links-right a {
+                display: block;
+                color: #FFD700; /* Consistent color */
+                background: none;
+                border: none;
+                text-align: center;
+            }
 
-        .second-banner-text-container, .call-to-action {
-            width: 100%;
-            max-width: 80%; /* Remove max-width constraint */
-            margin: 0; /* Remove margins */
-        }
+            /* Remove display: none; from links */
+            .nav-links-left a,
+            .nav-links-right a {
+                font-size: 18px;
+                padding: 15px 0; /* Consistent padding for all links */
+                text-decoration: none;
+                color: #FFD700; /* Text color to match other links */
+                display: block; /* Ensure links are visible */
+                width: 100%; /* Make links span full width for a clean look */
+                background: none; /* No background */
+                border: none; /* No border */
+                text-align: center; /* Align text in the center */
+            }
 
-        .scroll-banner-text {
-            font-size: 24px;
-            margin-top: -10px;
-    
-        }
-
-        /* Typing keyframes */
-        @keyframes typingScroll {
-            from { width: 0%; }
-            to { width: 100%; }
-        }
-
-        /* Cursor blink animation */
-        @keyframes blinkScroll {
-            from, to { border-color: transparent; }
-            50% { border-color: yellow; }
-        }
-
-        .second-banner h2 {
-            font-size: 24px;
-        }
-
-        .second-banner p {
-            font-size: 16px;
-        }
-
-        .call-to-action h3 {
-            font-size: 24px;
-        }
-
-        .call-to-action p {
-            font-size: 16px;
-        }
-
-        .cta-button {
-            padding: 12px 24px;
-        }
-
-
-    
-        
-        /* Keep nav links hidden initially */
-        .nav-links-left,
-        .nav-links-right {
-            display: none; /* Hide the hamburger content by default */
-            flex-direction: column; /* Stack items vertically */
-            position: absolute;
-            top: 60px;
-            left: 0;
-            width: 100%;
-            background-color: #000;
-            padding: 10px 0;
-            z-index: 1000;
-            text-align: center;
-        }
-        .nav-links-left a,
-        .nav-links-right a {
-            font-size: 18px;
-            padding: 15px 0; /* Consistent padding for all links */
-            text-decoration: none;
-            color: yellow;
-            display: block; /* Ensure links take up full width */
-            width: 100%; /* Make links span full width for a clean look */
-        }
-
-        /* Remove button styles for Sign Up and Login in the mobile view */
-        .nav-links-left a,
-        .nav-links-right a {
-            background: none; /* No background */
-            border: none; /* No border */
-            padding: 15px 0; /* Consistent padding with other links */
-            font-size: 18px;
-            color: yellow; /* Text color to match other links */
-            text-align: center; /* Align text in the center */
-        }
-
-        /* When the menu is open, show the hamburger content */
-        .menu-open .nav-links-left,
-        .menu-open .nav-links-right {
-        display: flex;
-        }
             /* Hover effect for all links */
-        .nav-links-left a:hover,
-        .nav-links-right a:hover {
-        background-color: #222; /* Darker background on hover */
-        color: yellow; /* Keep the same text color */
-        }
+            .nav-links-left a:hover,
+            .nav-links-right a:hover {
+                background-color: #222; /* Darker background on hover */
+                color: #FFFF31; /* Slightly different yellow for hover */
+            }
 
-        /* Remove button styles for Sign Up and Login in the mobile view */
-        .nav-links-left a {
-            background: none; /* No background */
-            border: none; /* No border */
-            padding: 10px; /* Consistent padding with other links */
-            font-size: 18px;
-            color: yellow; /* Text color to match other links */
-        }
+            /* Dropdown toggle link */
+            .dropdown-toggle {
+                color: #FFD700;
+                font-size: 18px;
+                padding: 15px 0;
+                cursor: pointer;
+                text-decoration: none;
+                position: relative;
+                display: inline-block;
+            }
 
-        .second-banner h2 {
-            font-size: 32px;
-        }
+            .dropdown-toggle::after {
+                content: " ▼";
+                font-size: 12px;
+                margin-left: 5px;
+            }
 
-        /* Other sections styling */
-        .subscription-tier {
-            flex: 1 1 100%;
-            max-width: 100%;
-            margin: 10px;
-        }
+            /* Dropdown content */
+            .dropdown-content {
+                display: none;
+                position: absolute;
+                background-color: rgba(0, 0, 0, 0.8);
+                min-width: 200px;
+                box-shadow: 0 8px 16px rgba(255, 255, 0, 0.3);
+                z-index: 1;
+                text-align: left;
+                border-radius: 8px;
+                transition: opacity 0.3s ease, transform 0.3s ease;
+                transform: translateY(10px);
+                opacity: 0;
+            }
 
-        
-        .third-banner-section {
-            flex-direction: column !important;
-            align-items: center;
-            text-align: center;
-        }
+            /* Show dropdown content when active */
+            .dropdown.active .dropdown-content {
+                display: block;
+                opacity: 1;
+                transform: translateY(0);
+            }
 
-        .third-banner-section img {
-            width: 100%;
-            height: auto;
-            margin-left: 0;
-            margin-bottom: 20px;
+            /* Links inside the dropdown */
+            .dropdown-content a {
+                color: #FFD700;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+                font-size: 16px;
+                transition: background-color 0.3s ease;
+            }
 
-        }
+            /* Dropdown hover effects */
+            .dropdown-content a:hover {
+                background-color: rgba(255, 255, 0, 0.2);
+                color: white;
+            }
 
-        .third-banner-section p {
-            width: 100%;
-            text-align: center; /* Center text on mobile */
+            /* Banner adjustments */
+            .banner {
+                padding: 45px 20px;
+            }
+
+            /* Adjust banner text */
+            .banner-text {
+                font-size: 32px !important;
+                max-width: 100%;
+                white-space: normal;
+                overflow: hidden;
+                border-right: none;
+                text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+            }
+
+            /* Adjust second banner */
+            .second-banner {
+                padding: 50px 0; /* Reduced horizontal padding */
+                align-items: stretch; /* Allow child items to stretch full width */
+                margin-bottom: 0; /* Removed negative margin */
+                margin-top: 10px;
+            }
+
+            /* Adjust second-banner-content */
+            .second-banner-content {
+                flex-direction: column;
+                align-items: stretch; /* Stretch child items to full width */
+                width: 100%;
+            }
+
+            .second-banner-left, .second-banner-right {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+
+            .second-banner-text-container, .call-to-action {
+                width: 100%;
+                max-width: 80%; /* Remove max-width constraint */
+                margin: 0; /* Remove margins */
+            }
+
+            .scroll-banner-text {
+                font-size: 24px;
+                margin-top: -10px;
+            }
+
+            /* Typing keyframes */
+            @keyframes typingScroll {
+                from { width: 0%; }
+                to { width: 100%; }
+            }
+
+            /* Cursor blink animation */
+            @keyframes blinkScroll {
+                from, to { border-color: transparent; }
+                50% { border-color: yellow; }
+            }
+
+            .second-banner h2 {
+                font-size: 24px;
+            }
+
+            .second-banner p {
+                font-size: 16px;
+            }
+
+            .call-to-action h3 {
+                font-size: 24px;
+            }
+
+            .call-to-action p {
+                font-size: 16px;
+            }
+
+            .cta-button {
+                padding: 12px 24px;
+            }
+
+            /* Adjust login container */
+            .login-container {
+                width: 90%;
+                padding: 50px;
+                margin: 40px auto;
+                margin-bottom: 100px;
+            }
+
+            .login-container h2 {
+                font-size: 20px;
+                padding: 10px;
+            }
+
+            .login-container input[type="text"],
+            .login-container input[type="REMOVED"] {
+                width: 85%;
+                padding: 10px 12px;
+                font-size: 14px;
+            }
+
+            .login-container input[type="submit"] {
+                width: 95%;
+                padding: 10px 0;
+                font-size: 16px;
+            }
+
+            #h-captcha-container {
+                /* Optional: Adjust padding or alignment for mobile */
+                width: auto;
+                height: auto;
+                max-width: 10px;
+            }
+
+            /* Adjust footer */
+            footer {
+                padding: 20px 0;
+            }
+
+            .social-icons img {
+                width: 25px;
+                margin: 0 8px;
+            }
+
+            /* Third banner adjustments (ensure stacking and centering) */
+            .third-banner-section {
+                flex-direction: column; /* Stack vertically */
+                align-items: center; /* Center items horizontally */
+                text-align: center; /* Center text */
+            }
+
+            .third-banner-section img {
+                width: 100%; /* Full width for images */
+                height: auto;
+                margin-left: 0;
+                margin-bottom: 20px;
+            }
+
+            .third-banner-section p {
+                width: 100%;
+                text-align: center; /* Center text */
+            }
+
+            /* Ensure parent container aligns correctly */
+            .third-banner {
+                padding: 50px 20px; /* Maintain appropriate padding */
+                text-align: center;
+                display: flex;
+                flex-direction: column;
+                gap: 30px;
+                align-items: center; /* Center child elements */
+            }
         }
-        
-    }
-    
     </style>
 </head>
 <body>
@@ -768,15 +899,13 @@
     </div> 
 
     <header>
-        <!-- Insert the logo here-->
-        <!--img src="{{ url_for('static', filename='images/logobaby.png') }}" alt="ButchAI Logo" class="logo"-->
-        <!-- Insert the logo text here-->
+        <!-- Logo Text -->
         <div class="logo-text" aria-label="ButchAI">
             Butch<span class="ai">AI</span>
         </div>
 
-            <!-- Hamburger menu icon -->
-        <div class="hamburger" onclick="toggleMenu()">
+        <!-- Hamburger menu icon -->
+        <div class="hamburger" onclick="toggleMenu()" aria-label="Toggle navigation menu" role="button" tabindex="0">
             <div></div>
             <div></div>
             <div></div>
@@ -784,17 +913,16 @@
 
         <!-- Left Navigation links -->
         <div class="nav-links-left">
-
-            <!-- Dropdown for features-->
+            <a href="/">Home</a>
+            <!-- Dropdown for Features -->
             <div class="dropdown">
-                <a href="#">Features</a>
+                <a href="#" class="dropdown-toggle">Features</a>
                 <div class="dropdown-content">
                     <a href="/how-to-prompt">How to Prompt</a>
                     <a href="/basic">Basic</a>
                     <a href="/premium">Premium</a>
                 </div>
             </div>
-
             <a href="/pricing">Pricing</a>
             <a href="/contact">Contact</a>
         </div>
@@ -805,84 +933,87 @@
         </div>
     </header>
 
-    <!-- First banner section -->
-    <div class="banner">
-        <div class="banner-text">
-            Just place your prompt, be creative, explore.
+    <main>
+        <!-- First banner section -->
+        <div class="banner">
+            <div class="banner-text">
+                Just place your prompt, be creative, explore.
+            </div>
         </div>
-    </div>
 
-    <div class="second-banner">
-        <!-- Container for left and right sections -->
-        <div class="second-banner-content">
-            <div class="second-banner-left">
-                <div class="second-banner-text-container">
-                    <div class="second-banner-text">
-                        <h2>The First Narration Tool to Use Key Frames</h2>
-                        <p> 
-                            We create custom narrations using key frames of your video to provide
-                            personalized voiceover content that stands out. This unique approach allows us
-                            to offer narration that enhances your storytelling, ensuring every key moment
-                            is highlighted with precision.
-                        </p>
+        <div class="second-banner">
+            <!-- Container for left and right sections -->
+            <div class="second-banner-content">
+                <div class="second-banner-left">
+                    <div class="second-banner-text-container">
+                        <div class="second-banner-text">
+                            <h2>The First Narration Tool to Use Key Frames</h2>
+                            <p> 
+                                We create custom narrations using key frames of your video to provide
+                                personalized voiceover content that stands out. This unique approach allows us
+                                to offer narration that enhances your storytelling, ensuring every key moment
+                                is highlighted with precision.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="second-banner-right">
+                    <div class="call-to-action">
+                        <h3>Get Started Today!</h3>
+                        <p>Experience the future of narration.</p>
+                        <a href="/signup" class="cta-button">Sign Up Now</a>
                     </div>
                 </div>
             </div>
-            <div class="second-banner-right">
-                <div class="call-to-action">
-                    <h3>Get Started Today!</h3>
-                    <p>Experience the future of narration.</p>
-                    <a href="/signup" class="cta-button">Sign Up Now</a>
-                </div>
+            <!-- Scroll banner text -->
+            <div class="scroll-banner-text">
+                Narrate an ad for Butch AI<br>
+            </div> 
+        </div>
+        <div class="audio-container">
+            <audio id="audioPlayer">
+                <source src="{{ url_for('static', filename='video_summary_audio.mp3') }}" type="audio/mp3">
+                Your browser does not support the audio element.
+            </audio>
+            <button id="playPauseBtn" class="play">
+                &#9658; <!-- Play icon -->
+            </button>
+        </div>
+
+        <!-- Third banner section-->
+        <div class="third-banner">
+            <div class="third-banner-section">
+                <img src="{{ url_for('static', filename='images/bball.jpg') }}" alt="Business Ad Image">
+                <p>
+                    Our AI narration tool is perfect for business advertisements, offering you a tailored voiceover that aligns with your brand.
+                    Stand out with our custom narrations for your promotional and ad videos, making sure your message is heard with clarity.
+                </p>
+            </div>
+            <div class="third-banner-section">
+                <img src="{{ url_for('static', filename='images/michael.png') }}" alt="Business Ad Image">
+                  
+                <p>
+                    Looking to have fun with your videos? Our tool lets you create entertaining and personalized narrations for any video you have. 
+                    Whether it's for social media, memes, or just for fun, our narration tool adds an extra layer of creativity to your projects.
+                </p>
             </div>
         </div>
-        <!-- Scroll banner text -->
-        <div class="scroll-banner-text">
-            Narrate an ad for Butch AI<br>
-        </div> 
-    </div>
-    <div class="audio-container">
-        <audio id="audioPlayer">
-            <source src="{{ url_for('static', filename='video_summary_audio.mp3') }}" type="audio/mp3">
-            Your browser does not support the audio element.
-        </audio>
-        <button id="playPauseBtn" class="play">
-            &#9658; <!-- Play icon -->
-        </button>
-    </div>
 
-    <!-- Third banner section-->
-    <div class="third-banner">
-        <div class="third-banner-section">
-            <img src="{{ url_for('static', filename='images/bball.jpg') }}" alt="Business Ad Image">
-            <p>
-                Our AI narration tool is perfect for business advertisements, offering you a tailored voiceover that aligns with your brand.
-                Stand out with our custom narrations for your promotional and ad videos, making sure your message is heard with clarity.
-            </p>
+        <!-- Subscription options-->
+        <div id="subscriptions" class="subscription-options">
+            <div class="subscription-tier">
+                <h3>Basic Tier  $5/month</h3>
+                <p>Access to basic narration services.</p>
+                <a href="/signup">Subscribe to Basic</a> 
+            </div>
+            <div class="subscription-tier">
+                <h3>Premium Tier  $15/month</h3>
+                <p>Advanced narration with key frame analysis.</p>
+                <a href="/signup">Subscribe to Premium</a>
+            </div>
         </div>
-        <div class="third-banner-section">
-            <img src="{{ url_for('static', filename='images/michael.png') }}" alt="Business Ad Image">
-              
-            <p>
-                Looking to have fun with your videos? Our tool lets you create entertaining and personalized narrations for any video you have. 
-                Whether it's for social media, memes, or just for fun, our narration tool adds an extra layer of creativity to your projects.
-            </p>
-        </div>
-    </div>
+    </main>
 
-    <!-- Subscription options-->
-    <div id="subscriptions" class="subscription-options">
-        <div class="subscription-tier">
-            <h3>Basic Tier  $5/month</h3>
-            <p>Access to basic narration services.</p>
-            <a href="/signup">Subscribe to Basic</a> 
-        </div>
-        <div class="subscription-tier">
-            <h3>Premium Tier  $15/month</h3>
-            <p>Advanced narration with key frame analysis.</p>
-            <a href="/signup">Subscribe to Premium</a>
-        </div>
-    </div>
     <script>
         // Wait for the DOM to load
         document.addEventListener('DOMContentLoaded', function() {
@@ -910,7 +1041,18 @@
 
             // Update button icon when audio ends
             audio.addEventListener('ended', updateButton);
+
+            // Dropdown toggle for mobile
+            const dropdownToggle = document.querySelector('.dropdown-toggle');
+            if (dropdownToggle) {
+                dropdownToggle.addEventListener('click', function(e) {
+                    e.preventDefault(); // Prevent default link behavior
+                    const dropdown = this.parentElement;
+                    dropdown.classList.toggle('active');
+                });
+            }
         });
+
         // Remove the intro overlay after the animation ends
         document.addEventListener("DOMContentLoaded", function () {
             const introOverlay = document.querySelector('.intro-overlay');
@@ -920,10 +1062,19 @@
                 document.body.style.overflow = 'auto'; // Allow scrolling after intro
             }, 3000); // Matches the animation duration
         });
+
         function toggleMenu() {
             const header = document.querySelector('header');
             header.classList.toggle('menu-open');
+        }
+
+        // Allow toggling menu with keyboard (Enter key)
+        document.querySelector('.hamburger').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                toggleMenu();
             }
+        });
+
         // Scroll event to trigger the typing animation
         document.addEventListener("scroll", function() {
             const bannerText = document.querySelector('.scroll-banner-text');
