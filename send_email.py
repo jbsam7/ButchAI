@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 import os
 from itsdangerous import URLSafeTimedSerializer
 from logger import logger
+import time
 
 # Load environment variables
 load_dotenv()
@@ -53,6 +54,9 @@ def store_otp(recipient_email, otp):
     expiration_time = datetime.now() + timedelta(minutes=5)  # OTP expires in 5 minutes
     otp_storage[recipient_email] = {'otp': otp, 'expires_at': expiration_time}
     logger.info(f"Time of otp generation: {datetime.now()}, time otp expires {expiration_time}.")
+
+    # Introducing a small delay to see if it's timing
+    time.sleep(1)
 
 # Validate the OTP entered by the user
 def validate_otp(recipient_email, otp_entered):
