@@ -1278,7 +1278,6 @@ def upload_video():
         # Generate the adjusted summary
         adjusted_summary = summarize_video(video_path, frame_interval, max_frame_for_last_key, api_key, custom_prompt, custom_prompt_frame, session['username'])
 
-        # Check for errors before proceeding to audio generation
         if 'Error' not in adjusted_summary:
             logger.info(f"Summary generated successfully for video {file.filename}.")
             # Generate audio from the summary
@@ -1286,12 +1285,10 @@ def upload_video():
             audio = generate_audio_from_text(adjusted_summary, voice_id)
             output_filename = os.path.join('static', 'video_summary_audio.mp3')
             save_audio(audio, output_filename)
-            return send_file(output_filename, as_attachment=True, download_name='video_summary_audio.mp3')
-        else:
-            # Handle the error properly, return to user or log it
-            app.logger.error(f"Error during summarization: {adjusted_summary}")
-            flash("Error occurred during summarization. Please try again.")
-            return redirect(url_for('upload_video'))  # Adjust as needed for your UI flow
+            
+            # Instead of sending the file directly, return a JSON response with the file URL
+            audio_url = url_for('static', filename='video_summary_audio.mp3', _external=True)
+            return jsonify({'message': 'Upload successful', 'audio_url': audio_url}), 200
 
 @app.route('/tts', methods=['GET', 'POST'])
 @login_required
