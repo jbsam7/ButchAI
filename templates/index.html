@@ -353,36 +353,54 @@
                 display: none; /* Hide initially */
                 flex-direction: column;
                 position: absolute;
-                top: 70px;
+                top: 50px;
                 left: 0;
                 width: 100%;
-                background-color: #000;
+                background-color: #1a1a1a;
                 padding: 10px 0;
                 z-index: 1000;
                 text-align: center;
+                
+
+
             }
 
             .nav-links-left {
                 display: none; /* Hide initially */
                 flex-direction: column;
                 position: absolute;
-                top: 70px;
+                top: 175px;
                 left: 0;
                 width: 100%;
-                background-color: #000;
+                background-color: #1a1a1a;
                 padding: 10px 0;
                 z-index: 1000;
                 text-align: center;
+                border-radius: 8px;
             }
 
-            .nav-links-left a,
-            .nav-links-right a {
+            .nav-links-left a {
                 font-size: 18px;
                 padding: 15px 0;
                 text-decoration: none;
                 color: #FFD700;
                 display: block;
                 width: 100%;
+                background-color: #1a1a1a;
+                border: none;
+                box-shadow: none;
+                
+            }
+            .nav-links-right a {
+                font-size: 18px;
+                padding: 10px 0;
+                text-decoration: none;
+                color: #FFD700;
+                display: block;
+                width: 100%;
+                background-color: #1a1a1a;
+                border: none;
+                box-shadow: none;
             }
 
             .menu-open .nav-links-left,
@@ -392,12 +410,13 @@
 
             /* Dropdown Adjustments for Mobile */
             .dropdown-content {
-                position: static;
-                background-color: #111;
+                position: absolute;
+                background-color: gray;
                 box-shadow: none;
                 transform: none;
                 opacity: 1;
                 display: none;
+                border-radius: 6px;
             }
 
             .dropdown:hover .dropdown-content {
@@ -406,6 +425,7 @@
 
             .dropdown .dropdown-content {
                 display: none;
+                margin-left: -50px;
             }
 
             .dropdown a {
@@ -413,7 +433,6 @@
             }
 
             .dropdown a::after {
-                content: " ▼";
                 font-size: 12px;
             }
 
