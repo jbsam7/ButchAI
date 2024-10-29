@@ -15,7 +15,7 @@
         }
 
         html, body {
-            background-color: black;
+            background-color: #1a1a1a;
             color: yellow;
             font-family: 'Poppins', sans-serif;
             margin: 0;
@@ -28,42 +28,64 @@
             display: flex;
             flex-wrap: wrap;
             align-items: center;
-            padding: 2px;
+            padding: 4px;
             position: fixed;
             top: 0;
             width: 100%;
             z-index: 1000;
-            background-color: black;
-            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.5);
-            backdrop-filter: blur(10px);
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            background-color: #1a1a1a;
+            
         }
 
-        .logo {
-            height: 60px;
-            width: auto;
+        /* Logo Text */
+        .logo-text {
+            font-size: 32px;
+            font-weight: 700;
+            color: #FFFF31;
             margin-right: 20px;
-            transition: box-shadow 0.3s ease-in-out;
-            border-radius: 6px;
-            margin-left: -2px;
-            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.5);
+            transition: color 0.3s ease-in-out;
+            cursor: default;
+            padding-left: 8px;
+        }
+        .logo-text:hover {
+            color: rgba(255, 255, 0, 0.8);
         }
 
-        .logo:hover {
-            box-shadow: 0 0 30px rgba(255, 255, 0, 1);
+        /* Style for the 'AI' part */
+        .logo-text .ai {
+            color: #FFD700; /* Gold color for 'AI' */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Enhance readability */
         }
 
+        /* Navigation Links */
         .nav-links-left {
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
             align-items: center;
+            padding-top: 3px;
         }
 
         .nav-links-left a {
-            color: yellow;
+            color: #FFD700;
             text-decoration: none;
             font-size: 18px;
+            position: relative;
+        }
+
+        .nav-links-left a::after {
+            content: "";
+            position: absolute;
+            width: 0%;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #FFD700;
+            transition: width 0.3s;
+        }
+
+        .nav-links-left a:hover::after {
+            width: 100%;
         }
 
         .nav-links-left a:hover {
@@ -128,23 +150,26 @@
         }
 
         .nav-links-right a {
-            color: yellow;
+            color: black;
             text-decoration: none;
-            padding: 10px 20px;
-            border: 2px solid yellow;
+            padding: 7px 14px;
+            border: 2px solid #FFD700;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
+            background-color: #FFD700;
+            transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
         }
 
         .nav-links-right a:hover {
-            background-color: yellow;
+            background-color: #FFFF31;
             color: black;
-            box-shadow: 0 0 20px rgba(255, 255, 0, 0.8);
+            box-shadow: 0 0 20px rgba(255, 255, 0, 0.5);
+            border: 2px solid #FFFF31;
         }
 
         /* Banner Section */
         .banner {
-            background: linear-gradient(to right, yellow, rgba(0, 0, 0, 0.9));
+            background: linear-gradient(to right, #FFD700, rgba(0, 0, 0, 0.9));
             padding: 100px 50px 50px 50px; /* Increased top padding to accommodate fixed header */
             display: flex;
             flex-direction: column;
@@ -175,6 +200,7 @@
             border-radius: 15px;
             box-shadow: 0px 8px 20px rgba(255, 255, 0, 0.3);
             transition: transform 0.3s, box-shadow 0.3s ease-in-out;
+            border: #FFD700 solid 4px;
         }
 
         .banner-form:hover {
@@ -215,7 +241,7 @@
 
         /* Submit Button */
         input[type="submit"] {
-            background-color: yellow;
+            background-color: #FFD700;
             color: black;
             border: none;
             padding: 15px;
@@ -275,7 +301,7 @@
             /* Header Adjustments */
             header {
                 justify-content: space-between;
-                padding: 10px 20px;
+                padding: 5px 10px;
             }
 
             /* Hamburger menu styling */
@@ -283,19 +309,18 @@
                 display: block; /* Show hamburger on mobile */
                 cursor: pointer;
                 position: relative;
-                border: rgba(255, 255, 0);
-                padding: 6px;
-                box-shadow: 0 4px 10px rgba(255, 255, 0, 0.8);
+                padding: 6px 5px;
                 border-radius: 4px;
+                padding-right: 8px;
             }
 
             .hamburger div {
                 width: 30px;
                 height: 4px;
-                background-color: yellow;
+                background-color: #FFD700;
                 margin: 5px 0;
                 border-radius: 4px;
-                box-shadow: 0 4px 10px rgba(255, 255, 0, 0.5);
+               
             }
 
             .logo {
@@ -323,8 +348,21 @@
             }
 
             /* Navigation Links for Mobile */
-            .nav-links-left,
+            
             .nav-links-right {
+                display: none; /* Hide initially */
+                flex-direction: column;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background-color: #000;
+                padding: 10px 0;
+                z-index: 1000;
+                text-align: center;
+            }
+
+            .nav-links-left {
                 display: none; /* Hide initially */
                 flex-direction: column;
                 position: absolute;
@@ -342,7 +380,7 @@
                 font-size: 18px;
                 padding: 15px 0;
                 text-decoration: none;
-                color: yellow;
+                color: #FFD700;
                 display: block;
                 width: 100%;
             }
@@ -386,15 +424,14 @@
     </style>
 </head>
 <body>
-    <!-- Intro Overlay (Optional, can be removed if not needed) -->
-    <div class="intro-overlay" style="display: none;">
-        <div class="intro-text">Welcome to Butch AI</div>
-    </div> 
+    
 
     <!-- Header (Integrated from main.html) -->
     <header>
-        <!-- Logo -->
-        <img src="{{ url_for('static', filename='images/logobaby.png') }}" alt="ButchAI Logo" class="logo">
+        <!-- Logo Text -->
+        <div class="logo-text" aria-label="ButchAI">
+            Butch<span class="ai">AI</span>
+        </div>
 
         <!-- Hamburger menu icon -->
         <div class="hamburger" onclick="toggleMenu()">
