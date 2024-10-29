@@ -260,26 +260,46 @@
             .hamburger div {
                 width: 30px;
                 height: 4px;
-                background-color: yellow;
+                background-color: #FFD700;
                 margin: 5px 0;
+                border-radius: 8px;
+            }
+            .nav-links-left {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 210px;
+                left: 0;
+                width: 100%;
+                background-color: #1a1a1a;
+                padding: 10px 0;
+                text-align: center;
             }
 
-            .nav-links-left, .nav-links-right {
+             .nav-links-right {
                 display: none;
                 flex-direction: column;
                 position: absolute;
                 top: 60px;
                 left: 0;
                 width: 100%;
-                background-color: #000;
+                background-color: #1a1a1a;
                 padding: 10px 0;
                 text-align: center;
             }
 
-            .nav-links-left a, .nav-links-right a {
+             .nav-links-right a {
                 font-size: 18px;
                 padding: 15px 0;
-                color: yellow;
+                color: #FFD700;
+                width: 100%;
+                background-color: #1a1a1a;
+                border: none;
+            }
+            .nav-links-left a {
+                font-size: 18px;
+                padding: 8px 0;
+                color: #FFD700;
                 width: 100%;
             }
 
@@ -321,6 +341,7 @@
                     <a href="/premium">Premium</a>
                 </div>
             </div>
+            <a href="/">Home</a>
             <a href="/pricing">Pricing</a>
             <a href="/contact">Contact</a>
         </div>
