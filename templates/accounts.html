@@ -17,8 +17,8 @@
         }
 
         html, body {
-            background-color: black;
-            color: yellow;
+            background-color: #1a1a1a;
+            color: #FFD700;
             font-family: 'Poppins', sans-serif;
             height: 100%;
             min-height: 100vh;
@@ -34,33 +34,33 @@
             display: flex;
             justify-content: space-between; /* Space between left and right sections */
             align-items: center;
-            padding: 10px 20px;
+            padding: 2px 4px;
             position: fixed;
             top: 0;
             width: 100%;
-            background-color: rgba(0, 0, 0, 0.9); /* Semi-transparent for better visibility */
-            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.5);
+            background-color: #1a1a1a; /* Semi-transparent for better visibility */
+    
             z-index: 1000;
         }
 
-        /* Left Section: Logo and Navigation Links */
-        .left-section {
-            display: flex;
-            align-items: center;
-            gap: 20px;
+       /* Logo Text */
+       .logo-text {
+            font-size: 32px;
+            font-weight: 700;
+            color: #FFFF31;
+            margin-right: 20px;
+            transition: color 0.3s ease-in-out;
+            cursor: default;
+            padding-left: 8px;
         }
 
-        /* Logo Styling */
-        .logo {
-            height: 60px;
-            width: auto;
-            transition: box-shadow 0.3s ease-in-out;
-            border-radius: 6px;
-            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.5);
+        .logo-text:hover {
+            color: rgba(255, 255, 0, 0.8);
         }
 
-        .logo:hover {
-            box-shadow: 0 0 30px rgba(255, 255, 0, 1);
+        .logo-text .ai {
+            color: #FFD700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
         }
 
         /* Navigation Links Containers */
@@ -70,42 +70,55 @@
             gap: 20px;
         }
 
-        /* Left Navigation Links */
+       
+
         .nav-links-left a {
-            color: yellow;
+            color: #FFD700;
             text-decoration: none;
             font-size: 18px;
-            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links-left a::after {
+            content: "";
+            position: absolute;
+            width: 0%;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #FFD700;
+            transition: width 0.3s;
+        }
+
+        .nav-links-left a:hover::after {
+            width: 100%;
         }
 
         .nav-links-left a:hover {
             color: rgba(255, 255, 0, 0.8);
         }
 
-        /* Dropdown Menu */
         .dropdown {
             position: relative;
-        }
-
-        .dropdown > a::after {
-            content: " ▼";
-            font-size: 12px;
         }
 
         .dropdown-content {
             display: none;
             position: absolute;
-            background-color: black;
-            min-width: 150px;
-            box-shadow: 0 4px 8px rgba(255, 255, 0, 0.2);
+            background-color: rgba(0, 0, 0, 0.9);
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(255, 255, 0, 0.3);
             z-index: 1;
             text-align: left;
             border-radius: 8px;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            transform: translateY(10px);
+            opacity: 0;
         }
 
         .dropdown-content a {
-            color: yellow;
-            padding: 10px;
+            color: #FFD700;
+            padding: 12px 16px;
             text-decoration: none;
             display: block;
             font-size: 16px;
@@ -119,24 +132,39 @@
 
         .dropdown:hover .dropdown-content {
             display: block;
+            opacity: 1;
+            transform: translateY(0);
         }
 
-        /* Right Navigation Links (Premium Page, Basic Page, Logout) */
+        .dropdown::after {
+            content: " ▼";
+            font-size: 12px;
+        }
+
+        .nav-links-right {
+            margin-left: auto;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-right: 1%;
+        }
+
         .nav-links-right a {
-            color: yellow;
+            color: black;
             text-decoration: none;
-            font-size: 18px;
-            padding: 10px 20px;
-            border: 2px solid yellow;
+            padding: 7px 14px;
+            border: 2px solid #FFD700;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
+            background-color: #FFD700;
             transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
         }
 
         .nav-links-right a:hover {
-            background-color: yellow;
+            background-color: #FFFF31;
             color: black;
-            box-shadow: 0 0 20px rgba(255, 255, 0, 0.8);
+            box-shadow: 0 0 20px rgba(255, 255, 0, 0.5);
+            border: 2px solid #FFFF31;
         }
 
         /* Hamburger Menu */
@@ -144,70 +172,70 @@
             display: none; /* Hidden by default, shown on mobile via media queries */
             cursor: pointer;
             padding: 6px;
-            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.8);
             border-radius: 4px;
         }
 
         .hamburger div {
             width: 30px;
             height: 4px;
-            background-color: yellow;
+            background-color: #FFD700;
             margin: 5px 0;
             border-radius: 2px;
-            box-shadow: 0 2px 5px rgba(255, 255, 0, 0.5);
         }
 
         /* Banner Styles */
         .banner {
-            background: linear-gradient(to right, yellow, rgba(255, 255, 0, 0.1));
+            background: linear-gradient(to right, #FFD700, rgba(255, 255, 0, 0.1));
             display: flex;
             align-items: center;
             justify-content: center; /* Center the text */
             padding: 100px 20px; /* Adjusted padding to accommodate fixed header */
-            margin-top: 60px; /* Adjusted to prevent overlap with fixed header */
+            margin-top: 30px; /* Adjusted to prevent overlap with fixed header */
             flex-direction: column;
             text-align: center;
         }
 
         .banner-text {
-            font-size: 36px;
+            font-size: 40px;
             font-weight: bold;
             color: black; /* Text color contrasting with the background */
             max-width: 90%;
             overflow: hidden;
             white-space: nowrap;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+            text-shadow: 2px 0px 4px white;
             animation: none; /* Removed typing animation for simplicity */
             margin-bottom: 20px;
         }
 
         .banner-subtext {
-            font-size: 18px;
+            font-size: 25px;
             color: rgba(0, 0, 0, 0.8);
+            font-weight: bold;
+            text-shadow: 2px 0px 6px white;
         }
 
         /* Account Container Styles */
         .account-container {
-            background-color: black;
-            color: yellow;
+            background-color: #FFD700;
+            color: white;
+            text-shadow: #1a1a1a 2px 0px 5px;
             padding: 40px;
             border-radius: 15px;
-            box-shadow: 0px 8px 20px rgba(255, 255, 0, 0.6);
             width: 100%;
             max-width: 500px;
             text-align: center;
-            margin: 150px auto 50px auto; /* Space for header and footer */
+            margin: 70px auto 50px auto; /* Space for header and footer */
         }
 
         /* Title inside account container */
         .account-container h1 {
             margin-bottom: 30px;
             font-size: 24px;
-            box-shadow: 0 0 30px rgba(255, 255, 0, 1);
             padding: 15px;
             border-radius: 10px;
-            color: black;
-            background-color: yellow;
+            color: #1a1a1a;
+            background-color: white;
+            border: yellow 3px solid;
         }
 
         /* Subscription Information */
@@ -226,6 +254,7 @@
             display: flex;
             align-items: center;
             margin-bottom: 10px;
+            color: white;
         }
 
         .form-check input[type="radio"] {
@@ -235,7 +264,7 @@
             width: 20px;
             height: 20px;
             border-radius: 50%;
-            border: 2px solid yellow;
+            border: 2px solid white;
             position: relative;
             cursor: pointer;
             transition: all 0.2s ease-in-out;
@@ -243,8 +272,8 @@
         }
 
         .form-check input[type="radio"]:checked {
-            background-color: yellow; /* Only fill in yellow when selected */
-            border: 2px solid yellow; /* Keep the yellow border */
+            background-color: white; /* Only fill in yellow when selected */
+            border: 2px solid white; /* Keep the yellow border */
         }
 
         .form-check input[type="radio"]:checked::before {
@@ -260,7 +289,7 @@
 
         .form-check-label {
             font-size: 18px;
-            color: yellow;
+            color: white;
             cursor: pointer;
         }
 
@@ -275,10 +304,11 @@
             border: none;
             padding: 10px 20px;
             border-radius: 5px;
-            box-shadow: 0px 4px 10px rgba(255, 0, 0, 0.5);
             cursor: pointer;
             transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
             width: 100%;
+            font-weight: bold;
+            text-shadow: #000 2px 0px 5px;
         }
 
         .btn-unsubscribe:hover {
@@ -289,15 +319,16 @@
         /* Button styling for other account actions */
         .btn-account {
             background-color: yellow;
-            color: black;
+            color: white;
+            text-shadow: #000 2px 0px 5px;
             border: none;
             padding: 10px 20px;
             border-radius: 5px;
-            box-shadow: 0px 4px 10px rgba(255, 255, 0, 0.5);
             cursor: pointer;
             transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
             width: 100%;
             margin-top: 20px;
+            font-weight: bold;
         }
 
         .btn-account:hover {
@@ -349,18 +380,33 @@
             }
 
             /* Hide navigation links by default */
-            .nav-links-left,
+           
             .nav-links-right {
                 display: none;
                 flex-direction: column;
                 position: absolute;
-                top: 60px;
+                top: 45px;
                 left: 0;
                 width: 100%;
-                background-color: #000;
+                background-color: #1a1a1a;
                 padding: 10px 0;
                 z-index: 1000;
                 text-align: center;
+            }
+
+            
+            .nav-links-left  {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 140px;
+                left: 0;
+                width: 100%;
+                background-color: #1a1a1a;
+                padding: 10px 0;
+                z-index: 1000;
+                text-align: center;
+                border-radius: 6px;
             }
 
             .nav-links-left a,
@@ -369,6 +415,7 @@
                 padding: 15px 0;
                 text-decoration: none;
                 color: yellow;
+                background-color: #1a1a1a;
                 display: block;
                 width: 100%;
             }
@@ -421,8 +468,17 @@
 
     <!-- Header -->
     <header>
-        <div class="left-section">
-            <img src="{{ url_for('static', filename='images/logobaby.png') }}" alt="ButchAI Logo" class="logo">
+        <!-- Logo Text -->
+        <div class="logo-text" aria-label="ButchAI">
+            Butch<span class="ai">AI</span>
+        </div>
+
+        <!-- Hamburger Menu Icon -->
+        <div class="hamburger" onclick="toggleMenu()" aria-label="Toggle navigation menu" role="button" tabindex="0">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
 
             <div class="nav-links-left">
                 <a href="/">Home</a>
@@ -447,12 +503,6 @@
             <a href="/logout">Logout</a>
         </div>
 
-        <!-- Hamburger Menu Icon -->
-        <div class="hamburger" onclick="toggleMenu()" aria-label="Toggle navigation menu" role="button" tabindex="0">
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
     </header>
 
     <!-- Banner Section -->
