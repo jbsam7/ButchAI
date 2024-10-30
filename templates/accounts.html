@@ -481,6 +481,7 @@
 
         <!-- Form to manage subscription tiers -->
         <form action="{{ url_for('account') }}" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <div class="subscription-info">
                 <p>Current Subscription: {{ subscription_tier }}</p>
 

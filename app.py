@@ -44,6 +44,10 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv('FLASK_SECRET_KEY')   # Required for session management and flashing messages
 
+# Set up logging
+logging.basicConfig(level=logging.DEBUG)  # Set to DEBUG level to capture all logs
+logger = logging.getLogger(__name__)
+
 # Initialize CSRF protection
 csrf = CSRFProtect()
 csrf.init_app(app)
@@ -1150,7 +1154,6 @@ def allowed_file(filename):
 @app.route('/upload', methods=['GET', 'POST'])
 @limiter.limit("10 per minute")
 @login_required
-@basic_required
 @premium_required
 def upload_video():
     if request.method == 'GET':
@@ -1296,7 +1299,7 @@ def upload_video():
 def text_to_speech():
     if request.method == 'GET':
         # Return the upload form on a GET request
-        return render_template('index.html')
+        return render_template('tts.html')
 
 
     if request.method == 'POST':
@@ -1304,11 +1307,13 @@ def text_to_speech():
         user_prompt = bleach.clean(request.form.get('custom_prompt'))
         if not user_prompt:
             flash('Please enter some text to generate speech')
+            print('Please enter some text to generate speech')
             return render_template('tts.html')
 
         # Handle file upload and processing
         if 'file' not in request.files or request.files['file'].filename == '':
             flash('No selected or no file part in the request.')
+            print('No selected or no file part in the request.')
             return render_template('tts.html')
 
         file = request.files['file']
@@ -1316,7 +1321,7 @@ def text_to_speech():
         # Validate the file type
         if not allowed_file(file.filename):
             flash("Invalid file type. Please upload only .mp4, .mov, or .avi video files.")
-            return render_template('tts.html')
+            return jsonify({'error': "Invalid file type. Please upload only .mp4, .mov, or .avi video files."}), 401
 
         # Ensure the filename is secure
         filename = secure_filename(file.filename)
@@ -1325,7 +1330,7 @@ def text_to_speech():
         mime_type, _ = mimetypes.guess_type(filename)
         if mime_type is None or not mime_type.startswith('video'):
             flash(f"Invalid file type: {mime_type}. Only video files are allowed.")
-            return render_template('tts.html')
+            return jsonify({'error': "Invalid file type: Only video files are allowed."}), 401
         
         video_path = os.path.join('uploads', filename)
         file.save(video_path)
@@ -1335,7 +1340,8 @@ def text_to_speech():
         if not vidcap.isOpened():
             flash("Uploaded file is not a valid video.")
             os.remove(video_path)
-            return render_template('tts.html')
+            return jsonify({'error': "Uploaded file is not a valid video."}), 404
+
         
         fps = vidcap.get(cv2.CAP_PROP_FPS)
         frame_count = int(vidcap.get(cv2.CAP_PROP_FRAME_COUNT))
@@ -1422,7 +1428,12 @@ def text_to_speech():
             # Check for errors before proceeding to audio generation
             if 'Error' not in final_summary:
                 # Generate audio from the summary using your existing function
-                audio_file_path = generate_audio_with_openai(adjusted_summary)
+                generate_audio_with_openai(adjusted_summary)
+
+                
+
+                # Generate a URL for the audio file
+                audio_url = url_for('static', filename='speech_openai.mp3', _external=True)
 
                 # Count characters in final summary
                 character_count = count_characters(final_summary)
@@ -1430,21 +1441,23 @@ def text_to_speech():
                 # Log the character usage and cost
                 log_tts_usage_and_cost(username, character_count)
 
-                # Serve the audio file to the user
-                return send_file(audio_file_path, as_attachment=True, download_name='video_summary_audio.mp3')
+                # Return JSON response with the audio URL
+                return jsonify({'message': 'Upload successful', 'audio_url': audio_url}), 200
             else:
                 flash("Error occurred during summarization. Please try again.")
-                return render_template('tts.html')
+                return jsonify({'error': "Error occurred during summarization. Please try again."}), 500
 
         except Exception as e:
+            logger.error(f"Error during video summarization: {str(e)}")
             flash(f"Error during video summarization: {str(e)}")
             return render_template('tts.html')
-
-    return render_template('tts.html')
+    else:
+        flash("Invalid input. Please upload a video and provide a custom prompt.")
+        return render_template('tts.html')
     
 
     
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0')
+    app.run(debug=True)
 
