@@ -12,6 +12,7 @@ import logging
 import bleach
 import mimetypes
 import redis
+from redis_config import redis_client
 from flask_wtf.csrf import CSRFProtect
 from werkzeug.utils import secure_filename
 from datetime import timedelta
@@ -75,21 +76,6 @@ limiter = Limiter(get_remote_address, app=app, default_limits=["100 per minute"]
 # Initialize Stripe with your secret key
 stripe.api_key = os.getenv('STRIPE_API_KEY')
 
-# Retrieve Redis connection details from environment variables
-host = os.getenv("REDIS_HOST")
-port = int(os.getenv("REDIS_PORT"))
-username = os.getenv("REDIS_USERNAME")
-REMOVED = os.getenv("REDIS_PASSWORD")
-ssl = os.getenv("REDIS_SSL") == "True"  # Convert string to boolean
-
-# Connect to Redis
-redis_client = redis.StrictRedis(
-    host=host,
-    port=port,
-    username=username,
-    REMOVED=REMOVED,
-    ssl=ssl
-)
 
 # Test the connection
 try:

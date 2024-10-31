@@ -1,6 +1,8 @@
 import random
 from datetime import datetime, timedelta
 import smtplib
+import redis
+from redis_config import redis_client
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from dotenv import load_dotenv
@@ -19,8 +21,7 @@ SMTP_USERNAME = os.getenv('SMTP_USERNAME')  # Your Microsoft 365 email address
 SMTP_PASSWORD = os.getenv('SMTP_PASSWORD')  # Your Microsoft 365 email REMOVED
 SENDER = 'REMOVED'  # Your Microsoft 365 email address
 
-# Temporary OTP storage (for production, consider using a database or Redis)
-otp_storage = {}
+
 
 # Generate a 6-digit OTP
 def generate_otp():
@@ -51,29 +52,28 @@ def send_otp_email(recipient_email, otp):
 
 # Store OTP for a recipient and set expiration time
 def store_otp(recipient_email, otp):
-    expiration_time = datetime.now() + timedelta(minutes=5)  # OTP expires in 5 minutes
-    otp_storage[recipient_email] = {'otp': otp, 'expires_at': expiration_time}
-    logger.info(f"Time of otp generation: {datetime.now()}, time otp expires {expiration_time}.")
-
-    # Introducing a small delay to see if it's timing
-    time.sleep(1)
+    redis_key = f"otp:{recipient_email}"  # Create a unique key for each email
+    expiration_time = 300 # OTP expires in 5 minutes (300 seconds)
+    redis_client.setex(redis_key, expiration_time, otp)
+    logger.info(f"Stored OTP for {recipient_email} in Redis, expires in 5 minutes.")
 
 # Validate the OTP entered by the user
 def validate_otp(recipient_email, otp_entered):
-    otp_info = otp_storage.get(recipient_email)
-    logger.info(f"Data entered in otp_storage for email {recipient_email}: OTP storage {otp_storage}.")
-    if not otp_info:
+    redis_key = f"otp:{recipient_email}"
+
+    # Retrieve OTP from Redis
+    otp_stored = redis_client.get(redis_key)
+
+    if otp_stored is None:
+        logger.info(f"No OTP found for {recipient_email} or OTP expired.")
         return False, "No OTP sent or OTP expired"
-    
-    if datetime.now() > otp_info['expires_at']:
-        otp_storage.pop(recipient_email)  # Remove expired OTP
-        return False, "OTP expired"
-    
-    if otp_info['otp'] == otp_entered:
-        otp_storage.pop(recipient_email)  # Remove OTP after successful validation
+    # Check if entered OTP matches the stored OTP
+    if otp_stored.decode('utf-8') == otp_entered:
+        # Delete the OTP from Redis after successful verification
+        redis_client.delete(redis_key)
         return True, "OTP validated successfully"
-    
-    return False, "Invalid OTP"
+    else:
+        return False, "Invalid OTP"
 
 # Generate a REMOVED reset token
 def generate_REMOVED_reset_token(email):
