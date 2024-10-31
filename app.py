@@ -187,6 +187,12 @@ def signup_route():
         confirm_REMOVED = bleach.clean(request.form['confirm_REMOVED']).strip()
         email = bleach.clean(request.form['email']).strip()
         subscription_tier = request.form['subscription_tier']
+        terms_agreed = bleach.clean(request.form['terms'])
+
+        if not terms_agreed:
+            flash('You must agree to the terms and conditions.')
+            return redirect(url_for('signup_route'))
+
 
         # Ensure the subscription tier is one of the allowed values
         if subscription_tier not in ['basic', 'premium']:

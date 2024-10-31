@@ -321,6 +321,20 @@
             background-color:#FFFF31;
         }
 
+        .terms {
+            color: white;
+            text-shadow: #121212 2px 0px 5px;
+            padding-bottom: 20px;
+        }
+
+        .captcha-container {
+            display: flex;
+            justify-content: center; /* Center align */
+            padding-right: 30px; /* Adjust this as necessary */
+        }
+
+        
+
         /* Footer Styles */
         footer {
             background-color: #121212;
@@ -555,6 +569,15 @@
                 padding: 12px 0;
                 font-size: 16px;
             }
+            .captcha-container {
+                padding-left: 80px; /* Remove padding on smaller screens */
+                width: 100%;
+            }
+
+            .h-captcha {
+                transform: scale(0.85); /* Scale down the captcha widget */
+                transform-origin: 0 0;  /* Ensure scaling works properly */
+            }
 
             footer {
                 padding: 20px 0;
@@ -673,9 +696,18 @@
                     <label class="form-check-label" for="premium">Premium - $15/month</label>
                 </div>
             </div>
+            <div class="terms">
+                <input type="checkbox" id="terms" name="terms" required>
+                <label for="terms">I have read and agree to the
+                    <a href="/terms" target="_blank">Terms and Conditions</a> and 
+                    <a href="/privacy" target="_blank">Privacy Policy</a>
+                </label>
+            </div>
 
-            <!-- hCaptcha Widget -->
-            <div class="h-captcha" data-sitekey="4a78635c-db18-4b7e-ae10-ab8eca3a57f2"></div>
+            <div class="captcha-container">
+                <!-- hCaptcha Widget -->
+                <div class="h-captcha" data-sitekey="4a78635c-db18-4b7e-ae10-ab8eca3a57f2"></div>
+            </div>
 
             <!-- Submit Button -->
             <button type="submit" class="btn-primary">Sign Up</button>
