@@ -1300,15 +1300,16 @@ def upload_video():
 
         if 'Error' not in adjusted_summary:
             logger.info(f"Summary generated successfully for video {file.filename}.")
+
             # Generate audio from the summary
             voice_id = 'pNInz6obpgDQGcFmaJgB'
-            audio = generate_audio_from_text(adjusted_summary, voice_id)
-            output_filename = os.path.join('static', 'video_summary_audio.mp3')
-            save_audio(audio, output_filename)
-            
-            # Instead of sending the file directly, return a JSON response with the file URL
-            audio_url = url_for('static', filename='video_summary_audio.mp3', _external=True)
+            audio_url = generate_audio_from_text(adjusted_summary, voice_id)
+
+            # Return JSON response with the audio URL from DigitalOcean Spaces
             return jsonify({'message': 'Upload successful', 'audio_url': audio_url}), 200
+        else:
+            flash("Error occurred during summarization. Please try again.")
+            return jsonify({'error': "Error occurred during summarization. Please try again."}), 500
 
 @app.route('/tts', methods=['GET', 'POST'])
 @login_required

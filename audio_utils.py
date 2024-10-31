@@ -3,7 +3,10 @@ import time
 import re
 import base64
 import math
+import boto3
+import time
 from elevenlabs.client import ElevenLabs
+from dotenv import load_dotenv
 from anthropic import Anthropic
 from logger import logger
 import os
@@ -11,6 +14,17 @@ from data_utils_gpt4o import get_db_connection,log_token_usage_and_cost_gpt4o
 from data_utils import get_db_connection, log_token_usage_and_cost
 import cv2
 
+load_dotenv()
+
+# Initialize DigitalOcean Spaces client
+s3_client = boto3.client(
+    's3',
+    endpoint_url=os.getenv("DO_SPACES_ENDPOINT"),
+    aws_access_key_id=os.getenv("DO_SPACES_KEY"),
+    aws_secret_access_key=os.getenv("DO_SPACES_SECRET")
+)
+
+SPACE_NAME = os.getenv("DO_SPACES_NAME")
 
 # Generate key frame phrases using GPT-4o
 def generate_key_frame_phrases(combined_summary, custom_prompt, api_key, username, retries=3, delay=60):
@@ -96,7 +110,27 @@ def generate_audio_from_text(prompt, voice_id):
     audio_generator = client.generate(text=prompt, voice=voice_id)
     # collect audio into bytes
     audio_data = b''.join(audio_generator) # Convert generator into bytes
-    return audio_data
+    
+    # Define a unique filename for each audio file in DigitalOcean Spaces
+    file_key = f"audio/video_summary_audio_{int(time.time())}.mp3"
+    
+    # Upload the audio data to DigitalOcean Space
+    s3_client.put_object(
+        Bucket=SPACE_NAME,
+        Key=file_key,
+        Body=audio_data,
+        ContentType='audio/mpeg'
+    )
+
+    # Generate a signed URL for the uploaded file
+    audio_url = s3_client.generate_presigned_url(
+        'get_object',
+        Params={'Bucket': SPACE_NAME, 'Key': file_key},
+        ExpiresIn=3600  # URL expires in 1 hour
+    )
+
+    logger.info(f"Audio successfully uploaded and accessible at {audio_url}")
+    return audio_url
 
 # Save audio to a file
 def save_audio(audio, filename):
