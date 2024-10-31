@@ -11,6 +11,7 @@ import stripe
 import logging
 import bleach
 import mimetypes
+import redis
 from flask_wtf.csrf import CSRFProtect
 from werkzeug.utils import secure_filename
 from datetime import timedelta
@@ -73,6 +74,30 @@ limiter = Limiter(get_remote_address, app=app, default_limits=["100 per minute"]
 
 # Initialize Stripe with your secret key
 stripe.api_key = os.getenv('STRIPE_API_KEY')
+
+# Retrieve Redis connection details from environment variables
+host = os.getenv("REDIS_HOST")
+port = int(os.getenv("REDIS_PORT"))
+username = os.getenv("REDIS_USERNAME")
+REMOVED = os.getenv("REDIS_PASSWORD")
+ssl = os.getenv("REDIS_SSL") == "True"  # Convert string to boolean
+
+# Connect to Redis
+redis_client = redis.StrictRedis(
+    host=host,
+    port=port,
+    username=username,
+    REMOVED=REMOVED,
+    ssl=ssl
+)
+
+# Test the connection
+try:
+    redis_client.ping()
+    print("Connected to Redis!")
+except redis.exceptions.ConnectionError as e:
+    print(f"Connection failed: {e}")
+
 
 # Define the path for saving the audio file
 AUDIO_SAVE_PATH = 'static/audio_output.mp3'
