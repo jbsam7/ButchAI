@@ -1445,12 +1445,7 @@ def text_to_speech():
             # Check for errors before proceeding to audio generation
             if 'Error' not in final_summary:
                 # Generate audio from the summary using your existing function
-                generate_audio_with_openai(adjusted_summary)
-
-                
-
-                # Generate a URL for the audio file
-                audio_url = url_for('static', filename='speech_openai.mp3', _external=True)
+                audio_url = generate_audio_with_openai(adjusted_summary)
 
                 # Count characters in final summary
                 character_count = count_characters(final_summary)

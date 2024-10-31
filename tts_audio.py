@@ -2,7 +2,22 @@
 from pathlib import Path
 from openai import OpenAI
 from logger import logger
+from dotenv import load_dotenv
 import os
+import boto3
+import time
+
+load_dotenv()
+
+# Initialize DigitalOcean Spaces client
+s3_client = boto3.client(
+    's3',
+    endpoint_url=os.getenv("DO_SPACES_ENDPOINT"),
+    aws_access_key_id=os.getenv("DO_SPACES_KEY"),
+    aws_secret_access_key=os.getenv("DO_SPACES_SECRET")
+)
+
+SPACE_NAME = os.getenv("DO_SPACES_NAME")
 
 def generate_audio_with_openai(input_text, voice="fable"):
     """
@@ -17,9 +32,6 @@ def generate_audio_with_openai(input_text, voice="fable"):
     """
     client = OpenAI(api_key=os.getenv("GPT_API_KEY"))  # Initialize the OpenAI client with API key
 
-    # Define the path to save the audio file
-    static_folder = Path(__file__).parent / "static"
-    speech_file_path = static_folder / "speech_openai.mp3"  # Save as 'speech_openai.mp3'
     
     # Call the OpenAI TTS API to generate speech
     response = client.audio.speech.create(
@@ -27,10 +39,23 @@ def generate_audio_with_openai(input_text, voice="fable"):
         voice=voice,  # Choose a voice
         input=input_text  # The text to convert to speech
     )
-    
-    # Assuming `response` contains the raw audio content
-    # Write the audio data to a file manually
-    with open(speech_file_path, "wb") as audio_file:
-        audio_file.write(response.content)
 
-    return str(speech_file_path)  # Return the file path as a string for further processing
+    # Define a unique file key
+    file_key = f"audio/speech_openai_{int(time.time())}.mp3"
+    
+    # Upload the file to DigitalOcean Space
+    s3_client.put_object(
+        Bucket=SPACE_NAME,
+        Key=file_key,
+        Body=response.content,
+        ContentType='audio/mpeg'
+    )
+
+    # Generate a signed URL with a specific expiration time (e.g., 1 hour)
+    audio_url = s3_client.generate_presigned_url(
+        'get_object',
+        Params={'Bucket': SPACE_NAME, 'Key': file_key},
+        ExpiresIn=3600  # Link expires in 1 hour (3600 seconds)
+    )
+
+    return audio_url
