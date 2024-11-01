@@ -123,15 +123,20 @@
         /* Banner */
         .banner {
             background-color: #1a1a1a;
-            padding: 100px 20px;
+            padding: 10px;
             text-align: center;
-            margin-top: 60px; /* Adjusted for header height */
+            margin-top: 40px; /* Adjusted for header height */
+           
+       
         }
 
         .banner-text {
             font-size: 48px;
             font-weight: bold;
             color: yellow;
+          
+            margin-top: 70px;
+
         }
 
         /* Pricing Section */
@@ -140,6 +145,7 @@
             background-color: #1a1a1a;
             color: yellow;
             text-align: center;
+         
         }
 
         .section h2 {
@@ -157,31 +163,34 @@
 
         .pricing-plan {
             background-color: #FFD700;
-            border: 2px solid #FFFF31;
+            border: 3px solid #FFFF31;
             border-radius: 15px;
             padding: 30px;
-            max-width: 300px;
+            max-width: 320px;
             text-align: center;
             width: 100%;
-            box-shadow: 0 4px 10px rgba(255, 255, 0, 0.5);
+            box-shadow: 0 4px 10px rgba(255, 215, 0, 0.6);
             transition: transform 0.3s, box-shadow 0.3s ease-in-out;
         }
 
         .pricing-plan:hover {
             transform: translateY(-10px);
-            box-shadow: 0 8px 20px rgba(255, 255, 0, 0.8);
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.9);
         }
 
         .pricing-plan h3 {
             font-size: 28px;
             margin-bottom: 15px;
             color: #1a1a1a;
+            font-weight: 700;
+            text-transform: uppercase;
         }
 
         .pricing-plan p {
-            font-size: 18px;
+            font-size: 24px;
             margin-bottom: 20px;
-            color: #1a1a1a;
+            color: #333;
+            font-weight: bold;
         }
 
         .pricing-plan ul {
@@ -191,10 +200,19 @@
             margin-bottom: 20px;
             text-align: left;
             color: #1a1a1a;
+            font-weight: 600;
         }
 
         .pricing-plan ul li {
             margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .pricing-plan ul li::before {
+            content: "✔️";
+            margin-right: 8px;
+            color: #1a1a1a;
         }
 
         .cta-button {
@@ -207,11 +225,13 @@
             font-size: 20px;
             font-weight: bold;
             border-radius: 5px;
-            box-shadow: 10px 5px 5px black;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s, box-shadow 0.3s;
         }
 
         .cta-button:hover {
             background-color: #FFFF31;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
         }
 
         /* Footer */
@@ -375,12 +395,12 @@
             <!-- Basic Plan -->
             <div class="pricing-plan">
                 <h3>Basic Plan</h3>
-                <p>$6 per month</p>
+                <p>$7 per month</p>
                 <ul>
-                    <li>10 minutes of narration per month</li>
-                    <li>Basic text-to-speech capabilities</li>
-                    <li>Customizable narration tone</li>
-                    <li>Upgrade options available</li>
+                    <li>10 minutes of narration each month</li>
+                    <li>Powered by OpenAI's text-to-speech</li>
+                    <li>Great for simple, fun narrations</li>
+                    <li>📌 "Costs less than that random app you forgot to cancel."</li>
                 </ul>
                 <a href="/signup" class="cta-button">Choose Basic</a>
             </div>
@@ -390,11 +410,10 @@
                 <h3>Premium Plan</h3>
                 <p>$15 per month</p>
                 <ul>
-                    <li>30 minutes of narration per month</li>
-                    <li>Advanced text-to-speech capabilities</li>
-                    <li>Enhanced customization options</li>
-                    <li>Priority support</li>
-                    <li>Key frame-based narration</li>
+                    <li>10 minutes of narration each month</li>
+                    <li>Enhanced voice quality with Eleven Labs</li>
+                    <li>Advanced key frame-based video analysis</li>
+                    <li>📌 "Because your videos deserve more than just silence."</li>
                 </ul>
                 <a href="/signup" class="cta-button">Choose Premium</a>
             </div>
