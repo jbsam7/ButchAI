@@ -277,9 +277,9 @@ def verify_otp_signup_route():
                     try:
                         subscription_tier = temp_signup_data['tier']
                         if subscription_tier == 'basic':
-                            price_id = 'price_1PyQBqGWB2OjKBV44jdpOtqm'  # Replace with actual Basic Price ID
+                            price_id = 'price_1QGFRXGWB2OjKBV4lFRYqIj4'  # Replace with actual Basic Price ID
                         elif subscription_tier == 'premium':
-                            price_id = 'price_1PyQDpGWB2OjKBV4LL3FTYS2'  # Replace with actual Premium Price ID
+                            price_id = 'price_1QGFVBGWB2OjKBV4sGv4ildx'  # Replace with actual Premium Price ID
 
 
                         # Include email in metadata
@@ -762,9 +762,9 @@ def account():
         # Update the existing Stripe subscription with the new price ID
         try:
             if new_tier == 'basic':
-                price_id = 'price_1PyQBqGWB2OjKBV44jdpOtqm'
+                price_id = 'price_1QGFRXGWB2OjKBV4lFRYqIj4'
             elif new_tier == 'premium':
-                price_id = 'price_1PyQDpGWB2OjKBV4LL3FTYS2'
+                price_id = 'price_1QGFVBGWB2OjKBV4sGv4ildx'
 
             # Retrieve the subscription object from Stripe
             subscription = stripe.Subscription.retrieve(subscription_id)
@@ -1062,6 +1062,7 @@ def create_checkout_session_basic_route():
 def create_checkout_session_premium_route():
     return create_checkout_session_premium()
 
+@csrf.exempt
 @app.route('/stripe-webhook', methods=['POST'])
 @limiter.limit("10 per minute")
 def stripe_webhook_route():
