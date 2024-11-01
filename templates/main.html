@@ -291,7 +291,7 @@
         .second-banner {
             background: #1a1a1a;
             color: #1a1a1a;
-            padding: 100px;
+            padding: 50px;
             text-align: center;
             font-family: 'Poppins', sans-serif;
             display: flex;
@@ -320,7 +320,7 @@
             padding: 20px;
             border-radius: 10px;
             border: 4px solid #FFFF31;
-            backdrop-filter: blur(5px);
+            box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.2);
             width: 90%;
             max-width: 500px;
         }
@@ -345,16 +345,16 @@
             font-weight: bold;
             color: white;
             text-align: center;
-            text-shadow: black 1px 0 10px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
         }
 
         .second-banner p {
-            font-size: 20px;
-            font-weight: bold;
-            color: #1c1c1c;
+            font-size: 24px;
+            font-weight: 600;
+            color: black;
             margin: 30px 0px;
             line-height: 2;
-            text-shadow: white 1px 0 10px;
+            text-shadow: white 2px 2px 10px !important;
         }
 
         .call-to-action h3 {
@@ -481,6 +481,14 @@
             margin-left: 2%;
             text-shadow: black 1px 0 10px;
         }
+        .third-banner-section p strong {
+            font-weight: bold;
+            font-size: 28px;
+            display: block; 
+            margin-bottom: 2px;
+            color: #1a1a1a;
+            text-shadow: white 2px 0px 5px;
+        }
 
         /* Subscription options */
         .subscription-options {
@@ -511,8 +519,8 @@
 
         .subscription-tier h3 {
             margin-bottom: 15px;
-            color: #1a1a1a;
-            text-shadow: white 5px 5px 15px;
+            color: white;
+            text-shadow: #1c1c1c 5px 0px 15px;
             font-size: 25px;
             border-radius: 4px;
         }
@@ -521,7 +529,8 @@
             margin-bottom: 10px;
             color:#1a1a1a;
             font-weight: bold;
-            font-size: 18px;
+            font-size: 20px;
+            text-shadow: white 5px 0px 15px;
         }
 
         .subscription-tier a {
@@ -534,6 +543,17 @@
             font-weight: bold;
             border: #FFFF31 solid 4px;
             box-shadow: 10px 5px 5px red;  
+        }
+
+        .subscription-tier em {
+            color: red;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+            font-weight: bold;
+            margin-top: 15px;
+           
         }
 
         /* Footer section */
@@ -579,6 +599,7 @@
             overflow-x: hidden;
         }
 
+       
         /* Mobile styles */
         @media only screen and (max-width: 768px) {
             
@@ -827,19 +848,19 @@
             }
 
             .second-banner h2 {
-                font-size: 24px;
+                font-size: 26px;
             }
 
             .second-banner p {
-                font-size: 16px;
+                font-size: 20px;
             }
 
             .call-to-action h3 {
-                font-size: 24px;
+                font-size: 28px;
             }
 
             .call-to-action p {
-                font-size: 16px;
+                font-size: 19px;
             }
 
             .cta-button {
@@ -979,12 +1000,9 @@
                 <div class="second-banner-left">
                     <div class="second-banner-text-container">
                         <div class="second-banner-text">
-                            <h2>The First Narration Tool to Use Key Frames</h2>
+                            <h2>Upload Your Video – Let AI Narrate the Story</h2>
                             <p> 
-                                We create custom narrations using key frames of your video to provide
-                                personalized voiceover content that stands out. This unique approach allows us
-                                to offer narration that enhances your storytelling, ensuring every key moment
-                                is highlighted with precision.
+                                Our tool analyzes the visuals in your video to create a unique, custom narration using advanced AI technology. Simply upload your video, and we’ll generate a personalized voiceover that highlights the key moments. 
                             </p>
                         </div>
                     </div>
@@ -992,7 +1010,7 @@
                 <div class="second-banner-right">
                     <div class="call-to-action">
                         <h3>Get Started Today!</h3>
-                        <p>Experience the future of narration.</p>
+                        <p>Experience an innovative way to add storytelling to your videos.</p>
                         <a href="/signup" class="cta-button">Sign Up Now</a>
                     </div>
                 </div>
@@ -1017,16 +1035,16 @@
             <div class="third-banner-section">
                 <img src="{{ url_for('static', filename='images/bball.jpg') }}" alt="Business Ad Image">
                 <p>
-                    Our AI narration tool is perfect for business advertisements, offering you a tailored voiceover that aligns with your brand.
-                    Stand out with our custom narrations for your promotional and ad videos, making sure your message is heard with clarity.
+                    <strong>Explore New Possibilities for Your Brand’s Storytelling</strong><br>
+Looking for fresh, innovative ways to create marketing content? Our AI narration tool brings an artistic edge to videos by generating unique, frame-based voiceovers that help your brand’s message stand out. Ideal for creative social media campaigns, experimental ads, or engaging product highlights.
                 </p>
             </div>
             <div class="third-banner-section">
                 <img src="{{ url_for('static', filename='images/michael.png') }}" alt="Business Ad Image">
                   
                 <p>
-                    Looking to have fun with your videos? Our tool lets you create entertaining and personalized narrations for any video you have. 
-                    Whether it's for social media, memes, or just for fun, our narration tool adds an extra layer of creativity to your projects.
+                    <strong>Create Unique Narrations for Any Occasion</strong><br>
+Whether it's a memorable home video, a funny pet clip, or just a random moment caught on camera, our AI brings it to life with a custom narration! Perfect for personal use, social media fun, or adding a unique twist to any video. 
                 </p>
             </div>
         </div>
@@ -1034,13 +1052,17 @@
         <!-- Subscription options-->
         <div id="subscriptions" class="subscription-options">
             <div class="subscription-tier">
-                <h3>Basic Tier  $5/month</h3>
-                <p>Access to basic narration services.</p>
+                <h3>Basic Tier - $7/month</h3>
+                <p>Access to basic narration services.<br> 
+                <em>Costs less than that random app you forgot to cancel.</em>
+                </p>
                 <a href="/signup">Subscribe to Basic</a> 
             </div>
             <div class="subscription-tier">
-                <h3>Premium Tier  $15/month</h3>
-                <p>Advanced narration with key frame analysis.</p>
+                <h3>Premium Tier - $15/month</h3>
+                <p>Advanced narration with key frame analysis.<br> 
+                <em>Because you deserve more than silent home videos, right?</em>
+                </p>
                 <a href="/signup">Subscribe to Premium</a>
             </div>
         </div>
