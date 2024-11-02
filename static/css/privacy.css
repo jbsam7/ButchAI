@@ -1,0 +1,385 @@
+/* Global Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    background-color: #1a1a1a;
+    color: #FFD700;
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header Styles */
+header {
+    display: flex;
+    justify-content: space-between; /* Space between logo and navigation */
+    align-items: center; /* Vertically center items */
+    padding: 3px 7px; /* Adjust padding as needed */
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #1a1a1a;
+    box-shadow: 0 4px 10px rgba(255, 215, 0, 0.5);
+    z-index: 1000;
+}
+
+/* Logo Text */
+.logo-text {
+    font-size: 32px;
+    font-weight: 700;
+    color: #FFFF31;
+    transition: color 0.3s ease-in-out;
+    cursor: default;
+}
+
+.logo-text:hover {
+    color: rgba(255, 255, 0, 0.8);
+}
+
+.logo-text .ai {
+    color: #FFD700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+/* Navigation Links Left */
+.nav-links-left {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.nav-links-left a {
+    color: #FFD700;
+    text-decoration: none;
+    font-size: 18px;
+    position: relative;
+}
+
+.nav-links-left a::after {
+    content: "";
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    bottom: -2px;
+    left: 0;
+    background-color: #FFD700;
+    transition: width 0.3s;
+}
+
+.nav-links-left a:hover::after {
+    width: 100%;
+}
+
+.nav-links-left a:hover {
+    color: rgba(255, 255, 0, 0.8);
+}
+
+.dropdown {
+    position: relative;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.9);
+    min-width: 200px;
+    box-shadow: 0 8px 16px rgba(255, 255, 0, 0.3);
+    z-index: 1;
+    text-align: left;
+    border-radius: 8px;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    transform: translateY(10px);
+    opacity: 0;
+}
+
+.dropdown-content a {
+    color: #FFD700;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.dropdown-content a:hover {
+    background-color: rgba(255, 255, 0, 0.2);
+    color: white;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.dropdown::after {
+    content: " ▼";
+    font-size: 12px;
+}
+
+.nav-links-right {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.nav-links-right a {
+    color: black;
+    text-decoration: none;
+    padding: 7px 14px;
+    border: 2px solid #FFD700;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    background-color: #FFD700;
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+}
+
+.nav-links-right a:hover {
+    background-color: #FFFF31;
+    color: black;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+    border: 2px solid #FFFF31;
+}
+
+/* Hamburger Menu */
+.hamburger {
+    display: none; /* Hidden by default, shown on mobile via media queries */
+    cursor: pointer;
+    position: relative;
+    z-index: 1001; /* Ensure it stays above the menu */
+}
+
+.hamburger div {
+    width: 35px; /* Adjusted width */
+    height: 4px; /* Adjusted height */
+    background-color: #FFD700;
+    margin: 5px 0;
+    border-radius: 2px;
+    transition: all 0.3s ease; /* Smooth transition for potential animations */
+}
+
+/* Banner Styles */
+.banner {
+    background: #FFD700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 100px 20px;
+    margin-top: 80px; /* Adjusted to prevent overlap with fixed header */
+    flex-direction: column;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.banner-text {
+    font-size: 56px;
+    font-weight: bold;
+    color: #1c1c1c;
+    max-width: 90%;
+    overflow: hidden;
+    white-space: normal;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+}
+
+/* Terms Container */
+.terms-container {
+    background-color: #2c2c2c;
+    padding: 40px 30px;
+    border-radius: 15px;
+    box-shadow: 0px 4px 20px rgba(255, 215, 0, 0.5);
+    width: 90%;
+    max-width: 800px;
+    text-align: left;
+    margin: 50px auto;
+    flex: 1;
+    color: #FFD700;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Terms Content */
+.terms-container h2 {
+    margin-bottom: 30px;
+    font-size: 28px;
+    box-shadow: 0 0 30px rgba(255, 215, 0, 1);
+    padding: 15px;
+    border-radius: 10px;
+    color: #1a1a1a;
+    background-color: #FFD700;
+    display: inline-block;
+}
+
+.terms-container h3 {
+    margin-top: 20px;
+    color: #FFD700;
+    font-size: 24px;
+    text-shadow: 1px 1px 3px rgba(255, 255, 0, 0.3);
+}
+
+.terms-container p, .terms-container ul {
+    margin-bottom: 15px;
+    line-height: 1.6;
+    font-size: 16px;
+}
+
+.terms-container ul {
+    list-style-type: disc;
+    margin-left: 20px;
+}
+
+.terms-container a {
+    color: #FFD700;
+    text-decoration: none;
+    transition: color 0.3s, text-shadow 0.3s;
+}
+
+.terms-container a:hover {
+    color: #FFFF31;
+    text-shadow: 0px 0px 10px rgba(255, 215, 0, 0.8);
+}
+
+/* Footer Styles */
+footer {
+    background-color: #121212;
+    color: rgba(255, 255, 255, 0.8);
+    padding: 30px 0;
+    text-align: center;
+    font-size: 14px;
+    margin-top: auto;
+    width: 100%;
+}
+
+footer a {
+    color: #FFD700;
+    text-decoration: none;
+    margin: 0 10px;
+    transition: color 0.3s;
+}
+
+footer a:hover {
+    color: #FFFF31;
+    text-decoration: underline;
+}
+
+.social-icons {
+    margin-top: 20px;
+}
+
+.social-icons img {
+    width: 30px;
+    margin: 0 10px;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+}
+
+.social-icons img:hover {
+    opacity: 1;
+}
+
+/* Mobile Styles */
+@media only screen and (max-width: 768px) {
+
+    /* Show Hamburger Menu */
+    .hamburger {
+        display: block; /* Show hamburger on mobile */
+    }
+
+    /* Hide navigation links by default */
+    .nav-links-left,
+    .nav-links-right {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 45px;
+        left: 0;
+        width: 100%;
+        background-color: #1a1a1a;
+        padding: 10px 0;
+        z-index: 1000;
+        text-align: center;
+    }
+
+   
+    .nav-links-left a {
+        font-size: 18px;
+        padding: 15px 0;
+        text-decoration: none;
+        color: #FFD700;
+        display: block;
+        width: 100%;
+        transition: background-color 0.3s ease;
+    }
+
+    .nav-links-right a {
+        font-size: 18px;
+        padding: 15px 0;
+        text-decoration: none;
+        color: black;
+        font-weight: bold;
+        display: block;
+        width: 100%;
+        transition: background-color 0.3s ease;
+    }
+
+    /* Show navigation links when menu is open */
+    .menu-open .nav-links-left,
+    .menu-open .nav-links-right {
+        display: flex;
+    }
+
+    /* Align Hamburger Menu to the Right */
+    .hamburger {
+        position: absolute;
+        right: 20px; /* Position it 20px from the right */
+        top: 50%;
+        transform: translateY(-50%); /* Center vertically */
+        z-index: 1001; /* Ensure it stays above the menu */
+    }
+
+    .hamburger div {
+        width: 30px; /* Adjust width for better fit */
+        height: 4px;  /* Adjust height for aesthetics */
+        background-color: #FFD700;
+        margin: 5px 0; /* Adjust spacing */
+        border-radius: 4px;
+    }
+
+    /* Adjust banner text */
+    .banner-text {
+        font-size: 32px !important;
+        max-width: 100%;
+        white-space: normal;
+        overflow: hidden;
+        border-right: none;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+    }
+
+    /* Adjust terms container for mobile */
+    .terms-container {
+        width: 90%;
+        padding: 30px;
+        margin: 40px auto;
+        font-size: 14px;
+    }
+
+    .terms-container h3 {
+        font-size: 20px;
+    }
+
+    /* Adjust footer */
+    footer {
+        padding: 20px 0;
+    }
+
+    .social-icons img {
+        width: 25px;
+        margin: 0 8px;
+    }
+}
