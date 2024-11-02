@@ -46,10 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 3000); // Matches the animation duration
 });
 
-function toggleMenu() {
-    const header = document.querySelector('header');
-    header.classList.toggle('menu-open');
-}
+
 
 // Function to toggle the menu
 function toggleMenu() {

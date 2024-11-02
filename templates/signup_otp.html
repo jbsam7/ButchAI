@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://js.hcaptcha.com; frame-src https://hcaptcha.com https://*.hcaptcha.com;">
+
     <title>OTP Verification - Butch AI</title>
     
     <!-- Google Font -->
@@ -24,7 +26,7 @@
         </div>
 
         <!-- Hamburger Menu Icon -->
-        <div class="hamburger" onclick="toggleMenu()" aria-label="Toggle navigation menu" role="button" tabindex="0">
+        <div class="hamburger" aria-label="Toggle navigation menu" role="button" tabindex="0">
             <div></div>
             <div></div>
             <div></div>

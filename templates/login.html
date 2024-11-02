@@ -3,10 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://js.hcaptcha.com; frame-src https://hcaptcha.com https://*.hcaptcha.com;">
+
     <title>Login - Butch AI</title>
     
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    
 
     <!-- hCaptcha Widget -->
     <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
@@ -24,7 +27,7 @@
         </div>
 
         <!-- Hamburger Menu Icon -->
-        <div class="hamburger" onclick="toggleMenu()" aria-label="Toggle navigation menu" role="button" tabindex="0">
+        <div class="hamburger" aria-label="Toggle navigation menu" role="button" tabindex="0">
             <div></div>
             <div></div>
             <div></div>
@@ -107,5 +110,6 @@
 
     <!-- JavaScript for Hamburger Menu Toggle -->
     <script src="{{ url_for('static', filename='js/login.js') }}"></script>
+
 </body>
 </html>

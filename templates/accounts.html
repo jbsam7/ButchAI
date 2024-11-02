@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
     <!-- Link to external CSS file -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/accounts.css') }}">
 
 </head>
 <body>
@@ -22,7 +22,7 @@
         </div>
 
         <!-- Hamburger Menu Icon -->
-        <div class="hamburger" onclick="toggleMenu()" aria-label="Toggle navigation menu" role="button" tabindex="0">
+        <div class="hamburger" aria-label="Toggle navigation menu" role="button" tabindex="0">
             <div></div>
             <div></div>
             <div></div>
@@ -108,8 +108,10 @@
             <button type="submit" class="btn-account">Update Payment Info</button>
         </form>
 
-        <!-- Change Password button -->
-        <button class="btn-account" onclick="window.location.href='/change_REMOVED'">Change Password</button>
+        <!-- Form for changing REMOVED -->
+        <form action="{{ url_for('change_REMOVED') }}" method="POST">
+            <button type="submit" class="btn-account">Change Password</button>
+        </form>
     </div>
 
     <!-- Footer -->
