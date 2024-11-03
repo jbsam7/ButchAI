@@ -3,39 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forgot Username</title>
+    <title>Forgot Password - Butch AI</title>
     
-    <!-- Google Fonts Link -->
+    <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
     <!-- Link to external CSS file -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/forgot_username.css') }}">
     
-
 </head>
 <body>
     <!-- Header -->
     <header>
-        <div class="left-section">
-            <img src="{{ url_for('static', filename='images/logobaby.png') }}" alt="ButchAI Logo" class="logo">
-
-            <div class="nav-links-left">
-                <a href="/">Home</a>
-                <div class="dropdown">
-                    <a href="#">Features</a>
-                    <div class="dropdown-content">
-                        <a href="/how-to-prompt">How to Prompt</a>
-                        <a href="/basic">Basic</a>
-                        <a href="/premium">Premium</a>
-                    </div>
-                </div>
-                <a href="/pricing">Pricing</a>
-                <a href="/contact">Contact</a>
-            </div>
-        </div>
-
-        <div class="nav-links-right">
-            <a href="/login">Login</a>
+        <!-- Logo Text -->
+        <div class="logo-text" aria-label="ButchAI">
+            Butch<span class="ai">AI</span>
         </div>
 
         <!-- Hamburger Menu Icon -->
@@ -43,6 +25,28 @@
             <div></div>
             <div></div>
             <div></div>
+        </div>
+
+        <!-- Navigation Links -->
+        <div class="nav-links-left">
+            <a href="/">Home</a>
+            <!-- Dropdown for Features -->
+            <div class="dropdown">
+                <a href="#">Features</a>
+                <div class="dropdown-content">
+                    <a href="/how-to-prompt">How to Prompt</a>
+                    <a href="/basic">Basic</a>
+                    <a href="/premium">Premium</a>
+                </div>
+            </div>
+            <a href="/pricing">Pricing</a>
+            <a href="/contact">Contact</a>
+        </div>
+
+        <!-- Right Navigation Links -->
+        <div class="nav-links-right">
+            <a href="/signup">Sign Up</a>
+            <a href="/login">Login</a>
         </div>
     </header>
 
@@ -52,22 +56,32 @@
             Forgot Username
         </div>
         <div class="banner-subtext">
-            Enter your email below to retrieve your username securely.
+            Enter your email below to retrieve your username
         </div>
     </div>
 
-    <!-- Forgot Username Form -->
-    <div class="content">
-        <div class="forgot-username-container">
-            <h1>Retrieve Your Username</h1>
-            <form action="/forgot-username" method="POST">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                <label for="email">Email Address:</label>
-                <input type="email" id="email" name="email" placeholder="Enter your email" required>
-
-                <button type="submit">Retrieve Username</button>
-            </form>
-        </div>
+    <!-- Forgot Password Form Container -->
+    <div class="login-container">
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for message in messages %}
+                        <p class="flash-message">{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        
+        <!-- Forgot Password Form -->
+        <form action="/forgot-username" method="POST" class="login-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            <input type="submit" value="Get Username">
+        </form>
+        <!-- Additional Links -->
+        <a href="/login">Back to Login</a>
+        <a href="/signup">Don't have an account? Sign up</a>
     </div>
 
     <!-- Footer -->
@@ -87,8 +101,7 @@
     </footer>
 
     <!-- JavaScript for Hamburger Menu Toggle -->
-    <script src="{{ url_for('static', filename='js/forgot_username.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/forgot_REMOVED.js') }}"></script>
 
-    
 </body>
 </html>
