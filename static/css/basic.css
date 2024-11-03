@@ -177,12 +177,13 @@ header {
 .section {
     padding: 50px 20px;
     background-color: #121212;
-    color: yellow;
+    color: white;
     text-align: left;
     display: flex;
     flex-direction: row;
     gap: 40px;
     flex-wrap: wrap;
+    text-shadow: #111 2px 0px 8px;
 }
 
 .section h2 {
@@ -194,10 +195,10 @@ header {
 }
 
 .section p {
-    font-size: 18px;
-    font-weight: 300;
+    font-size: 20px;
+    font-weight: 800;
     line-height: 1.8;
-    color: rgba(255, 255, 0, 0.8);
+    color: white;
     flex: 1;
     min-width: 300px;
 }
@@ -210,7 +211,7 @@ header {
 }
 
 .section img {
-    max-width: 100%;
+    max-width: 80%;
     height: auto;
     border-radius: 15px;
     margin-top: 20px;
@@ -230,7 +231,7 @@ header {
     text-align: center;
     padding: 50px 20px;
     background-color: #111;
-    color: yellow;
+    color: white;
 }
 
 .cta-section h2 {
@@ -305,7 +306,7 @@ footer a:hover {
     }
 
     /* Hide navigation links by default */
-    .nav-links-left,
+   
     .nav-links-right {
         display: none;
         flex-direction: column;
@@ -319,7 +320,29 @@ footer a:hover {
         text-align: center;
     }
 
-    .nav-links-left a,
+    .nav-links-left {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 200px;
+        left: 0;
+        width: 100%;
+        background-color: #000;
+        padding: 10px 0;
+        z-index: 1000;
+        text-align: center;
+    }
+
+    
+    .nav-links-left a {
+        font-size: 18px;
+        padding: 15px 0;
+        text-decoration: none;
+        color: yellow;
+        display: block;
+        width: 100%;
+    }
+
     .nav-links-right a {
         font-size: 18px;
         padding: 15px 0;
@@ -327,6 +350,7 @@ footer a:hover {
         color: yellow;
         display: block;
         width: 100%;
+        background-color: #000;
     }
 
     /* Show navigation links when menu is open */
