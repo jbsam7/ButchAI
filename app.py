@@ -1204,7 +1204,7 @@ def upload_video():
     subscription_status = user[1]
 
     # Check if the user has exceeded 
-    if video_duration >= 1800: # 1800 seconds = 30 minutes
+    if video_duration >= 600: # 10 minutes
         logger.info(f"User {session['username']} exceeded video limit.")
         cursor.execute('''
             UPDATE users
