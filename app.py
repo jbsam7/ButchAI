@@ -1315,6 +1315,8 @@ def upload_video():
 @app.route('/tts', methods=['GET', 'POST'])
 @login_required
 @basic_required
+@limiter.exempt
+@csrf.exempt
 def text_to_speech():
     if request.method == 'GET':
         # Return the upload form on a GET request
@@ -1322,8 +1324,10 @@ def text_to_speech():
 
 
     if request.method == 'POST':
+        logger.debug("Received POST request for /tts")
         # Retrieve prompt and video details from the form
         user_prompt = bleach.clean(request.form.get('custom_prompt'))
+        logger.info("We have received the prompt")
         if not user_prompt:
             flash('Please enter some text to generate speech')
             print('Please enter some text to generate speech')
@@ -1333,12 +1337,15 @@ def text_to_speech():
         if 'file' not in request.files or request.files['file'].filename == '':
             flash('No selected or no file part in the request.')
             print('No selected or no file part in the request.')
+
             return render_template('tts.html')
 
         file = request.files['file']
+        logger.info(f"Received file: {file.filename}")
 
         # Validate the file type
         if not allowed_file(file.filename):
+            logger.error(f"Invalid file type: {file.filename}")
             flash("Invalid file type. Please upload only .mp4, .mov, or .avi video files.")
             return jsonify({'error': "Invalid file type. Please upload only .mp4, .mov, or .avi video files."}), 401
 
