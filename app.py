@@ -55,7 +55,7 @@ csrf = CSRFProtect()
 csrf.init_app(app)
 
 # Set max upload for now to 100MB
-app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024  # 100MB file size limit
+app.config['MAX_CONTENT_LENGTH'] = 500 * 1024 * 1024  # 100MB file size limit
 
 # Set session to log out and remove cookies after 30 minutes
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
