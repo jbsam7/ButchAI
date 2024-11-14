@@ -873,7 +873,7 @@ html, body {
     }
 
     .login-container input[type="text"],
-    .login-container input[type="REMOVED"] {
+    .login-container input[type="password"] {
         width: 85%;
         padding: 10px 12px;
         font-size: 14px;

@@ -252,7 +252,7 @@ header {
 .form-group input[type="text"],
 .form-group input[type="date"],
 .form-group input[type="email"],
-.form-group input[type="REMOVED"] {
+.form-group input[type="password"] {
     width: 100%;
     padding: 10px;
     border-radius: 5px;

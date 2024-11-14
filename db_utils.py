@@ -11,7 +11,7 @@ def init_db():
     CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY,
         username TEXT UNIQUE NOT NULL,
-        REMOVED_hash TEXT NOT NULL,
+        password_hash TEXT NOT NULL,
         subscription_status TEXT DEFAULT 'inactive',
         first_name TEXT,
         last_name TEXT,
@@ -35,7 +35,7 @@ def init_db():
     CREATE TABLE IF NOT EXISTS temp_users (
         id INTEGER PRIMARY KEY,
         username TEXT UNIQUE NOT NULL,
-        REMOVED_hash TEXT NOT NULL,
+        password_hash TEXT NOT NULL,
         subscription_status TEXT DEFAULT 'inactive',
         first_name TEXT,
         last_name TEXT,
@@ -63,7 +63,7 @@ def update_db_schema():
     conn.commit()
     conn.close()
 
-def hash_REMOVED(REMOVED):
-    return hashlib.sha256(REMOVED.encode()).hexdigest()
+def hash_password(password):
+    return hashlib.sha256(password.encode()).hexdigest()
 
 

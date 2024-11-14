@@ -33,12 +33,12 @@ from elevenlabs import save
 from elevenlabs.client import ElevenLabs
 from decorators import basic_required, premium_required
 from stripe_utils import create_checkout_session_basic, create_checkout_session_premium, handle_stripe_webhook
-from db_utils import init_db, update_db_schema, hash_REMOVED
+from db_utils import init_db, update_db_schema, hash_password
 from text_adjustment import adjust_text_for_duration
 from audio_utils import generate_key_frame_phrases, extract_phrases, generate_audio_from_text, save_audio, analyze_frame, generate_sequential_summary, summarize_text, encode_image, extract_frames, calculate_frame_interval, save_audio
 from tts_audio import generate_audio_with_openai
 from tts_token_logging import log_tts_usage_and_cost, count_characters
-from send_email import generate_otp, send_otp_email, store_otp, validate_otp, generate_REMOVED_reset_token, verify_REMOVED_reset_token, send_REMOVED_reset_email, send_email
+from send_email import generate_otp, send_otp_email, store_otp, validate_otp, generate_password_reset_token, verify_password_reset_token, send_password_reset_email, send_email
 
 load_dotenv()
 
@@ -93,25 +93,25 @@ init_db()
 # Update the db schema
 update_db_schema()
 
-def hash_REMOVED(REMOVED):
-    return hashlib.sha256(REMOVED.encode()).hexdigest()
+def hash_password(password):
+    return hashlib.sha256(password.encode()).hexdigest()
 
 # Password check
-def is_REMOVED_valid(REMOVED):
+def is_password_valid(password):
     # At least 8 characters, contains at least one uppercase letter, one lowercase letter, one number, and one special character
-    REMOVED_regex = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$'
-    return re.match(REMOVED_regex, REMOVED) is not None
+    password_regex = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$'
+    return re.match(password_regex, password) is not None
 
-def signup(username, REMOVED_hash, first_name, last_name, dob, email, tier, subscription_id, customer_id):
+def signup(username, password_hash, first_name, last_name, dob, email, tier, subscription_id, customer_id):
     conn = get_db_connection()
     cursor = conn.cursor()
     try:
         cursor.execute('''
             INSERT INTO users (
-                username, REMOVED_hash, first_name, last_name, dob, email, video_duration,
+                username, password_hash, first_name, last_name, dob, email, video_duration,
                 tier, subscription_id, stripe_customer_id, subscription_status
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (username, REMOVED_hash, first_name, last_name, dob, email, 0.0 , tier, subscription_id, customer_id, 'active'))
+        ''', (username, password_hash, first_name, last_name, dob, email, 0.0 , tier, subscription_id, customer_id, 'active'))
         conn.commit()
         return True
     except sqlite3.IntegrityError:
@@ -120,11 +120,11 @@ def signup(username, REMOVED_hash, first_name, last_name, dob, email, tier, subs
     finally:
         conn.close()
 
-def login(username, REMOVED):
-    REMOVED_hash = hash_REMOVED(REMOVED)
+def login(username, password):
+    password_hash = hash_password(password)
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM users WHERE username = ? AND REMOVED_hash = ?', (username, REMOVED_hash))
+    cursor.execute('SELECT * FROM users WHERE username = ? AND password_hash = ?', (username, password_hash))
     user = cursor.fetchone()
     conn.close()
     return user is not None
@@ -194,8 +194,8 @@ def signup_route():
         last_name = bleach.clean(request.form['last_name']).strip()
         dob = bleach.clean(request.form['dob']).strip()
         username = bleach.clean(request.form['username']).strip()
-        REMOVED = bleach.clean(request.form['REMOVED']).strip()
-        confirm_REMOVED = bleach.clean(request.form['confirm_REMOVED']).strip()
+        password = bleach.clean(request.form['password']).strip()
+        confirm_password = bleach.clean(request.form['confirm_password']).strip()
         email = bleach.clean(request.form['email']).strip()
         subscription_tier = request.form['subscription_tier']
         terms_agreed = bleach.clean(request.form['terms'])
@@ -210,13 +210,13 @@ def signup_route():
             flash('Invalid subscription tier selected. Please try again.')
             return redirect(url_for('signup_route'))
 
-        # Check if REMOVEDs match 
-        if REMOVED != confirm_REMOVED:
+        # Check if passwords match 
+        if password != confirm_password:
             flash('Passwords do not match. Please try again.')
             return redirect('signup_route')
         
-        # Validate REMOVED strength
-        if not is_REMOVED_valid(REMOVED):
+        # Validate password strength
+        if not is_password_valid(password):
             flash('Password must be at least 8 characters long, contain both uppercase and lowercase letters, one number, and one special character.')
             return redirect(url_for('signup_route'))
         
@@ -225,16 +225,16 @@ def signup_route():
         store_otp(email, otp)
         send_otp_email(email, otp)
 
-        # Hash the REMOVED baby
-        REMOVED_hash = hash_REMOVED(REMOVED)
+        # Hash the password baby
+        password_hash = hash_password(password)
 
         # Store users details temporarily in a database
         conn = get_db_connection()
         cursor = conn.cursor()
         cursor.execute('''
-            INSERT INTO temp_users (username, REMOVED_hash, first_name, last_name, dob, email, tier, video_duration, subscription_status) 
+            INSERT INTO temp_users (username, password_hash, first_name, last_name, dob, email, tier, video_duration, subscription_status) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (username, REMOVED_hash, first_name, last_name, dob, email, subscription_tier, 0.0, 'inactive'))
+        ''', (username, password_hash, first_name, last_name, dob, email, subscription_tier, 0.0, 'inactive'))
         conn.commit()
         conn.close()
 
@@ -354,7 +354,7 @@ def payment_successful():
         # Call signup function to add user to users table
         signup_success = signup(
             temp_signup_data['username'],
-            temp_signup_data['REMOVED_hash'],
+            temp_signup_data['password_hash'],
             temp_signup_data['first_name'],
             temp_signup_data['last_name'],
             temp_signup_data['dob'],
@@ -487,9 +487,9 @@ def forgot_username_route():
 
     return render_template('forgot_username.html')
 
-@app.route('/forgot-REMOVED', methods=['GET', 'POST'])
+@app.route('/forgot-password', methods=['GET', 'POST'])
 @limiter.limit("10 per minute")
-def forgot_REMOVED_route():
+def forgot_password_route():
     if request.method == 'POST':
         email = bleach.clean(request.form['email'])
 
@@ -501,52 +501,52 @@ def forgot_REMOVED_route():
         conn.close()
 
         if result:
-            token = generate_REMOVED_reset_token(email)  # Generate a secure token
-            reset_link = url_for('reset_REMOVED_route', token=token, _external=True)
+            token = generate_password_reset_token(email)  # Generate a secure token
+            reset_link = url_for('reset_password_route', token=token, _external=True)
             # Send the reset link via email (implement the send_email function)
-            send_REMOVED_reset_email(email, f'Click the link to reset your REMOVED: {reset_link}')
+            send_password_reset_email(email, f'Click the link to reset your password: {reset_link}')
             flash('Password reset instructions have been sent to your email.')
             logger.info(f"Reset link: {reset_link}")
         else:
             flash('Email not found.')
 
-        return redirect(url_for('forgot_REMOVED_route'))
+        return redirect(url_for('forgot_password_route'))
 
-    return render_template('forgot_REMOVED.html')
+    return render_template('forgot_password.html')
 
-@app.route('/reset-REMOVED/<token>', methods=['GET', 'POST'])
+@app.route('/reset-password/<token>', methods=['GET', 'POST'])
 @limiter.limit("10 per minute")
-def reset_REMOVED_route(token):
+def reset_password_route(token):
     token = bleach.clean(token)
     # Verify the token and fetch the user's email
-    email = verify_REMOVED_reset_token(token)
+    email = verify_password_reset_token(token)
 
     if not email:
         flash('Invalid or expired token.')
-        return redirect(url_for('forgot_REMOVED_route'))
+        return redirect(url_for('forgot_password_route'))
 
     if request.method == 'POST':
         logger.info(f"Received token: {token}")
-        new_REMOVED = bleach.clean(request.form['REMOVED'])
-        confirm_REMOVED = bleach.clean(request.form['confirm_REMOVED'])
+        new_password = bleach.clean(request.form['password'])
+        confirm_password = bleach.clean(request.form['confirm_password'])
 
-        if new_REMOVED != confirm_REMOVED:
+        if new_password != confirm_password:
             flash('Passwords do not match.')
             logger.info('Pasword doesnt match')
-            return redirect(url_for('reset_REMOVED_route', token=token))
+            return redirect(url_for('reset_password_route', token=token))
 
-        # Hash the new REMOVED and update the database
-        REMOVED_hash = hash_REMOVED(new_REMOVED)
+        # Hash the new password and update the database
+        password_hash = hash_password(new_password)
         conn = get_db_connection()
         cursor = conn.cursor()
-        cursor.execute('UPDATE users SET REMOVED_hash = ? WHERE email = ?', (REMOVED_hash, email))
+        cursor.execute('UPDATE users SET password_hash = ? WHERE email = ?', (password_hash, email))
         conn.commit()
         conn.close()
 
-        flash('Your REMOVED has been updated successfully.')
+        flash('Your password has been updated successfully.')
         return redirect(url_for('login_route'))
 
-    return render_template('reset_REMOVED.html', token=token)
+    return render_template('reset_password.html', token=token)
 
 @app.route('/login', methods=['GET', 'POST'])
 @limiter.limit("5 per minute")
@@ -577,8 +577,8 @@ def login_route():
             return redirect(url_for('login'))
         
         username = bleach.clean(request.form['username'])
-        REMOVED = bleach.clean(request.form['REMOVED'])
-        if login(username, REMOVED):
+        password = bleach.clean(request.form['password'])
+        if login(username, password):
             # Fetch user subscription details
             conn = get_db_connection()
             cursor = conn.cursor()
@@ -601,7 +601,7 @@ def login_route():
             else:
                 flash('Email not found for the user.')
         else:
-            flash('Invalid username or REMOVED')
+            flash('Invalid username or password')
     return render_template('login.html')
 
 @app.route('/logout')
@@ -657,7 +657,7 @@ def contact():
         # Get the user input from contact form
         name = bleach.clean(request.form.get('name'))
         user_email = bleach.clean(request.form.get('email'))
-        email = 'REMOVED'
+        email = 'customersupport@thebutchai.com'
         message = bleach.clean(request.form.get('message'))
         subject = f"Contact Form Message from {name}"
         message = (
@@ -708,7 +708,7 @@ def waitlist():
         name = bleach.clean(request.form.get('name'))
         user_email = bleach.clean(request.form.get('email'))
         message = bleach.clean(request.form.get('additional_info'))
-        email = 'REMOVED'
+        email = 'customersupport@thebutchai.com'
 
         subject = f"Waitlist Form Message from {name}"
         message = (
@@ -818,52 +818,52 @@ def account():
         return redirect(url_for('login_route'))
 
 
-@app.route('/change_REMOVED', methods=['GET', 'POST'])
+@app.route('/change_password', methods=['GET', 'POST'])
 @limiter.limit("5 per minute")
 @login_required
-def change_REMOVED():
+def change_password():
     username = session.get('username')
     
     if not username:
-        flash("You need to be logged in to change your REMOVED.")
+        flash("You need to be logged in to change your password.")
         return redirect(url_for('login_route'))
 
     if request.method == 'POST':
-        current_REMOVED = bleach.clean(request.form['current_REMOVED'])
-        new_REMOVED = bleach.clean(request.form['new_REMOVED'])
-        confirm_new_REMOVED = bleach.clean(request.form['confirm_new_REMOVED'])
+        current_password = bleach.clean(request.form['current_password'])
+        new_password = bleach.clean(request.form['new_password'])
+        confirm_new_password = bleach.clean(request.form['confirm_new_password'])
 
-        # Verify current REMOVED
+        # Verify current password
         conn = get_db_connection()
         cursor = conn.cursor()
-        cursor.execute('SELECT REMOVED_hash FROM users WHERE username = ?', (username,))
+        cursor.execute('SELECT password_hash FROM users WHERE username = ?', (username,))
         user = cursor.fetchone()
 
-        # Since fetchone() returns a tuple, access the REMOVED_hash using index 0
-        if not user or user[0] != hash_REMOVED(current_REMOVED):
-            flash('Current REMOVED is incorrect.')
-            return redirect(url_for('change_REMOVED'))
+        # Since fetchone() returns a tuple, access the password_hash using index 0
+        if not user or user[0] != hash_password(current_password):
+            flash('Current password is incorrect.')
+            return redirect(url_for('change_password'))
 
-        # Check if new REMOVEDs match
-        if new_REMOVED != confirm_new_REMOVED:
-            flash('New REMOVEDs do not match.')
-            return redirect(url_for('change_REMOVED'))
+        # Check if new passwords match
+        if new_password != confirm_new_password:
+            flash('New passwords do not match.')
+            return redirect(url_for('change_password'))
 
-        # Validate the new REMOVED strength
-        if not is_REMOVED_valid(new_REMOVED):
+        # Validate the new password strength
+        if not is_password_valid(new_password):
             flash('Password must be at least 8 characters long, contain uppercase, lowercase letters, a number, and a special character.')
-            return redirect(url_for('change_REMOVED'))
+            return redirect(url_for('change_password'))
 
-        # Update the REMOVED in the database
-        new_REMOVED_hash = hash_REMOVED(new_REMOVED)
-        cursor.execute('UPDATE users SET REMOVED_hash = ? WHERE username = ?', (new_REMOVED_hash, username))
+        # Update the password in the database
+        new_password_hash = hash_password(new_password)
+        cursor.execute('UPDATE users SET password_hash = ? WHERE username = ?', (new_password_hash, username))
         conn.commit()
         conn.close()
 
         flash('Password successfully updated.')
         return redirect(url_for('account'))
 
-    return render_template('change_REMOVED.html')
+    return render_template('change_password.html')
 
 # Update card payment
 @app.route('/update_payment', methods=['POST'])
@@ -1353,6 +1353,12 @@ def text_to_speech():
 
         # Ensure the filename is secure
         filename = secure_filename(file.filename)
+
+        # Check if the file is a valid video MIME type
+        mime_type, _ = mimetypes.guess_type(filename)
+        if mime_type is None or not mime_type.startswith('video'):
+            app.logger.error(f"Invalid file type: {mime_type}. Only video files are allowed.")
+            return "Invalid file type: Only video files are allowed"
 
         
         video_path = os.path.join('uploads', filename)

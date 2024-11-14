@@ -18,8 +18,8 @@ load_dotenv()
 SMTP_SERVER = 'smtp.office365.com'
 SMTP_PORT = 587
 SMTP_USERNAME = os.getenv('SMTP_USERNAME')  # Your Microsoft 365 email address
-SMTP_PASSWORD = os.getenv('SMTP_PASSWORD')  # Your Microsoft 365 email REMOVED
-SENDER = 'REMOVED'  # Your Microsoft 365 email address
+SMTP_PASSWORD = os.getenv('SMTP_PASSWORD')  # Your Microsoft 365 email password
+SENDER = 'customersupport@thebutchai.com'  # Your Microsoft 365 email address
 
 
 
@@ -75,14 +75,14 @@ def validate_otp(recipient_email, otp_entered):
     else:
         return False, "Invalid OTP"
 
-# Generate a REMOVED reset token
-def generate_REMOVED_reset_token(email):
+# Generate a password reset token
+def generate_password_reset_token(email):
     s = URLSafeTimedSerializer(os.getenv('FLASK_SECRET_KEY'))  # Use your Flask secret key
     token = s.dumps(email, salt=os.getenv('SECURITY_PASSWORD_SALT'))  # Use a security salt
     return token
 
-# Verify the REMOVED reset token
-def verify_REMOVED_reset_token(token, expiration=3600):
+# Verify the password reset token
+def verify_password_reset_token(token, expiration=3600):
     s = URLSafeTimedSerializer(os.getenv('FLASK_SECRET_KEY'))
     try:
         email = s.loads(token, salt=os.getenv('SECURITY_PASSWORD_SALT'), max_age=expiration)
@@ -91,10 +91,10 @@ def verify_REMOVED_reset_token(token, expiration=3600):
         return None
     return email
 
-# Send a REMOVED reset email with a reset link
-def send_REMOVED_reset_email(recipient_email, reset_link):
+# Send a password reset email with a reset link
+def send_password_reset_email(recipient_email, reset_link):
     SUBJECT = 'Password Reset Request'
-    BODY_TEXT = f"Click the link to reset your REMOVED: {reset_link}. The link is valid for 1 hour."
+    BODY_TEXT = f"Click the link to reset your password: {reset_link}. The link is valid for 1 hour."
     
     # Create the message container
     msg = MIMEMultipart()
@@ -112,7 +112,7 @@ def send_REMOVED_reset_email(recipient_email, reset_link):
         server.quit()
         logger.info(f"Password reset email sent to {recipient_email}")
     except Exception as e:
-        logger.info(f"Error sending REMOVED reset email: {e}")
+        logger.info(f"Error sending password reset email: {e}")
 
 def send_email(recipient_email, subject, body_text):
     msg = MIMEMultipart()

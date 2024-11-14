@@ -88,10 +88,10 @@
                 <input type="email" class="form-control" id="email" name="email" required maxlength="100" placeholder="Enter your email">
             </div>
             <div class="form-group">
-                <label for="REMOVED">Password:</label>
-                <input type="REMOVED" class="form-control" id="REMOVED" name="REMOVED" required minlength="8" maxlength="50" oninput="validatePassword()" placeholder="Create a REMOVED">
+                <label for="password">Password:</label>
+                <input type="password" class="form-control" id="password" name="password" required minlength="8" maxlength="50" oninput="validatePassword()" placeholder="Create a password">
                 <!-- Password criteria feedback -->
-                <ul id="REMOVEDCriteria" style="color: white; margin-left: 0; padding-left: 20px; list-style-type: none;">
+                <ul id="passwordCriteria" style="color: white; margin-left: 0; padding-left: 20px; list-style-type: none;">
                     <li id="minLength" style="color: red;">At least 8 characters</li>
                     <li id="uppercase" style="color: red;">At least one uppercase letter</li>
                     <li id="lowercase" style="color: red;">At least one lowercase letter</li>
@@ -100,10 +100,10 @@
                 </ul>
             </div>
             <div class="form-group">
-                <label for="confirm_REMOVED">Confirm Password:</label>
-                <input type="REMOVED" class="form-control" id="confirm_REMOVED" name="confirm_REMOVED" required minlength="8" maxlength="50" oninput="validatePassword()" placeholder="Confirm your REMOVED">
+                <label for="confirm_password">Confirm Password:</label>
+                <input type="password" class="form-control" id="confirm_password" name="confirm_password" required minlength="8" maxlength="50" oninput="validatePassword()" placeholder="Confirm your password">
                 <!-- Password match feedback -->
-                <small id="REMOVEDMatch" style="color: red;"></small>
+                <small id="passwordMatch" style="color: red;"></small>
             </div>
 
             <!-- Subscription Tier Selection -->

@@ -19,54 +19,54 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Password Validation Function
 function validatePassword() {
-    const REMOVED = document.getElementById("REMOVED").value;
-    const confirmPassword = document.getElementById("confirm_REMOVED").value;
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirm_password").value;
     // Elements for feedback
     const minLength = document.getElementById("minLength");
     const uppercase = document.getElementById("uppercase");
     const lowercase = document.getElementById("lowercase");
     const number = document.getElementById("number");
     const special = document.getElementById("special");
-    const match = document.getElementById("REMOVEDMatch");
+    const match = document.getElementById("passwordMatch");
 
     // Minimum length (8 characters)
-    if (REMOVED.length >= 8) {
+    if (password.length >= 8) {
         minLength.style.color = "green";
     } else {
         minLength.style.color = "red";
     }
 
     // At least one uppercase letter
-    if (/[A-Z]/.test(REMOVED)) {
+    if (/[A-Z]/.test(password)) {
         uppercase.style.color = "green";
     } else {
         uppercase.style.color = "red";
     }
 
     // At least one lowercase letter
-    if (/[a-z]/.test(REMOVED)) {
+    if (/[a-z]/.test(password)) {
         lowercase.style.color = "green";
     } else {
         lowercase.style.color = "red";
     }
 
     // At least one number
-    if (/\d/.test(REMOVED)) {
+    if (/\d/.test(password)) {
         number.style.color = "green";
     } else {
         number.style.color = "red";
     }
 
     // At least one special character
-    if (/[@$!%*?&]/.test(REMOVED)) {
+    if (/[@$!%*?&]/.test(password)) {
         special.style.color = "green";
     } else {
         special.style.color = "red";
     }
 
-    // Check if REMOVEDs match
-    if (REMOVED !== '' && confirmPassword !== '') {
-        if (REMOVED === confirmPassword) {
+    // Check if passwords match
+    if (password !== '' && confirmPassword !== '') {
+        if (password === confirmPassword) {
             match.style.color = "green";
             match.innerText = "Passwords match";
         } else {

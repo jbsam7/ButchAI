@@ -226,7 +226,7 @@ header {
 
 /* Form fields */
 .login-container input[type="text"],
-.login-container input[type="REMOVED"] {
+.login-container input[type="password"] {
     width: 90%;
     padding: 12px 15px;
     border-radius: 8px;
@@ -240,12 +240,12 @@ header {
 }
 
 .login-container input[type="text"]::placeholder,
-.login-container input[type="REMOVED"]::placeholder {
+.login-container input[type="password"]::placeholder {
     color: rgba(255, 215, 0, 0.7);
 }
 
 .login-container input[type="text"]:focus,
-.login-container input[type="REMOVED"]:focus {
+.login-container input[type="password"]:focus {
     background-color: #444444;
     border: 1px solid #FFFF31;
     box-shadow: 0px 0 10px rgba(255, 215, 0, 0.7);
@@ -464,7 +464,7 @@ footer a:hover {
     }
 
     .login-container input[type="text"],
-    .login-container input[type="REMOVED"] {
+    .login-container input[type="password"] {
         width: 85%;
         padding: 10px 12px;
         font-size: 14px;
