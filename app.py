@@ -1325,6 +1325,8 @@ def text_to_speech():
 
     if request.method == 'POST':
         logger.info("Received POST request for /tts")
+        logger.info(f"Request Content-Length: {request.content_length}")
+        logger.info(f"Request Headers: {request.headers}")
         # Retrieve prompt and video details from the form
         user_prompt = bleach.clean(request.form.get('custom_prompt'))
         logger.info("We have received the prompt")
@@ -1360,10 +1362,10 @@ def text_to_speech():
         vidcap = cv2.VideoCapture(video_path)
         if not vidcap.isOpened():
             flash("Uploaded file is not a valid video.")
+            logger.info("Video is not valid video")
             os.remove(video_path)
             return jsonify({'error': "Uploaded file is not a valid video."}), 404
 
-        
         fps = vidcap.get(cv2.CAP_PROP_FPS)
         frame_count = int(vidcap.get(cv2.CAP_PROP_FRAME_COUNT))
 
