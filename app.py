@@ -1324,7 +1324,7 @@ def text_to_speech():
 
 
     if request.method == 'POST':
-        logger.debug("Received POST request for /tts")
+        logger.info("Received POST request for /tts")
         # Retrieve prompt and video details from the form
         user_prompt = bleach.clean(request.form.get('custom_prompt'))
         logger.info("We have received the prompt")
@@ -1352,11 +1352,6 @@ def text_to_speech():
         # Ensure the filename is secure
         filename = secure_filename(file.filename)
 
-        # Check if the file is a valid video MIME type
-        mime_type, _ = mimetypes.guess_type(filename)
-        if mime_type is None or not mime_type.startswith('video'):
-            flash(f"Invalid file type: {mime_type}. Only video files are allowed.")
-            return jsonify({'error': "Invalid file type: Only video files are allowed."}), 401
         
         video_path = os.path.join('uploads', filename)
         file.save(video_path)
